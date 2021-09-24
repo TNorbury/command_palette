@@ -9,6 +9,7 @@ Allows you to provide users with a convenient way to perform all sorts of action
 * Access the command-bar via a keyboard shortcut, or programmatically.
 * Define a custom list of options for the user and define the callbacks for each.
 * Use the default styling or build your own custom list items. 
+* Use throughout your entire app, or in just certain sections!
 
 
 ## Getting started
