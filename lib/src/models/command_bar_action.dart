@@ -32,6 +32,14 @@ class CommandBarAction {
   /// the actions that will be displayed when this action is selected
   List<CommandBarAction>? childrenActions;
 
+  /// For widgets that exist inside of a nested action, this points to their
+  /// parent action
+  CommandBarAction? _parent;
+
+  /// Returns the parent of this action. Null indicates that it's a top-level
+  /// action
+  CommandBarAction? getParent() => _parent;
+
   CommandBarAction({
     required this.label,
     this.description,
@@ -40,5 +48,12 @@ class CommandBarAction {
     this.childrenActions,
   }) : assert((actionType == CommandBarActionType.single && onSelect != null) ||
             (actionType == CommandBarActionType.nested &&
-                (childrenActions?.isNotEmpty ?? false)));
+                (childrenActions?.isNotEmpty ?? false))) {
+    // give all our children "us" as a parent.
+    if (actionType == CommandBarActionType.nested) {
+      for (final child in childrenActions!) {
+        child._parent = this;
+      }
+    }
+  }
 }

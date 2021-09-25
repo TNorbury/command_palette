@@ -1,8 +1,9 @@
+import 'package:command_bar/src/controller/command_bar_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'command_bar_options.dart';
 import 'command_bar_text_field.dart';
-import 'models/command_bar_action.dart';
 
 /// Modal route which houses the command bar.
 ///
@@ -11,12 +12,13 @@ class CommandBarModal extends ModalRoute<void> {
   /// See [CommandBar.hintText]
   final String hintText;
 
-  /// See [CommandBar.actions]
-  final List<CommandBarAction> actions;
+  /// controller for the command bar. Passed into the modal so that it can be
+  /// distributed among this route
+  final CommandBarController commandBarController;
 
   CommandBarModal({
     required this.hintText,
-    required this.actions,
+    required this.commandBarController,
   });
 
   @override
@@ -41,30 +43,45 @@ class CommandBarModal extends ModalRoute<void> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-    return FadeTransition(
-      opacity: CurvedAnimation(curve: Curves.linear, parent: animation),
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          return Container(
-            height: constraints.maxHeight,
-            padding: EdgeInsets.symmetric(
-              vertical: constraints.maxHeight * (1 / 8),
-              horizontal: constraints.maxWidth * (1 / 8),
-            ),
-            child: Column(
-              children: [
-                CommandBarTextField(
-                  hintText: hintText,
+    return CommandBarControllerProvider(
+      controller: commandBarController,
+      child: FadeTransition(
+        opacity: CurvedAnimation(curve: Curves.linear, parent: animation),
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return Focus(
+              // not sure why but this seems to make things play nice lol
+              onKeyEvent: (node, event) => KeyEventResult.ignored,
+              onKey: (node, event) {
+                KeyEventResult result = KeyEventResult.ignored;
+
+                if (LogicalKeySet(LogicalKeyboardKey.backspace)
+                    .accepts(event, RawKeyboard.instance)) {
+                  if (commandBarController.handleBackspace()) {
+                    result = KeyEventResult.handled;
+                  }
+                }
+
+                return result;
+              },
+              child: Container(
+                height: constraints.maxHeight,
+                padding: EdgeInsets.symmetric(
+                  vertical: constraints.maxHeight * (1 / 8),
+                  horizontal: constraints.maxWidth * (1 / 8),
                 ),
-                Flexible(
-                  child: CommandBarOptions(
-                    actions: actions,
-                  ),
-                )
-              ],
-            ),
-          );
-        },
+                child: Column(
+                  children: [
+                    CommandBarTextField(hintText: hintText),
+                    const Flexible(
+                      child: CommandBarOptions(),
+                    )
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

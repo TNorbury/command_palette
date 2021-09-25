@@ -1,4 +1,5 @@
 import 'package:command_bar/src/command_bar_modal.dart';
+import 'package:command_bar/src/controller/command_bar_controller.dart';
 import 'package:command_bar/src/models/command_bar_action.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,32 +35,42 @@ class _CommandBarState extends State<CommandBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Focus(
-      autofocus: true,
-      onKey: (node, event) {
-        // debugPrint("here");
-        KeyEventResult result = KeyEventResult.ignored;
+    final controller = CommandBarController(widget.actions);
 
-        // if ctrl-c is pressed, and the command bar isn't open, open it
-        if (LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyK)
-                .accepts(event, RawKeyboard.instance) &&
-            !_commandBarOpen) {
-          _openCommandBar();
+    return CommandBarControllerProvider(
+      controller: controller,
+      child: Builder(
+        builder: (context) {
+          return Focus(
+            autofocus: true,
+            onKey: (node, event) {
+              // debugPrint("here");
+              KeyEventResult result = KeyEventResult.ignored;
 
-          result = KeyEventResult.handled;
-        }
+              // if ctrl-c is pressed, and the command bar isn't open, open it
+              if (LogicalKeySet(
+                          LogicalKeyboardKey.control, LogicalKeyboardKey.keyK)
+                      .accepts(event, RawKeyboard.instance) &&
+                  !_commandBarOpen) {
+                _openCommandBar(context);
 
-        // if esc is pressed, and the command bar isn't open, close it
-        else if (LogicalKeySet(LogicalKeyboardKey.escape)
-                .accepts(event, RawKeyboard.instance) &&
-            _commandBarOpen) {
-          _closeCommandBar();
-          result = KeyEventResult.handled;
-        }
+                result = KeyEventResult.handled;
+              }
 
-        return result;
-      },
-      child: widget.child,
+              // if esc is pressed, and the command bar isn't open, close it
+              else if (LogicalKeySet(LogicalKeyboardKey.escape)
+                      .accepts(event, RawKeyboard.instance) &&
+                  _commandBarOpen) {
+                _closeCommandBar();
+                result = KeyEventResult.handled;
+              }
+
+              return result;
+            },
+            child: widget.child,
+          );
+        },
+      ),
     );
   }
 
@@ -72,7 +83,7 @@ class _CommandBarState extends State<CommandBar> {
   }
 
   /// Opens the command bar
-  void _openCommandBar() {
+  void _openCommandBar(BuildContext context) {
     setState(() {
       _commandBarOpen = true;
     });
@@ -81,7 +92,10 @@ class _CommandBarState extends State<CommandBar> {
         .push(
           CommandBarModal(
             hintText: widget.hintText,
-            actions: widget.actions,
+
+            // we pass the controller in so that it can be re-provided within the
+            // tree of the modal
+            commandBarController: CommandBarControllerProvider.of(context),
           ),
         )
         .then(

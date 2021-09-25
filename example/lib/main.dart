@@ -44,24 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               CommandBarAction(
-                label: "Light",
-                actionType: CommandBarActionType.single,
-                onSelect: () {
-                  setState(() {
-                    themeMode = ThemeMode.light;
-                  });
-                },
-              ),
-              CommandBarAction(
-                label: "Dark",
-                actionType: CommandBarActionType.single,
-                onSelect: () {
-                  setState(() {
-                    themeMode = ThemeMode.dark;
-                  });
-                },
-              ),
-              CommandBarAction(
                 label: "Change Theme",
                 actionType: CommandBarActionType.nested,
                 childrenActions: [

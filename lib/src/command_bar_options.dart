@@ -1,17 +1,20 @@
+import 'package:command_bar/src/controller/command_bar_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'models/command_bar_action.dart';
 
+/// Displays all the available [CommandBarAction] options based upon various
+/// filtering criteria
 class CommandBarOptions extends StatelessWidget {
   const CommandBarOptions({
     Key? key,
-    required this.actions,
   }) : super(key: key);
-
-  final List<CommandBarAction> actions;
 
   @override
   Widget build(BuildContext context) {
+    CommandBarController controller = CommandBarControllerProvider.of(context);
+    List<CommandBarAction> actions = controller.getFilteredActions();
+
     return Material(
       elevation: 4,
       borderRadius: const BorderRadius.only(
@@ -26,11 +29,19 @@ class CommandBarOptions extends StatelessWidget {
           final item = actions[index];
           return InkWell(
             onTap: () {
+              // single items we just perform their action and then close the
+              // command bar
               if (item.actionType == CommandBarActionType.single) {
                 item.onSelect!();
                 if (Navigator.of(context).canPop()) {
                   Navigator.of(context).pop();
                 }
+              }
+
+              // nested items we set this item as the selected which in turn
+              // will display its children.
+              else if (item.actionType == CommandBarActionType.nested) {
+                controller.currentlySelectedAction = item;
               }
             },
             child: Padding(
