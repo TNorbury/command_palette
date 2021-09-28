@@ -62,6 +62,28 @@ class CommandBarModal extends ModalRoute<void> {
                   }
                 }
 
+                // down, move selector down
+                else if (LogicalKeySet(LogicalKeyboardKey.arrowDown)
+                    .accepts(event, RawKeyboard.instance)) {
+                  commandBarController.movedHighlightedAction(down: true);
+                  result = KeyEventResult.handled;
+                }
+
+                // up, move selector up
+                else if (LogicalKeySet(LogicalKeyboardKey.arrowUp)
+                    .accepts(event, RawKeyboard.instance)) {
+                  commandBarController.movedHighlightedAction(down: false);
+                  result = KeyEventResult.handled;
+                }
+
+                // enter makes selection
+                else if (LogicalKeySet(LogicalKeyboardKey.enter)
+                    .accepts(event, RawKeyboard.instance)) {
+                  commandBarController.performHighlightedAction(context);
+                  result = KeyEventResult.handled;
+                }
+
+                
                 return result;
               },
               child: Container(

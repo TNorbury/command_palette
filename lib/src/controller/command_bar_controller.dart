@@ -33,6 +33,10 @@ class CommandBarController extends ChangeNotifier {
   /// The query entered into the command search field
   String _enteredQuery = "";
 
+  /// Index of the highlighted action. This is the action which'll be invoked if
+  /// the enter key is pressed
+  int highlightedAction = 0;
+
   CommandBarController(this._actions) {
     textEditingController.addListener(_onTextControllerChange);
   }
@@ -72,6 +76,9 @@ class CommandBarController extends ChangeNotifier {
 
     // something changed so we need to refilter
     if (_actionsNeedRefiltered) {
+      // reset highlight position on re-filtering.
+      highlightedAction = 0;
+
       if (currentlySelectedAction?.actionType == CommandBarActionType.nested) {
         filteredActions = currentlySelectedAction!.childrenActions!;
       } else {
@@ -130,5 +137,38 @@ class CommandBarController extends ChangeNotifier {
     }
 
     return popped;
+  }
+
+  /// Moves the action highlighter.
+  void movedHighlightedAction({bool down = false}) {
+    if (down) {
+      highlightedAction =
+          (highlightedAction + 1) % _filteredActionsCache.length;
+    } else {
+      highlightedAction =
+          (highlightedAction - 1) % _filteredActionsCache.length;
+    }
+    notifyListeners();
+  }
+
+  /// Performs the required handling for the given action
+  void handleAction(BuildContext context, {required CommandBarAction action}) {
+    if (action.actionType == CommandBarActionType.single) {
+      action.onSelect!();
+      if (Navigator.of(context).canPop()) {
+        Navigator.of(context).pop();
+      }
+    }
+
+    // nested items we set this item as the selected which in turn
+    // will display its children.
+    else if (action.actionType == CommandBarActionType.nested) {
+      currentlySelectedAction = action;
+    }
+  }
+
+  /// performs the action which is currently selected by [highlightedAction]
+  void performHighlightedAction(BuildContext context) {
+    handleAction(context, action: _filteredActionsCache[highlightedAction]);
   }
 }

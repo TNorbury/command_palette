@@ -27,31 +27,24 @@ class CommandBarOptions extends StatelessWidget {
         itemCount: actions.length,
         itemBuilder: (context, index) {
           final item = actions[index];
-          return InkWell(
-            onTap: () {
-              // single items we just perform their action and then close the
-              // command bar
-              if (item.actionType == CommandBarActionType.single) {
-                item.onSelect!();
-                if (Navigator.of(context).canPop()) {
-                  Navigator.of(context).pop();
-                }
-              }
-
-              // nested items we set this item as the selected which in turn
-              // will display its children.
-              else if (item.actionType == CommandBarActionType.nested) {
-                controller.currentlySelectedAction = item;
-              }
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                item.label +
-                    (item.actionType == CommandBarActionType.nested
-                        ? "..."
-                        : ""),
-                textAlign: TextAlign.center,
+          return Material(
+            color: controller.highlightedAction == index
+                ? Theme.of(context).highlightColor // TODO: make part of args
+                : Theme.of(context).canvasColor, // TODO: make part of args
+            child: InkWell(
+              onTap: () => controller.handleAction(context, action: item),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  item.label +
+                      (item.actionType == CommandBarActionType.nested
+                          ? "..."
+                          : ""),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ), // TODO make part of args
+                ),
               ),
             ),
           );
