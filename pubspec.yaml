@@ -1,7 +1,9 @@
 name: command_bar
 description: Flutter implementation of the Command Bar (or Pallette). Can be brought up via a keyboard shortcut.
 version: 0.0.1
-homepage:
+homepage: https://github.com/TNorbury/command_bar
+issue_tracker: https://github.com/TNorbury/command_bar/issues
+repository: https://github.com/TNorbury/command_bar
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
