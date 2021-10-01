@@ -1,3 +1,4 @@
+import 'package:command_bar/command_bar.dart';
 import 'package:command_bar/src/models/command_bar_action.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,9 @@ class CommandBarControllerProvider
 /// Controller for the internals of the command bar
 class CommandBarController extends ChangeNotifier {
   /// All the actions supported by this command bar.
-  final List<CommandBarAction> _actions;
+  final List<CommandBarAction> actions;
+
+  final ActionFilter filter;
 
   List<CommandBarAction> _filteredActionsCache = [];
   bool _actionsNeedRefiltered = true;
@@ -37,7 +40,7 @@ class CommandBarController extends ChangeNotifier {
   /// the enter key is pressed
   int highlightedAction = 0;
 
-  CommandBarController(this._actions) {
+  CommandBarController(this.actions, {required this.filter}) {
     textEditingController.addListener(_onTextControllerChange);
   }
 
@@ -82,21 +85,11 @@ class CommandBarController extends ChangeNotifier {
       if (currentlySelectedAction?.actionType == CommandBarActionType.nested) {
         filteredActions = currentlySelectedAction!.childrenActions!;
       } else {
-        filteredActions = _actions;
+        filteredActions = actions;
       }
-
-      // TODO: make better filtering logic
-      // no only get options that contain the search query
-      filteredActions = filteredActions
-          .where(
-            (element) => element.label
-                .toLowerCase()
-                .contains(_enteredQuery.toLowerCase()),
-          )
-          .toList();
-
-      _actionsNeedRefiltered = false;
+      filteredActions = filter(_enteredQuery, filteredActions);
       _filteredActionsCache = filteredActions;
+      _actionsNeedRefiltered = false;
     }
 
     // no refilter required
@@ -141,6 +134,9 @@ class CommandBarController extends ChangeNotifier {
 
   /// Moves the action highlighter.
   void movedHighlightedAction({bool down = false}) {
+    if (_filteredActionsCache.isEmpty) {
+      return;
+    }
     if (down) {
       highlightedAction =
           (highlightedAction + 1) % _filteredActionsCache.length;
@@ -158,6 +154,7 @@ class CommandBarController extends ChangeNotifier {
       if (Navigator.of(context).canPop()) {
         Navigator.of(context).pop();
       }
+      // currentlySelectedAction = null;
     }
 
     // nested items we set this item as the selected which in turn

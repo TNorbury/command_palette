@@ -4,6 +4,23 @@ import 'package:command_bar/src/models/command_bar_action.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../command_bar.dart';
+
+/// Default filter for actions. Splits the entered query, and then wraps it in
+/// groups and wild cards
+// ignore: prefer_function_declarations_over_variables
+final ActionFilter _defaultFilter = (query, actions) {
+  final String expression =
+      query.split(" ").map((e) => "(${e.replaceAll("\\", "\\\\")}).*").join("");
+  // debugPrint(expression);
+  final re = RegExp(expression, caseSensitive: false);
+  return actions
+      .where(
+        (action) => re.hasMatch(action.label),
+      )
+      .toList();
+};
+
 /// Command bar is a widget that is summoned by a keyboard shortcut, or by
 /// programmatic means.
 ///
@@ -19,12 +36,16 @@ class CommandBar extends StatefulWidget {
   /// List of all the actions that are supported by this command bar
   final List<CommandBarAction> actions;
 
-  const CommandBar({
+  final ActionFilter filter;
+
+  CommandBar({
     required this.child,
     required this.actions,
     this.hintText = "Begin typing to search for something",
+    ActionFilter? filter,
     Key? key,
-  }) : super(key: key);
+  })  : filter = filter ?? _defaultFilter,
+        super(key: key);
 
   @override
   State<CommandBar> createState() => _CommandBarState();
@@ -33,10 +54,33 @@ class CommandBar extends StatefulWidget {
 class _CommandBarState extends State<CommandBar> {
   bool _commandBarOpen = false;
 
+  late CommandBarController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = CommandBarController(widget.actions, filter: widget.filter);
+  }
+
+  @override
+  void didUpdateWidget(covariant CommandBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.actions != widget.actions ||
+        oldWidget.filter != widget.filter) {
+      controller = CommandBarController(widget.actions, filter: widget.filter);
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final controller = CommandBarController(widget.actions);
-
     return CommandBarControllerProvider(
       controller: controller,
       child: Builder(

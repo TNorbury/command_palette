@@ -1,5 +1,6 @@
 import 'package:command_bar/src/controller/command_bar_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:substring_highlight/substring_highlight.dart';
 
 import 'models/command_bar_action.dart';
 
@@ -14,7 +15,6 @@ class CommandBarOptions extends StatelessWidget {
   Widget build(BuildContext context) {
     CommandBarController controller = CommandBarControllerProvider.of(context);
     List<CommandBarAction> actions = controller.getFilteredActions();
-
     return Material(
       elevation: 4,
       borderRadius: const BorderRadius.only(
@@ -35,15 +35,22 @@ class CommandBarOptions extends StatelessWidget {
               onTap: () => controller.handleAction(context, action: item),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  item.label +
-                      (item.actionType == CommandBarActionType.nested
-                          ? "..."
-                          : ""),
+                child: SubstringHighlight(
+                  text: item.label,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ), // TODO make part of args
+                  // term: controller.textEditingController.text,
+                  terms: controller.textEditingController.text.split(" "),
+                  textStyle:
+                      Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ) ??
+                          const TextStyle(), // TODO make part of args,
+                  textStyleHighlight:
+                      Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.w600
+                              ) ??
+                          const TextStyle(),
                 ),
               ),
             ),
