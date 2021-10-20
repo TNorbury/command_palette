@@ -16,13 +16,24 @@ class CommandBarModal extends ModalRoute<void> {
   /// distributed among this route
   final CommandBarController commandBarController;
 
+  /// How long it takes for the modal to fade in or out
+  final Duration _transitionDuration;
+
+  final Curve _transitionCurve;
+
+  /// [transitionDuration] How long it takes for the modal to fade in or out
+  ///
+  /// [transitionCurve] The curve used when fading the modal in and out
   CommandBarModal({
     required this.hintText,
     required this.commandBarController,
-  });
+    required Duration transitionDuration,
+    required Curve transitionCurve,
+  })  : _transitionDuration = transitionDuration,
+        _transitionCurve = transitionCurve;
 
   @override
-  Color? get barrierColor => Colors.black12;
+  Color? get barrierColor => commandBarController.style.commandBarBarrierColor;
 
   @override
   bool get barrierDismissible => true;
@@ -38,15 +49,21 @@ class CommandBarModal extends ModalRoute<void> {
   bool get opaque => false;
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 150);
+  Duration get transitionDuration => _transitionDuration;
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     return CommandBarControllerProvider(
       controller: commandBarController,
       child: FadeTransition(
-        opacity: CurvedAnimation(curve: Curves.linear, parent: animation),
+        opacity: CurvedAnimation(
+          curve: _transitionCurve,
+          parent: animation,
+        ),
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             return Focus(
@@ -83,7 +100,6 @@ class CommandBarModal extends ModalRoute<void> {
                   result = KeyEventResult.handled;
                 }
 
-                
                 return result;
               },
               child: Container(

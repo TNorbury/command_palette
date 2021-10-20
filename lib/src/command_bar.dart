@@ -1,8 +1,10 @@
+import 'package:command_bar/src/models/command_bar_style.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:command_bar/src/command_bar_modal.dart';
 import 'package:command_bar/src/controller/command_bar_controller.dart';
 import 'package:command_bar/src/models/command_bar_action.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../command_bar.dart';
 
@@ -36,14 +38,35 @@ class CommandBar extends StatefulWidget {
   /// List of all the actions that are supported by this command bar
   final List<CommandBarAction> actions;
 
+  /// Used to filter which actions are displayed based upon the currently
+  /// entered text of the search bar
   final ActionFilter filter;
 
+  /// How long it takes for the command bar to be opened or closed.
+  ///
+  /// Defaults to 150 ms
+  final Duration transitionDuration;
+
+  /// Curves used when fading the command bar in and out.
+  ///
+  /// Defaults to [Curves.linear]
+  final Curve transitionCurve;
+
+  /// Provides options to style the look of the command bar.
+  ///
+  /// Note for development: Changes to style while the command bar is open will
+  /// require the command bar to be closed and reopened.
+  final CommandBarStyle? style;
+
   CommandBar({
-    required this.child,
-    required this.actions,
-    this.hintText = "Begin typing to search for something",
     ActionFilter? filter,
     Key? key,
+    required this.child,
+    this.hintText = "Begin typing to search for something",
+    required this.actions,
+    this.transitionDuration = const Duration(milliseconds: 150),
+    this.transitionCurve = Curves.linear,
+    this.style,
   })  : filter = filter ?? _defaultFilter,
         super(key: key);
 
@@ -55,6 +78,8 @@ class _CommandBarState extends State<CommandBar> {
   bool _commandBarOpen = false;
 
   late CommandBarController controller;
+
+  late CommandBarStyle style;
 
   @override
   void initState() {
@@ -68,9 +93,45 @@ class _CommandBarState extends State<CommandBar> {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.actions != widget.actions ||
-        oldWidget.filter != widget.filter) {
+        oldWidget.filter != widget.filter ||
+        oldWidget.style != widget.style) {
       controller = CommandBarController(widget.actions, filter: widget.filter);
+      _initStyle();
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _initStyle();
+  }
+
+  /// Initialize all the styles and stuff
+  void _initStyle() {
+    CommandBarStyle styleToCopy = widget.style ?? const CommandBarStyle();
+
+    style = CommandBarStyle(
+      actionColor: styleToCopy.actionColor ?? Theme.of(context).canvasColor,
+      selectedColor:
+          styleToCopy.selectedColor ?? Theme.of(context).highlightColor,
+      actionLabelTextStyle: styleToCopy.actionLabelTextStyle ??
+          Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+      highlightedLabelTextStyle: styleToCopy.highlightedLabelTextStyle ??
+          Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+                fontWeight: FontWeight.w600,
+              ),
+      actionLabelTextAlign: styleToCopy.actionLabelTextAlign,
+      borderRadius: styleToCopy.borderRadius,
+      commandBarBarrierColor: styleToCopy.commandBarBarrierColor,
+      elevation: styleToCopy.elevation,
+      highlightSearchSubstring: styleToCopy.highlightSearchSubstring,
+    );
+
+    controller.style = style;
   }
 
   @override
@@ -140,6 +201,8 @@ class _CommandBarState extends State<CommandBar> {
             // we pass the controller in so that it can be re-provided within the
             // tree of the modal
             commandBarController: CommandBarControllerProvider.of(context),
+            transitionCurve: widget.transitionCurve,
+            transitionDuration: widget.transitionDuration,
           ),
         )
         .then(

@@ -1,5 +1,6 @@
 import 'package:command_bar/command_bar.dart';
 import 'package:command_bar/src/models/command_bar_action.dart';
+import 'package:command_bar/src/models/command_bar_style.dart';
 import 'package:flutter/material.dart';
 
 class CommandBarControllerProvider
@@ -40,7 +41,21 @@ class CommandBarController extends ChangeNotifier {
   /// the enter key is pressed
   int highlightedAction = 0;
 
-  CommandBarController(this.actions, {required this.filter}) {
+  CommandBarStyle _style;
+
+  /// updates the command bar style (if needed)
+  set style(CommandBarStyle style) {
+    if (_style != style) {
+      _style = style;
+      notifyListeners();
+    }
+  }
+
+  /// gets the style of the command bar
+  CommandBarStyle get style => _style;
+
+  CommandBarController(this.actions, {required this.filter})
+      : _style = const CommandBarStyle() {
     textEditingController.addListener(_onTextControllerChange);
   }
 

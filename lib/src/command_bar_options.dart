@@ -15,43 +15,48 @@ class CommandBarOptions extends StatelessWidget {
   Widget build(BuildContext context) {
     CommandBarController controller = CommandBarControllerProvider.of(context);
     List<CommandBarAction> actions = controller.getFilteredActions();
+
     return Material(
-      elevation: 4,
-      borderRadius: const BorderRadius.only(
-        bottomLeft: Radius.circular(5),
-        bottomRight: Radius.circular(5),
-      ),
+      elevation: controller.style.elevation,
+      borderRadius: controller.style.borderRadius,
       clipBehavior: Clip.antiAlias,
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: actions.length,
         itemBuilder: (context, index) {
           final item = actions[index];
+
+          Widget label;
+
+          // if highlighting the search substring is enabled, then we'll use the
+          // widget for that
+          if (controller.style.highlightSearchSubstring) {
+            label = SubstringHighlight(
+              text: item.label,
+              textAlign: controller.style.actionLabelTextAlign,
+              terms: controller.textEditingController.text.split(" "),
+              textStyle: controller.style.actionLabelTextStyle!,
+              textStyleHighlight: controller.style.highlightedLabelTextStyle!,
+            );
+          }
+          // otherwise, just use a plain ol' text widget
+          else {
+            label = Text(
+              item.label,
+              textAlign: controller.style.actionLabelTextAlign,
+              style: controller.style.actionLabelTextStyle!,
+            );
+          }
+
           return Material(
             color: controller.highlightedAction == index
-                ? Theme.of(context).highlightColor // TODO: make part of args
-                : Theme.of(context).canvasColor, // TODO: make part of args
+                ? controller.style.selectedColor
+                : controller.style.actionColor,
             child: InkWell(
               onTap: () => controller.handleAction(context, action: item),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SubstringHighlight(
-                  text: item.label,
-                  textAlign: TextAlign.center,
-                  // term: controller.textEditingController.text,
-                  terms: controller.textEditingController.text.split(" "),
-                  textStyle:
-                      Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ) ??
-                          const TextStyle(), // TODO make part of args,
-                  textStyleHighlight:
-                      Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontWeight: FontWeight.w600
-                              ) ??
-                          const TextStyle(),
-                ),
+                child: label,
               ),
             ),
           );
