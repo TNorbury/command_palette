@@ -70,19 +70,30 @@ class CommandBarStyle {
   /// Defaults to `Colors.black12`
   final Color commandBarBarrierColor;
 
+  /// Decoration used for the text field
+  /// 
+  /// Defaults to 
+  /// ```
+  /// InputDecoration(
+  ///   contentPadding: const EdgeInsets.all(8),
+  /// ).applyDefaults(Theme.of(context).inputDecorationTheme)
+  /// ```
+  final InputDecoration? textFieldInputDecoration;
+
   const CommandBarStyle({
     this.actionColor,
     this.selectedColor,
     this.actionLabelTextStyle,
     this.highlightedLabelTextStyle,
+    this.highlightSearchSubstring = true,
     this.elevation = 4.0,
     this.borderRadius = const BorderRadius.only(
       bottomLeft: Radius.circular(5),
       bottomRight: Radius.circular(5),
     ),
-    this.highlightSearchSubstring = true,
     this.actionLabelTextAlign = TextAlign.center,
     this.commandBarBarrierColor = Colors.black12,
+    this.textFieldInputDecoration,
   });
 
   @override

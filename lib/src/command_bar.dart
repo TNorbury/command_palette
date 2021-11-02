@@ -129,6 +129,13 @@ class _CommandBarState extends State<CommandBar> {
       commandBarBarrierColor: styleToCopy.commandBarBarrierColor,
       elevation: styleToCopy.elevation,
       highlightSearchSubstring: styleToCopy.highlightSearchSubstring,
+      textFieldInputDecoration: styleToCopy.textFieldInputDecoration == null
+          ? const InputDecoration(
+              hintText: "Begin typing to search for something",
+              contentPadding: EdgeInsets.all(8),
+            ).applyDefaults(Theme.of(context).inputDecorationTheme)
+          : styleToCopy.textFieldInputDecoration!
+              .applyDefaults(Theme.of(context).inputDecorationTheme),
     );
 
     controller.style = style;
@@ -149,7 +156,6 @@ class _CommandBarState extends State<CommandBar> {
           return Focus(
             autofocus: true,
             onKey: (node, event) {
-              // debugPrint("here");
               KeyEventResult result = KeyEventResult.ignored;
 
               // if ctrl-c is pressed, and the command bar isn't open, open it

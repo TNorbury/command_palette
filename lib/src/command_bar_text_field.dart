@@ -45,10 +45,9 @@ class _CommandBarTextFieldState extends State<CommandBarTextField> {
         controller:
             CommandBarControllerProvider.of(context).textEditingController,
         focusNode: _focusNode,
-        decoration: InputDecoration(
-          hintText: widget.hintText,
-          contentPadding: const EdgeInsets.all(8),
-        ),
+        decoration: CommandBarControllerProvider.of(context)
+            .style
+            .textFieldInputDecoration,
       ),
     );
   }

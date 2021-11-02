@@ -40,6 +40,13 @@ class _MyHomePageState extends State<MyHomePage> {
       home: Builder(
         builder: (context) {
           return CommandBar(
+            style: CommandBarStyle(
+              actionLabelTextAlign: TextAlign.start,
+              textFieldInputDecoration: InputDecoration(
+                hintText: "Enter Something",
+                contentPadding: EdgeInsets.all(16),
+              ),
+            ),
             actions: [
               CommandBarAction(
                 label: "Close Command Bar",
