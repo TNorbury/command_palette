@@ -1,3 +1,4 @@
+import 'package:command_bar/command_bar.dart';
 import 'package:command_bar/src/controller/command_bar_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:substring_highlight/substring_highlight.dart';
@@ -24,38 +25,62 @@ class CommandBarOptions extends StatelessWidget {
         shrinkWrap: true,
         itemCount: actions.length,
         itemBuilder: (context, index) {
-          final item = actions[index];
+          final CommandBarAction item = actions[index];
 
-          Widget label;
+          return controller.builder(
+            context,
+            controller.style,
+            item,
+            controller.highlightedAction == index,
+            () => controller.handleAction(context, action: item),
+            controller.textEditingController.text.split(" "),
+          );
+        },
+      ),
+    );
+  }
+}
 
-          // if highlighting the search substring is enabled, then we'll use the
-          // widget for that
-          if (controller.style.highlightSearchSubstring) {
-            label = SubstringHighlight(
-              text: item.label,
-              textAlign: controller.style.actionLabelTextAlign,
-              terms: controller.textEditingController.text.split(" "),
-              textStyle: controller.style.actionLabelTextStyle!,
-              textStyleHighlight: controller.style.highlightedLabelTextStyle!,
-            );
-          }
-          // otherwise, just use a plain ol' text widget
-          else {
-            label = Text(
-              item.label,
-              textAlign: controller.style.actionLabelTextAlign,
-              style: controller.style.actionLabelTextStyle!,
-            );
-          }
+/// Default builder of Actions.
+/// Uses all the parameters, so this is a good place to look if you're wanting
+/// to create your our custom builder
+// ignore: prefer_function_declarations_over_variables
+final ActionBuilder defaultBuilder = (
+  BuildContext context,
+  CommandBarStyle style,
+  CommandBarAction action,
+  bool isHighlighted,
+  VoidCallback onSelected,
+  List<String> searchTerms,
+) {
+  Widget label;
 
-          return Material(
-            color: controller.highlightedAction == index
-                ? controller.style.selectedColor
-                : controller.style.actionColor,
-            child: InkWell(
-              onTap: () => controller.handleAction(context, action: item),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+  // if highlighting the search substring is enabled, then we'll use the
+  // widget for that
+  if (style.highlightSearchSubstring) {
+    label = SubstringHighlight(
+      text: action.label,
+      textAlign: style.actionLabelTextAlign,
+      terms: searchTerms,
+      textStyle: style.actionLabelTextStyle!,
+      textStyleHighlight: style.highlightedLabelTextStyle!,
+    );
+  }
+  // otherwise, just use a plain ol' text widget
+  else {
+    label = Text(
+      action.label,
+      textAlign: style.actionLabelTextAlign,
+      style: style.actionLabelTextStyle!,
+    );
+  }
+
+  return Material(
+    color: isHighlighted ? style.selectedColor : style.actionColor,
+    child: InkWell(
+      onTap: () => onSelected,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
             Expanded(child: label),
@@ -85,11 +110,8 @@ class CommandBarOptions extends StatelessWidget {
                     .toList(),
               ),
           ],
-              ),
-            ),
-          );
-        },
+        ),
       ),
-    );
-  }
-}
+    ),
+  );
+};

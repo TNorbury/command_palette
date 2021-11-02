@@ -26,7 +26,11 @@ class CommandBarController extends ChangeNotifier {
   /// All the actions supported by this command bar.
   final List<CommandBarAction> actions;
 
+  /// Filter used to determine the actions currently shown
   final ActionFilter filter;
+
+  /// Builder for the action item
+  final ActionBuilder builder;
 
   List<CommandBarAction> _filteredActionsCache = [];
   bool _actionsNeedRefiltered = true;
@@ -54,8 +58,11 @@ class CommandBarController extends ChangeNotifier {
   /// gets the style of the command bar
   CommandBarStyle get style => _style;
 
-  CommandBarController(this.actions, {required this.filter})
-      : _style = const CommandBarStyle() {
+  CommandBarController(
+    this.actions, {
+    required this.filter,
+    required this.builder,
+  }) : _style = const CommandBarStyle() {
     textEditingController.addListener(_onTextControllerChange);
   }
 

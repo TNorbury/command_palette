@@ -7,6 +7,7 @@ import 'package:command_bar/src/controller/command_bar_controller.dart';
 import 'package:command_bar/src/models/command_bar_action.dart';
 
 import '../command_bar.dart';
+import 'command_bar_options.dart';
 
 /// Default filter for actions. Splits the entered query, and then wraps it in
 /// groups and wild cards
@@ -42,6 +43,12 @@ class CommandBar extends StatefulWidget {
   /// entered text of the search bar
   final ActionFilter filter;
 
+  /// Used to build the actions which're displayed when the command bar is open
+  ///
+  /// For an idea on how to builder your own custom builder, see
+  /// [defaultBuilder]
+  final ActionBuilder builder;
+
   /// How long it takes for the command bar to be opened or closed.
   ///
   /// Defaults to 150 ms
@@ -67,7 +74,9 @@ class CommandBar extends StatefulWidget {
     this.transitionDuration = const Duration(milliseconds: 150),
     this.transitionCurve = Curves.linear,
     this.style,
+    ActionBuilder? builder,
   })  : filter = filter ?? _defaultFilter,
+        builder = builder ?? defaultBuilder,
         super(key: key);
 
   @override
@@ -85,7 +94,11 @@ class _CommandBarState extends State<CommandBar> {
   void initState() {
     super.initState();
 
-    controller = CommandBarController(widget.actions, filter: widget.filter);
+    controller = CommandBarController(
+      widget.actions,
+      filter: widget.filter,
+      builder: widget.builder,
+    );
   }
 
   @override
@@ -94,8 +107,13 @@ class _CommandBarState extends State<CommandBar> {
 
     if (oldWidget.actions != widget.actions ||
         oldWidget.filter != widget.filter ||
-        oldWidget.style != widget.style) {
-      controller = CommandBarController(widget.actions, filter: widget.filter);
+        oldWidget.style != widget.style ||
+        oldWidget.builder != widget.builder) {
+      controller = CommandBarController(
+        widget.actions,
+        filter: widget.filter,
+        builder: widget.builder,
+      );
       _initStyle();
     }
   }
