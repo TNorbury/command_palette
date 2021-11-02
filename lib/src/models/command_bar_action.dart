@@ -40,15 +40,22 @@ class CommandBarAction {
   /// action
   CommandBarAction? getParent() => _parent;
 
+  /// List of strings representing the keyboard shortcut to invoke the action.
+  ///
+  /// Note that this doesn't set any handlers for shortcuts, but just adds a
+  /// visual indicator.
+  List<String>? shortcut;
+
   CommandBarAction({
     required this.label,
     this.description,
     required this.actionType,
     this.onSelect,
     this.childrenActions,
+    this.shortcut,
   }) : assert((actionType == CommandBarActionType.single && onSelect != null) ||
-            (actionType == CommandBarActionType.nested &&
-                (childrenActions?.isNotEmpty ?? false))) {
+              (actionType == CommandBarActionType.nested &&
+                  (childrenActions?.isNotEmpty ?? false))) {
     // give all our children "us" as a parent.
     if (actionType == CommandBarActionType.nested) {
       for (final child in childrenActions!) {

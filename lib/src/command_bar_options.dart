@@ -56,7 +56,35 @@ class CommandBarOptions extends StatelessWidget {
               onTap: () => controller.handleAction(context, action: item),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: label,
+        child: Row(
+          children: [
+            Expanded(child: label),
+            if (action.shortcut != null)
+              Row(
+                children: action.shortcut!
+                    .map(
+                      (e) => Padding(
+                        padding: const EdgeInsets.only(right: 2.0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.grey.shade700
+                                    : Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.black87),
+                          ),
+                          child: Text(e),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+          ],
               ),
             ),
           );

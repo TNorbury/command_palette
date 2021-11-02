@@ -51,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
               CommandBarAction(
                 label: "Close Command Bar",
                 actionType: CommandBarActionType.single,
+                shortcut: ["esc"],
                 onSelect: () {
                   Navigator.of(context).pop();
                 },
@@ -58,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
               CommandBarAction(
                 label: "Change Theme",
                 actionType: CommandBarActionType.nested,
+                shortcut: ["ctrl", "t"],
                 childrenActions: [
                   CommandBarAction(
                     label: "Light",
@@ -110,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 CommandBarAction(
                   label: "Log out",
                   actionType: CommandBarActionType.single,
+                  shortcut: ["l", "o"],
                   onSelect: () {
                     setState(() {
                       _currentUser = "";
