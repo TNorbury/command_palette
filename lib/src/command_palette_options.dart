@@ -1,21 +1,21 @@
-import 'package:command_bar/command_bar.dart';
-import 'package:command_bar/src/controller/command_bar_controller.dart';
+import 'package:command_palette/command_palette.dart';
+import 'package:command_palette/src/controller/command_palette_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:substring_highlight/substring_highlight.dart';
 
-import 'models/command_bar_action.dart';
+import 'models/command_palette_action.dart';
 
-/// Displays all the available [CommandBarAction] options based upon various
+/// Displays all the available [CommandPaletteAction] options based upon various
 /// filtering criteria
-class CommandBarOptions extends StatelessWidget {
-  const CommandBarOptions({
+class CommandPaletteOptions extends StatelessWidget {
+  const CommandPaletteOptions({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    CommandBarController controller = CommandBarControllerProvider.of(context);
-    List<CommandBarAction> actions = controller.getFilteredActions();
+    CommandPaletteController controller = CommandPaletteControllerProvider.of(context);
+    List<CommandPaletteAction> actions = controller.getFilteredActions();
 
     return Material(
       elevation: controller.style.elevation,
@@ -25,7 +25,7 @@ class CommandBarOptions extends StatelessWidget {
         shrinkWrap: true,
         itemCount: actions.length,
         itemBuilder: (context, index) {
-          final CommandBarAction item = actions[index];
+          final CommandPaletteAction item = actions[index];
 
           return controller.builder(
             context,
@@ -47,8 +47,8 @@ class CommandBarOptions extends StatelessWidget {
 // ignore: prefer_function_declarations_over_variables
 final ActionBuilder defaultBuilder = (
   BuildContext context,
-  CommandBarStyle style,
-  CommandBarAction action,
+  CommandPaletteStyle style,
+  CommandPaletteAction action,
   bool isHighlighted,
   VoidCallback onSelected,
   List<String> searchTerms,

@@ -1,19 +1,19 @@
-import 'package:command_bar/src/controller/command_bar_controller.dart';
+import 'package:command_palette/src/controller/command_palette_controller.dart';
 import 'package:flutter/material.dart';
 
-/// The Text Field portion of the command bar
-class CommandBarTextField extends StatefulWidget {
-  /// See [CommandBar.hintText]
+/// The Text Field portion of the command palette
+class CommandPaletteTextField extends StatefulWidget {
+  /// See [CommandPalette.hintText]
   final String hintText;
 
-  const CommandBarTextField({required this.hintText, Key? key})
+  const CommandPaletteTextField({required this.hintText, Key? key})
       : super(key: key);
 
   @override
-  _CommandBarTextFieldState createState() => _CommandBarTextFieldState();
+  _CommandPaletteTextFieldState createState() => _CommandPaletteTextFieldState();
 }
 
-class _CommandBarTextFieldState extends State<CommandBarTextField> {
+class _CommandPaletteTextFieldState extends State<CommandPaletteTextField> {
   late final FocusNode _focusNode;
 
   @override
@@ -23,7 +23,7 @@ class _CommandBarTextFieldState extends State<CommandBarTextField> {
     _focusNode.requestFocus();
 
     // we're a greedy focus node. Make sure we always have it (so long as the
-    // command bar is up)
+    // command palette is up)
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
         _focusNode.requestFocus();
@@ -43,9 +43,9 @@ class _CommandBarTextFieldState extends State<CommandBarTextField> {
       elevation: 4,
       child: TextField(
         controller:
-            CommandBarControllerProvider.of(context).textEditingController,
+            CommandPaletteControllerProvider.of(context).textEditingController,
         focusNode: _focusNode,
-        decoration: CommandBarControllerProvider.of(context)
+        decoration: CommandPaletteControllerProvider.of(context)
             .style
             .textFieldInputDecoration,
       ),

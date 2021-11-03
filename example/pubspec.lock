@@ -43,7 +43,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
-  command_bar:
+  command_palette:
     dependency: "direct main"
     description:
       path: ".."

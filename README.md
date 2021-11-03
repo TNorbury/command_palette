@@ -1,15 +1,15 @@
-# command_bar
+# command_palette
 
-A Flutter widget that allows you to bring up a command bar (or command pallette), seen in programs like Visual Studio Code and Slack.
+A Flutter widget that allows you to bring up a command palette, seen in programs like Visual Studio Code and Slack.
 Allows you to provide users with a convenient way to perform all sorts of actions related to your app.
 
 
 ## Features
 
-* Access the command-bar via a keyboard shortcut, or programmatically.
-* Define a custom list of options for the user and define the callbacks for each.
+* Access the command palette via a keyboard shortcut, or programmatically.
+* Define a custom list of actions for the user and define the callbacks for each.
 * Use the default styling or build your own custom list items. 
-* Use throughout your entire app, or in just certain sections!
+* Use throughout your entire app, or just in certain sections!
 
 
 ## Getting started

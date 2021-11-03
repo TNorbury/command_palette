@@ -1,5 +1,5 @@
-name: command_bar_example
-description: Command Bar Example
+name: command_palette_example
+description: Command Palette Example
 
 publish_to: "none"
 
@@ -11,7 +11,7 @@ dependencies:
     flutter:
         sdk: flutter
 
-    command_bar:
+    command_palette:
         path: ../
 
 dev_dependencies:

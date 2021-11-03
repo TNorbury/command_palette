@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// Used to style a [CommandBar]
-class CommandBarStyle {
+/// Used to style a [CommandPalette]
+class CommandPaletteStyle {
   /// Color that's used as the background of the non-selected action item.
   ///
   /// Defaults to `Theme.of(context).canvasColor` when not set
@@ -43,13 +43,13 @@ class CommandBarStyle {
   /// Defaults to `true`
   final bool highlightSearchSubstring;
 
-  /// Elevation of the command bar
+  /// Elevation of the command palette
   ///
   /// Defaults to `4.0`
   final double elevation;
 
-  /// Border radius of the entire command bar. Includes the search bar and the
-  /// contents.
+  /// Border radius of the entire command palette. Includes the search bar and 
+  /// the contents.
   ///
   /// Defaults to
   /// ```
@@ -65,10 +65,10 @@ class CommandBarStyle {
   /// Defaults to [TextAlign.center]
   final TextAlign actionLabelTextAlign;
 
-  /// The color which is set behind the command bar when it's open
+  /// The color which is set behind the command palette when it's open
   ///
   /// Defaults to `Colors.black12`
-  final Color commandBarBarrierColor;
+  final Color commandPaletteBarrierColor;
 
   /// Decoration used for the text field
   /// 
@@ -80,7 +80,7 @@ class CommandBarStyle {
   /// ```
   final InputDecoration? textFieldInputDecoration;
 
-  const CommandBarStyle({
+  const CommandPaletteStyle({
     this.actionColor,
     this.selectedColor,
     this.actionLabelTextStyle,
@@ -92,7 +92,7 @@ class CommandBarStyle {
       bottomRight: Radius.circular(5),
     ),
     this.actionLabelTextAlign = TextAlign.center,
-    this.commandBarBarrierColor = Colors.black12,
+    this.commandPaletteBarrierColor = Colors.black12,
     this.textFieldInputDecoration,
   });
 
@@ -100,7 +100,7 @@ class CommandBarStyle {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is CommandBarStyle &&
+    return other is CommandPaletteStyle &&
         other.actionColor == actionColor &&
         other.selectedColor == selectedColor &&
         other.actionLabelTextStyle == actionLabelTextStyle &&
@@ -109,7 +109,7 @@ class CommandBarStyle {
         other.elevation == elevation &&
         other.borderRadius == borderRadius &&
         other.actionLabelTextAlign == actionLabelTextAlign &&
-        other.commandBarBarrierColor == commandBarBarrierColor;
+        other.commandPaletteBarrierColor == commandPaletteBarrierColor;
   }
 
   @override
@@ -122,6 +122,6 @@ class CommandBarStyle {
         elevation.hashCode ^
         borderRadius.hashCode ^
         actionLabelTextAlign.hashCode ^
-        commandBarBarrierColor.hashCode;
+        commandPaletteBarrierColor.hashCode;
   }
 }

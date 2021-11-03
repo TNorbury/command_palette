@@ -1,23 +1,24 @@
-library command_bar;
+library command_palette;
 
 import 'package:flutter/material.dart';
 
-import 'src/models/command_bar_action.dart';
-import 'src/models/command_bar_style.dart';
+import 'src/models/command_palette_action.dart';
+import 'src/models/command_palette_style.dart';
 
-export 'src/command_bar.dart';
-export 'src/models/command_bar_action.dart';
-export 'src/models/command_bar_style.dart';
+export 'src/command_palette.dart';
+export 'src/models/command_palette_action.dart';
+export 'src/models/command_palette_style.dart';
 
-/// Defines the type of function to be used for filtering command bar actions.
+/// Defines the type of function to be used for filtering command palette 
+/// actions.
 /// Given [query] and [allActions], the function should determine the subset of
 /// actions to return based on the function
-typedef ActionFilter = List<CommandBarAction> Function(
-    String query, List<CommandBarAction> allActions);
+typedef ActionFilter = List<CommandPaletteAction> Function(
+    String query, List<CommandPaletteAction> allActions);
 
 /// Builder used for the action options.
 /// Provides the following arguments:
-/// * [style]: The style provided to the command bar
+/// * [style]: The style provided to the command palette
 /// * [action]: The action we're building a widget for
 /// * [isHighlighted]: Whether or not the action is the currently highlighted
 ///     one (selected by the cursor)
@@ -26,8 +27,8 @@ typedef ActionFilter = List<CommandBarAction> Function(
 ///     text field, splitting on space.
 typedef ActionBuilder = Widget Function(
   BuildContext context,
-  CommandBarStyle style,
-  CommandBarAction action,
+  CommandPaletteStyle style,
+  CommandPaletteAction action,
   bool isHighlighted,
   VoidCallback onSelected,
   List<String> searchTerms,

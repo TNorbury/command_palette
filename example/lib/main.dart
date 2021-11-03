@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:command_bar/command_bar.dart';
+import 'package:command_palette/command_palette.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -39,8 +39,8 @@ class _MyHomePageState extends State<MyHomePage> {
       themeMode: themeMode,
       home: Builder(
         builder: (context) {
-          return CommandBar(
-            style: CommandBarStyle(
+          return CommandPalette(
+            style: CommandPaletteStyle(
               actionLabelTextAlign: TextAlign.start,
               textFieldInputDecoration: InputDecoration(
                 hintText: "Enter Something",
@@ -58,31 +58,31 @@ class _MyHomePageState extends State<MyHomePage> {
             //   LogicalKeyboardKey.keyC,
             // ),
             actions: [
-              CommandBarAction(
-                label: "Close Command Bar",
-                actionType: CommandBarActionType.single,
+              CommandPaletteAction(
+                label: "Close Command Palette",
+                actionType: CommandPaletteActionType.single,
                 shortcut: ["esc"],
                 onSelect: () {
                   Navigator.of(context).pop();
                 },
               ),
-              CommandBarAction(
+              CommandPaletteAction(
                 label: "Change Theme",
-                actionType: CommandBarActionType.nested,
+                actionType: CommandPaletteActionType.nested,
                 shortcut: ["ctrl", "t"],
                 childrenActions: [
-                  CommandBarAction(
+                  CommandPaletteAction(
                     label: "Light",
-                    actionType: CommandBarActionType.single,
+                    actionType: CommandPaletteActionType.single,
                     onSelect: () {
                       setState(() {
                         themeMode = ThemeMode.light;
                       });
                     },
                   ),
-                  CommandBarAction(
+                  CommandPaletteAction(
                     label: "Dark",
-                    actionType: CommandBarActionType.single,
+                    actionType: CommandPaletteActionType.single,
                     onSelect: () {
                       setState(() {
                         themeMode = ThemeMode.dark;
@@ -91,15 +91,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              CommandBarAction(
+              CommandPaletteAction(
                 label: "Set User",
-                actionType: CommandBarActionType.nested,
+                actionType: CommandPaletteActionType.nested,
                 childrenActions: [
                   ...["Maria", "Kurt", "Susanne", "Larissa", "Simon", "Admin"]
                       .map(
-                    (e) => CommandBarAction(
+                    (e) => CommandPaletteAction(
                       label: e,
-                      actionType: CommandBarActionType.single,
+                      actionType: CommandPaletteActionType.single,
                       onSelect: () => setState(() {
                         _currentUser = e;
                         color = Colors.transparent;
@@ -109,9 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
               if (_currentUser == "Admin")
-                CommandBarAction(
+                CommandPaletteAction(
                   label: "Some sorta super secret admin action",
-                  actionType: CommandBarActionType.single,
+                  actionType: CommandPaletteActionType.single,
                   onSelect: () {
                     setState(() {
                       color = Color(Random().nextInt(0xFFFFFF)).withAlpha(255);
@@ -119,9 +119,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               if (_currentUser.isNotEmpty)
-                CommandBarAction(
+                CommandPaletteAction(
                   label: "Log out",
-                  actionType: CommandBarActionType.single,
+                  actionType: CommandPaletteActionType.single,
                   shortcut: ["l", "o"],
                   onSelect: () {
                     setState(() {
@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("Welcome to the Command Bar example!"),
+                    Text("Welcome to the Command Palette example!"),
                     if (_currentUser.isNotEmpty)
                       Text("Current User: $_currentUser"),
                     AnimatedContainer(

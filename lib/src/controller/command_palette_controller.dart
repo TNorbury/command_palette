@@ -1,30 +1,30 @@
-import 'package:command_bar/command_bar.dart';
-import 'package:command_bar/src/models/command_bar_action.dart';
-import 'package:command_bar/src/models/command_bar_style.dart';
+import 'package:command_palette/command_palette.dart';
+import 'package:command_palette/src/models/command_palette_action.dart';
+import 'package:command_palette/src/models/command_palette_style.dart';
 import 'package:flutter/material.dart';
 
-class CommandBarControllerProvider
-    extends InheritedNotifier<CommandBarController> {
-  late final CommandBarController controller;
+class CommandPaletteControllerProvider
+    extends InheritedNotifier<CommandPaletteController> {
+  late final CommandPaletteController controller;
 
   // ignore: prefer_const_constructors_in_immutables
-  CommandBarControllerProvider({
+  CommandPaletteControllerProvider({
     Key? key,
     required Widget child,
     required this.controller,
   }) : super(key: key, child: child, notifier: controller);
 
-  static CommandBarController of(BuildContext context) {
+  static CommandPaletteController of(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<CommandBarControllerProvider>()!
+        .dependOnInheritedWidgetOfExactType<CommandPaletteControllerProvider>()!
         .controller;
   }
 }
 
-/// Controller for the internals of the command bar
-class CommandBarController extends ChangeNotifier {
-  /// All the actions supported by this command bar.
-  final List<CommandBarAction> actions;
+/// Controller for the internals of the command palette
+class CommandPaletteController extends ChangeNotifier {
+  /// All the actions supported by this command palette.
+  final List<CommandPaletteAction> actions;
 
   /// Filter used to determine the actions currently shown
   final ActionFilter filter;
@@ -32,7 +32,7 @@ class CommandBarController extends ChangeNotifier {
   /// Builder for the action item
   final ActionBuilder builder;
 
-  List<CommandBarAction> _filteredActionsCache = [];
+  List<CommandPaletteAction> _filteredActionsCache = [];
   bool _actionsNeedRefiltered = true;
 
   /// Controller for the command search filed
@@ -45,24 +45,24 @@ class CommandBarController extends ChangeNotifier {
   /// the enter key is pressed
   int highlightedAction = 0;
 
-  CommandBarStyle _style;
+  CommandPaletteStyle _style;
 
-  /// updates the command bar style (if needed)
-  set style(CommandBarStyle style) {
+  /// updates the command palette style (if needed)
+  set style(CommandPaletteStyle style) {
     if (_style != style) {
       _style = style;
       notifyListeners();
     }
   }
 
-  /// gets the style of the command bar
-  CommandBarStyle get style => _style;
+  /// gets the style of the command palette
+  CommandPaletteStyle get style => _style;
 
-  CommandBarController(
+  CommandPaletteController(
     this.actions, {
     required this.filter,
     required this.builder,
-  }) : _style = const CommandBarStyle() {
+  }) : _style = const CommandPaletteStyle() {
     textEditingController.addListener(_onTextControllerChange);
   }
 
@@ -82,29 +82,29 @@ class CommandBarController extends ChangeNotifier {
   }
 
   /// The currently selected action. Only nested actions can be selected
-  CommandBarAction? get currentlySelectedAction => _currentlySelectedAction;
-  set currentlySelectedAction(CommandBarAction? newAction) {
+  CommandPaletteAction? get currentlySelectedAction => _currentlySelectedAction;
+  set currentlySelectedAction(CommandPaletteAction? newAction) {
     assert(newAction == null ||
-        newAction.actionType == CommandBarActionType.nested);
+        newAction.actionType == CommandPaletteActionType.nested);
     _currentlySelectedAction = newAction;
     _actionsNeedRefiltered = true;
     textEditingController.clear();
     notifyListeners();
   }
 
-  CommandBarAction? _currentlySelectedAction;
+  CommandPaletteAction? _currentlySelectedAction;
 
   /// Returns the list of actions filtered by the current search query, and if
   /// we're in a nested action
-  List<CommandBarAction> getFilteredActions() {
-    List<CommandBarAction> filteredActions = [];
+  List<CommandPaletteAction> getFilteredActions() {
+    List<CommandPaletteAction> filteredActions = [];
 
     // something changed so we need to refilter
     if (_actionsNeedRefiltered) {
       // reset highlight position on re-filtering.
       highlightedAction = 0;
 
-      if (currentlySelectedAction?.actionType == CommandBarActionType.nested) {
+      if (currentlySelectedAction?.actionType == CommandPaletteActionType.nested) {
         filteredActions = currentlySelectedAction!.childrenActions!;
       } else {
         filteredActions = actions;
@@ -170,8 +170,8 @@ class CommandBarController extends ChangeNotifier {
   }
 
   /// Performs the required handling for the given action
-  void handleAction(BuildContext context, {required CommandBarAction action}) {
-    if (action.actionType == CommandBarActionType.single) {
+  void handleAction(BuildContext context, {required CommandPaletteAction action}) {
+    if (action.actionType == CommandPaletteActionType.single) {
       action.onSelect!();
       if (Navigator.of(context).canPop()) {
         Navigator.of(context).pop();
@@ -181,7 +181,7 @@ class CommandBarController extends ChangeNotifier {
 
     // nested items we set this item as the selected which in turn
     // will display its children.
-    else if (action.actionType == CommandBarActionType.nested) {
+    else if (action.actionType == CommandPaletteActionType.nested) {
       currentlySelectedAction = action;
     }
   }
