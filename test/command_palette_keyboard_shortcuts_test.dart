@@ -1,0 +1,434 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import 'package:command_palette/command_palette.dart';
+import 'package:command_palette/src/command_palette_modal.dart';
+
+/// Tests here make sure that keyboard shortcuts work, and that their side
+/// effects happen as intended.
+void main() {
+  Future<void> _openPalette(WidgetTester tester) async {
+    await tester.sendKeyDownEvent(LogicalKeyboardKey.control);
+    await tester.sendKeyDownEvent(LogicalKeyboardKey.keyK);
+    await tester.sendKeyUpEvent(LogicalKeyboardKey.control);
+    await tester.sendKeyUpEvent(LogicalKeyboardKey.keyK);
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> _closePalette(WidgetTester tester) async {
+    await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+    await tester.pumpAndSettle();
+  }
+
+  group(
+    "Default keyboard shortcuts",
+    () {
+      testWidgets(
+        "Open and Close Palette",
+        (WidgetTester tester) async {
+          await tester.pumpWidget(
+            MyApp(
+              actions: [
+                CommandPaletteAction(
+                  label: "Action 1",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {},
+                ),
+              ],
+            ),
+          );
+          expect(find.byKey(kCommandPaletteModalKey), findsNothing);
+
+          // send open shortcut
+          await _openPalette(tester);
+
+          expect(find.byKey(kCommandPaletteModalKey), findsOneWidget);
+
+          await _closePalette(tester);
+          expect(find.byKey(kCommandPaletteModalKey), findsNothing);
+        },
+      );
+
+      testWidgets(
+        "Down arrow key",
+        (WidgetTester tester) async {
+          await tester.pumpWidget(
+            MyApp(
+              builder: (context, style, action, isHighlighted, onSelected,
+                  searchTerms) {
+                return Text("${action.label}-$isHighlighted");
+              },
+              actions: [
+                CommandPaletteAction(
+                  label: "1",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {},
+                ),
+                CommandPaletteAction(
+                  label: "2",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {},
+                ),
+                CommandPaletteAction(
+                  label: "3",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {},
+                ),
+              ],
+            ),
+          );
+
+          await _openPalette(tester);
+
+          // by default 1 will be highlighted. 2 won't be.
+          expect(find.text("1-true"), findsOneWidget);
+          expect(find.text("2-false"), findsOneWidget);
+          expect(find.text("3-false"), findsOneWidget);
+
+          // down arrow
+          await tester.sendKeyEvent(LogicalKeyboardKey.arrowDown);
+          await tester.pumpAndSettle();
+
+          // 2 will be highlighted now
+          expect(find.text("1-false"), findsOneWidget);
+          expect(find.text("2-true"), findsOneWidget);
+          expect(find.text("3-false"), findsOneWidget);
+
+          await tester.sendKeyEvent(LogicalKeyboardKey.arrowDown);
+          await tester.pumpAndSettle();
+          expect(find.text("1-false"), findsOneWidget);
+          expect(find.text("2-false"), findsOneWidget);
+          expect(find.text("3-true"), findsOneWidget);
+
+          // down wraps around
+          await tester.sendKeyEvent(LogicalKeyboardKey.arrowDown);
+          await tester.pumpAndSettle();
+          expect(find.text("1-true"), findsOneWidget);
+          expect(find.text("2-false"), findsOneWidget);
+          expect(find.text("3-false"), findsOneWidget);
+
+          await _closePalette(tester);
+        },
+      );
+      testWidgets(
+        "Up arrow key",
+        (WidgetTester tester) async {
+          await tester.pumpWidget(
+            MyApp(
+              builder: (context, style, action, isHighlighted, onSelected,
+                  searchTerms) {
+                return Text("${action.label}-$isHighlighted");
+              },
+              actions: [
+                CommandPaletteAction(
+                  label: "1",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {},
+                ),
+                CommandPaletteAction(
+                  label: "2",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {},
+                ),
+                CommandPaletteAction(
+                  label: "3",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {},
+                ),
+              ],
+            ),
+          );
+
+          await _openPalette(tester);
+
+          // by default 1 will be highlighted. 2 won't be.
+          expect(find.text("1-true"), findsOneWidget);
+          expect(find.text("2-false"), findsOneWidget);
+          expect(find.text("3-false"), findsOneWidget);
+
+          // up arrow, this will wrap around to 3
+          await tester.sendKeyEvent(LogicalKeyboardKey.arrowUp);
+          await tester.pumpAndSettle();
+
+          // 3 will be highlighted now
+          expect(find.text("1-false"), findsOneWidget);
+          expect(find.text("2-false"), findsOneWidget);
+          expect(find.text("3-true"), findsOneWidget);
+
+          // up arrow, this will move up to 2
+          await tester.sendKeyEvent(LogicalKeyboardKey.arrowUp);
+          await tester.pumpAndSettle();
+          expect(find.text("1-false"), findsOneWidget);
+          expect(find.text("2-true"), findsOneWidget);
+          expect(find.text("3-false"), findsOneWidget);
+
+          await tester.sendKeyEvent(LogicalKeyboardKey.arrowUp);
+          await tester.pumpAndSettle();
+          expect(find.text("1-true"), findsOneWidget);
+          expect(find.text("2-false"), findsOneWidget);
+          expect(find.text("3-false"), findsOneWidget);
+
+          await _closePalette(tester);
+        },
+      );
+
+      testWidgets(
+        "Enter (Single Option)",
+        (WidgetTester tester) async {
+          bool action1Selected = false;
+          await tester.pumpWidget(
+            MyApp(
+              actions: [
+                CommandPaletteAction(
+                  label: "Action 1",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {
+                    action1Selected = true;
+                  },
+                ),
+              ],
+            ),
+          );
+          await _openPalette(tester);
+
+          await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+          await tester.pumpAndSettle();
+
+          expect(action1Selected, true);
+
+          // selecting a single action closes the palette
+          expect(find.byKey(kCommandPaletteModalKey), findsNothing);
+        },
+      );
+
+      testWidgets(
+        "Enter (Nested Option)",
+        (WidgetTester tester) async {
+          await tester.pumpWidget(
+            MyApp(
+              actions: [
+                CommandPaletteAction(
+                  label: "Action 1",
+                  actionType: CommandPaletteActionType.nested,
+                  childrenActions: [
+                    CommandPaletteAction(
+                      label: "Nested Action 1",
+                      actionType: CommandPaletteActionType.single,
+                      onSelect: () {},
+                    ),
+                  ],
+                ),
+                CommandPaletteAction(
+                  label: "Action 2",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {},
+                ),
+              ],
+            ),
+          );
+          await _openPalette(tester);
+          await tester.pumpAndSettle();
+
+          expect(find.byKey(kCommandPaletteModalKey), findsOneWidget);
+
+          expect(find.text("Action 1"), findsOneWidget);
+          expect(find.text("Action 2"), findsOneWidget);
+
+          await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+          await tester.pumpAndSettle();
+
+          // palette still open
+          expect(find.byKey(kCommandPaletteModalKey), findsOneWidget);
+
+          // only child option is shown
+          expect(find.text("Nested Action 1"), findsOneWidget);
+          expect(find.text("Action 1"), findsNothing);
+          expect(find.text("Action 2"), findsNothing);
+
+          await _closePalette(tester);
+        },
+      );
+
+      testWidgets(
+        "Backspace (from nested item)",
+        (WidgetTester tester) async {
+          await tester.pumpWidget(
+            MyApp(
+              actions: [
+                CommandPaletteAction(
+                  label: "Action 1",
+                  actionType: CommandPaletteActionType.nested,
+                  childrenActions: [
+                    CommandPaletteAction(
+                      label: "Nested Action 1",
+                      actionType: CommandPaletteActionType.single,
+                      onSelect: () {},
+                    ),
+                  ],
+                ),
+                CommandPaletteAction(
+                  label: "Action 2",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {},
+                ),
+              ],
+            ),
+          );
+          await _openPalette(tester);
+          await tester.pumpAndSettle();
+
+          expect(find.byKey(kCommandPaletteModalKey), findsOneWidget);
+
+          await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+          await tester.pumpAndSettle();
+
+          await tester.sendKeyEvent(LogicalKeyboardKey.backspace);
+          await tester.pumpAndSettle();
+
+          expect(find.text("Action 1"), findsOneWidget);
+          expect(find.text("Action 2"), findsOneWidget);
+          await _closePalette(tester);
+        },
+      );
+
+      testWidgets(
+        "Backspace (text)",
+        (WidgetTester tester) async {
+          await tester.pumpWidget(
+            MyApp(
+              actions: [
+                CommandPaletteAction(
+                  label: "Action 1",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {},
+                ),
+              ],
+            ),
+          );
+          await _openPalette(tester);
+          await tester.pumpAndSettle();
+
+          // enter text
+          await tester.enterText(find.byType(TextField), "A");
+          await tester.pumpAndSettle();
+
+          // text should be there
+          expect(find.widgetWithText(TextField, "A"), findsOneWidget);
+
+          // backspace deletes a character
+          await tester.sendKeyEvent(LogicalKeyboardKey.backspace);
+          await tester.pumpAndSettle();
+
+          // character should be gone
+          expect(find.widgetWithText(TextField, ""), findsOneWidget);
+
+          await _closePalette(tester);
+        },
+      );
+    },
+  );
+
+  group(
+    "Custom Keyboard Shortcuts",
+    () {
+      testWidgets(
+        "Custom Open",
+        (WidgetTester tester) async {
+          await tester.pumpWidget(
+            MyApp(
+              openKeySet: LogicalKeySet(
+                LogicalKeyboardKey.alt,
+                LogicalKeyboardKey.keyJ,
+              ),
+              actions: [
+                CommandPaletteAction(
+                  label: "Action 1",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {},
+                ),
+              ],
+            ),
+          );
+
+          await tester.sendKeyDownEvent(LogicalKeyboardKey.alt);
+          await tester.sendKeyDownEvent(LogicalKeyboardKey.keyJ);
+          await tester.sendKeyUpEvent(LogicalKeyboardKey.alt);
+          await tester.sendKeyUpEvent(LogicalKeyboardKey.keyJ);
+          await tester.pumpAndSettle();
+          expect(find.byKey(kCommandPaletteModalKey), findsOneWidget);
+
+          await _closePalette(tester); // escape always closes
+
+          // default shortcuts shouldn't work
+          await _openPalette(tester);
+          expect(find.byKey(kCommandPaletteModalKey), findsNothing);
+        },
+      );
+
+      testWidgets(
+        "Custom Close",
+        (WidgetTester tester) async {
+          await tester.pumpWidget(
+            MyApp(
+              closeKeySet: LogicalKeySet(
+                LogicalKeyboardKey.alt,
+                LogicalKeyboardKey.keyJ,
+              ),
+              actions: [
+                CommandPaletteAction(
+                  label: "Action 1",
+                  actionType: CommandPaletteActionType.single,
+                  onSelect: () {},
+                ),
+              ],
+            ),
+          );
+          await _openPalette(tester);
+          await tester.sendKeyDownEvent(LogicalKeyboardKey.alt);
+          await tester.sendKeyDownEvent(LogicalKeyboardKey.keyJ);
+          await tester.sendKeyUpEvent(LogicalKeyboardKey.alt);
+          await tester.sendKeyUpEvent(LogicalKeyboardKey.keyJ);
+          await tester.pumpAndSettle();
+          expect(find.byKey(kCommandPaletteModalKey), findsNothing);
+        },
+      );
+    },
+  );
+}
+
+class MyApp extends StatelessWidget {
+  final List<CommandPaletteAction> actions;
+  final ActionBuilder? builder;
+  final LogicalKeySet? openKeySet;
+  final LogicalKeySet? closeKeySet;
+
+  const MyApp({
+    Key? key,
+    required this.actions,
+    this.builder,
+    this.openKeySet,
+    this.closeKeySet,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: CommandPalette(
+        actions: actions,
+        builder: builder,
+        openKeySet: openKeySet,
+        closeKeySet: closeKeySet,
+        style: const CommandPaletteStyle(
+          // have to turn highlighting off in order to find by text
+          highlightSearchSubstring: false,
+        ),
+        child: const Scaffold(
+          body: Center(
+            child: Text('Hello World'),
+          ),
+        ),
+      ),
+    );
+  }
+}

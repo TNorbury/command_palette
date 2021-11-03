@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'command_palette_options.dart';
 import 'command_palette_text_field.dart';
 
+const Key kCommandPaletteModalKey = Key("Command Palette Modal");
+
 /// Modal route which houses the command palette.
 ///
 /// When the palette is opened this modal is what appears.
@@ -61,6 +63,7 @@ class CommandPaletteModal extends ModalRoute<void> {
     Animation<double> secondaryAnimation,
   ) {
     return CommandPaletteControllerProvider(
+      key: kCommandPaletteModalKey,
       controller: commandPaletteController,
       child: FadeTransition(
         opacity: CurvedAnimation(
