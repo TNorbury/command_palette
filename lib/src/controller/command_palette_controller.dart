@@ -104,7 +104,8 @@ class CommandPaletteController extends ChangeNotifier {
       // reset highlight position on re-filtering.
       highlightedAction = 0;
 
-      if (currentlySelectedAction?.actionType == CommandPaletteActionType.nested) {
+      if (currentlySelectedAction?.actionType ==
+          CommandPaletteActionType.nested) {
         filteredActions = currentlySelectedAction!.childrenActions!;
       } else {
         filteredActions = actions;
@@ -170,13 +171,13 @@ class CommandPaletteController extends ChangeNotifier {
   }
 
   /// Performs the required handling for the given action
-  void handleAction(BuildContext context, {required CommandPaletteAction action}) {
+  void handleAction(BuildContext context,
+      {required CommandPaletteAction action}) {
     if (action.actionType == CommandPaletteActionType.single) {
       action.onSelect!();
       if (Navigator.of(context).canPop()) {
         Navigator.of(context).pop();
       }
-      // currentlySelectedAction = null;
     }
 
     // nested items we set this item as the selected which in turn
