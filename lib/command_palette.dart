@@ -9,7 +9,7 @@ export 'src/command_palette.dart';
 export 'src/models/command_palette_action.dart';
 export 'src/models/command_palette_style.dart';
 
-/// Defines the type of function to be used for filtering command palette 
+/// Defines the type of function to be used for filtering command palette
 /// actions.
 /// Given [query] and [allActions], the function should determine the subset of
 /// actions to return based on the function

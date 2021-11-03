@@ -10,7 +10,7 @@ enum CommandPaletteActionType {
   nested
 }
 
-/// Action that is presented in the command palette. These are the things the 
+/// Action that is presented in the command palette. These are the things the
 /// user will be presented with to choose from
 class CommandPaletteAction {
   /// The "primary" text of the action. This will be used by the searching
@@ -53,9 +53,10 @@ class CommandPaletteAction {
     this.onSelect,
     this.childrenActions,
     this.shortcut,
-  }) : assert((actionType == CommandPaletteActionType.single && onSelect != null) ||
-              (actionType == CommandPaletteActionType.nested &&
-                  (childrenActions?.isNotEmpty ?? false))) {
+  }) : assert((actionType == CommandPaletteActionType.single &&
+                onSelect != null) ||
+            (actionType == CommandPaletteActionType.nested &&
+                (childrenActions?.isNotEmpty ?? false))) {
     // give all our children "us" as a parent.
     if (actionType == CommandPaletteActionType.nested) {
       for (final child in childrenActions!) {

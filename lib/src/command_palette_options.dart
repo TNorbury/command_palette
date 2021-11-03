@@ -83,60 +83,72 @@ final ActionBuilder defaultBuilder = (
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: LayoutBuilder(builder: (context, c) {
-          return Row(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(child: label),
-                      ],
-                    ),
-                    if (action.description != null)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              action.description!,
-                              textAlign: style.actionLabelTextAlign,
-                            ),
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: c.maxWidth * 1 / 8,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: action.shortcut
-                          ?.map(
-                            (e) => Padding(
-                              padding: const EdgeInsets.only(right: 2.0),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 4,
-                                  vertical: 2,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.grey.shade700
-                                      : Colors.grey.shade200,
-                                  borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(color: Colors.black87),
-                                ),
-                                child: Text(e),
+          Widget? shortcuts;
+          if (action.shortcut != null) {
+            shortcuts = Wrap(
+                alignment: WrapAlignment.end,
+                // mainAxisAlignment: MainAxisAlignment.end,
+                children: action.shortcut!
+                    .map<Widget>(
+                      (e) => Padding(
+                        padding: const EdgeInsets.only(right: 2.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          // crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.grey.shade700
+                                    : Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Colors.black87),
+                              ),
+                              child: Text(
+                                e.toUpperCase(),
+                                style: style.actionDescriptionTextStyle,
                               ),
                             ),
-                          )
-                          .toList() ??
-                      [],
-                ),
+                            // const Text("+")
+                          ],
+                        ),
+                      ),
+                    )
+                    .toList());
+          }
+          return Stack(
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(child: label),
+                    ],
+                  ),
+                  if (action.description != null)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            action.description!,
+                            textAlign: style.actionLabelTextAlign,
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
               ),
+              if (shortcuts != null)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: shortcuts,
+                ),
             ],
           );
         }),

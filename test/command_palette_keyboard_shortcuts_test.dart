@@ -5,22 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:command_palette/command_palette.dart';
 import 'package:command_palette/src/command_palette_modal.dart';
 
+import 'utils.dart';
+
 /// Tests here make sure that keyboard shortcuts work, and that their side
 /// effects happen as intended.
 void main() {
-  Future<void> _openPalette(WidgetTester tester) async {
-    await tester.sendKeyDownEvent(LogicalKeyboardKey.control);
-    await tester.sendKeyDownEvent(LogicalKeyboardKey.keyK);
-    await tester.sendKeyUpEvent(LogicalKeyboardKey.control);
-    await tester.sendKeyUpEvent(LogicalKeyboardKey.keyK);
-    await tester.pumpAndSettle();
-  }
-
-  Future<void> _closePalette(WidgetTester tester) async {
-    await tester.sendKeyEvent(LogicalKeyboardKey.escape);
-    await tester.pumpAndSettle();
-  }
-
   group(
     "Default keyboard shortcuts",
     () {
@@ -41,11 +30,11 @@ void main() {
           expect(find.byKey(kCommandPaletteModalKey), findsNothing);
 
           // send open shortcut
-          await _openPalette(tester);
+          await openPalette(tester);
 
           expect(find.byKey(kCommandPaletteModalKey), findsOneWidget);
 
-          await _closePalette(tester);
+          await closePalette(tester);
           expect(find.byKey(kCommandPaletteModalKey), findsNothing);
         },
       );
@@ -79,7 +68,7 @@ void main() {
             ),
           );
 
-          await _openPalette(tester);
+          await openPalette(tester);
 
           // by default 1 will be highlighted. 2 won't be.
           expect(find.text("1-true"), findsOneWidget);
@@ -108,7 +97,7 @@ void main() {
           expect(find.text("2-false"), findsOneWidget);
           expect(find.text("3-false"), findsOneWidget);
 
-          await _closePalette(tester);
+          await closePalette(tester);
         },
       );
       testWidgets(
@@ -140,7 +129,7 @@ void main() {
             ),
           );
 
-          await _openPalette(tester);
+          await openPalette(tester);
 
           // by default 1 will be highlighted. 2 won't be.
           expect(find.text("1-true"), findsOneWidget);
@@ -169,7 +158,7 @@ void main() {
           expect(find.text("2-false"), findsOneWidget);
           expect(find.text("3-false"), findsOneWidget);
 
-          await _closePalette(tester);
+          await closePalette(tester);
         },
       );
 
@@ -190,7 +179,7 @@ void main() {
               ],
             ),
           );
-          await _openPalette(tester);
+          await openPalette(tester);
 
           await tester.sendKeyEvent(LogicalKeyboardKey.enter);
           await tester.pumpAndSettle();
@@ -227,7 +216,7 @@ void main() {
               ],
             ),
           );
-          await _openPalette(tester);
+          await openPalette(tester);
           await tester.pumpAndSettle();
 
           expect(find.byKey(kCommandPaletteModalKey), findsOneWidget);
@@ -246,7 +235,7 @@ void main() {
           expect(find.text("Action 1"), findsNothing);
           expect(find.text("Action 2"), findsNothing);
 
-          await _closePalette(tester);
+          await closePalette(tester);
         },
       );
 
@@ -275,7 +264,7 @@ void main() {
               ],
             ),
           );
-          await _openPalette(tester);
+          await openPalette(tester);
           await tester.pumpAndSettle();
 
           expect(find.byKey(kCommandPaletteModalKey), findsOneWidget);
@@ -288,7 +277,7 @@ void main() {
 
           expect(find.text("Action 1"), findsOneWidget);
           expect(find.text("Action 2"), findsOneWidget);
-          await _closePalette(tester);
+          await closePalette(tester);
         },
       );
 
@@ -306,7 +295,7 @@ void main() {
               ],
             ),
           );
-          await _openPalette(tester);
+          await openPalette(tester);
           await tester.pumpAndSettle();
 
           // enter text
@@ -323,7 +312,7 @@ void main() {
           // character should be gone
           expect(find.widgetWithText(TextField, ""), findsOneWidget);
 
-          await _closePalette(tester);
+          await closePalette(tester);
         },
       );
     },
@@ -358,10 +347,10 @@ void main() {
           await tester.pumpAndSettle();
           expect(find.byKey(kCommandPaletteModalKey), findsOneWidget);
 
-          await _closePalette(tester); // escape always closes
+          await closePalette(tester); // escape always closes
 
           // default shortcuts shouldn't work
-          await _openPalette(tester);
+          await openPalette(tester);
           expect(find.byKey(kCommandPaletteModalKey), findsNothing);
         },
       );
@@ -384,7 +373,7 @@ void main() {
               ],
             ),
           );
-          await _openPalette(tester);
+          await openPalette(tester);
           await tester.sendKeyDownEvent(LogicalKeyboardKey.alt);
           await tester.sendKeyDownEvent(LogicalKeyboardKey.keyJ);
           await tester.sendKeyUpEvent(LogicalKeyboardKey.alt);

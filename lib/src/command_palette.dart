@@ -8,21 +8,6 @@ import 'controller/command_palette_controller.dart';
 import 'models/command_palette_action.dart';
 import 'models/command_palette_style.dart';
 
-/// Default filter for actions. Splits the entered query, and then wraps it in
-/// groups and wild cards
-// ignore: prefer_function_declarations_over_variables
-final ActionFilter _defaultFilter = (query, actions) {
-  final String expression =
-      query.split(" ").map((e) => "(${e.replaceAll("\\", "\\\\")}).*").join("");
-  // debugPrint(expression);
-  final re = RegExp(expression, caseSensitive: false);
-  return actions
-      .where(
-        (action) => re.hasMatch(action.label),
-      )
-      .toList();
-};
-
 /// Command palette is a widget that is summoned by a keyboard shortcut, or by
 /// programmatic means.
 ///
@@ -92,7 +77,7 @@ class CommandPalette extends StatefulWidget {
     this.style,
     LogicalKeySet? openKeySet,
     LogicalKeySet? closeKeySet,
-  })  : filter = filter ?? _defaultFilter,
+  })  : filter = filter ?? defaultFilter,
         builder = builder ?? defaultBuilder,
         openKeySet = openKeySet ??
             LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyK),

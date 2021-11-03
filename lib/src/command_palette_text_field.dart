@@ -10,7 +10,8 @@ class CommandPaletteTextField extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CommandPaletteTextFieldState createState() => _CommandPaletteTextFieldState();
+  _CommandPaletteTextFieldState createState() =>
+      _CommandPaletteTextFieldState();
 }
 
 class _CommandPaletteTextFieldState extends State<CommandPaletteTextField> {
