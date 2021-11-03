@@ -47,6 +47,12 @@ class CommandPaletteController extends ChangeNotifier {
 
   CommandPaletteStyle _style;
 
+  /// To be called when the command palette is closed
+  void onClose() {
+    _currentlySelectedAction = null;
+    textEditingController.text = "";
+  }
+
   /// updates the command palette style (if needed)
   set style(CommandPaletteStyle style) {
     if (_style != style) {
