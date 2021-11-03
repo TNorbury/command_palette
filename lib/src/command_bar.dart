@@ -1,13 +1,12 @@
-import 'package:command_bar/src/models/command_bar_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:command_bar/src/command_bar_modal.dart';
-import 'package:command_bar/src/controller/command_bar_controller.dart';
-import 'package:command_bar/src/models/command_bar_action.dart';
-
 import '../command_bar.dart';
+import 'command_bar_modal.dart';
 import 'command_bar_options.dart';
+import 'controller/command_bar_controller.dart';
+import 'models/command_bar_action.dart';
+import 'models/command_bar_style.dart';
 
 /// Default filter for actions. Splits the entered query, and then wraps it in
 /// groups and wild cards
@@ -65,18 +64,37 @@ class CommandBar extends StatefulWidget {
   /// require the command bar to be closed and reopened.
   final CommandBarStyle? style;
 
+  /// The set of keys used to open the command bar.
+  ///
+  /// Defaults to Ctrl-/Cmd- C
+  final LogicalKeySet openKeySet;
+
+  /// The set of keys used to close the command bar.
+  ///
+  /// Please note that at this time escape will always close the command bar.
+  /// Regardless of if it's set or not. This is something defined at the
+  /// App-level. If you want to prevent this, see: https://stackoverflow.com/questions/63763478/disable-escape-key-navigation-in-flutter-web
+  ///
+  /// Defaults to Esc.
+  final LogicalKeySet closeKeySet;
+
   CommandBar({
     ActionFilter? filter,
     Key? key,
+    ActionBuilder? builder,
     required this.child,
     this.hintText = "Begin typing to search for something",
     required this.actions,
     this.transitionDuration = const Duration(milliseconds: 150),
     this.transitionCurve = Curves.linear,
     this.style,
-    ActionBuilder? builder,
+    LogicalKeySet? openKeySet,
+    LogicalKeySet? closeKeySet,
   })  : filter = filter ?? _defaultFilter,
         builder = builder ?? defaultBuilder,
+        openKeySet = openKeySet ??
+            LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyK),
+        closeKeySet = closeKeySet ?? LogicalKeySet(LogicalKeyboardKey.escape),
         super(key: key);
 
   @override
@@ -86,15 +104,15 @@ class CommandBar extends StatefulWidget {
 class _CommandBarState extends State<CommandBar> {
   bool _commandBarOpen = false;
 
-  late CommandBarController controller;
+  late CommandBarController _controller;
 
-  late CommandBarStyle style;
+  late CommandBarStyle _style;
 
   @override
   void initState() {
     super.initState();
 
-    controller = CommandBarController(
+    _controller = CommandBarController(
       widget.actions,
       filter: widget.filter,
       builder: widget.builder,
@@ -109,7 +127,7 @@ class _CommandBarState extends State<CommandBar> {
         oldWidget.filter != widget.filter ||
         oldWidget.style != widget.style ||
         oldWidget.builder != widget.builder) {
-      controller = CommandBarController(
+      _controller = CommandBarController(
         widget.actions,
         filter: widget.filter,
         builder: widget.builder,
@@ -129,7 +147,7 @@ class _CommandBarState extends State<CommandBar> {
   void _initStyle() {
     CommandBarStyle styleToCopy = widget.style ?? const CommandBarStyle();
 
-    style = CommandBarStyle(
+    _style = CommandBarStyle(
       actionColor: styleToCopy.actionColor ?? Theme.of(context).canvasColor,
       selectedColor:
           styleToCopy.selectedColor ?? Theme.of(context).highlightColor,
@@ -156,19 +174,19 @@ class _CommandBarState extends State<CommandBar> {
               .applyDefaults(Theme.of(context).inputDecorationTheme),
     );
 
-    controller.style = style;
+    _controller.style = _style;
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return CommandBarControllerProvider(
-      controller: controller,
+      controller: _controller,
       child: Builder(
         builder: (context) {
           return Focus(
@@ -177,20 +195,10 @@ class _CommandBarState extends State<CommandBar> {
               KeyEventResult result = KeyEventResult.ignored;
 
               // if ctrl-c is pressed, and the command bar isn't open, open it
-              if (LogicalKeySet(
-                          LogicalKeyboardKey.control, LogicalKeyboardKey.keyK)
-                      .accepts(event, RawKeyboard.instance) &&
+              if (widget.openKeySet.accepts(event, RawKeyboard.instance) &&
                   !_commandBarOpen) {
                 _openCommandBar(context);
 
-                result = KeyEventResult.handled;
-              }
-
-              // if esc is pressed, and the command bar isn't open, close it
-              else if (LogicalKeySet(LogicalKeyboardKey.escape)
-                      .accepts(event, RawKeyboard.instance) &&
-                  _commandBarOpen) {
-                _closeCommandBar();
                 result = KeyEventResult.handled;
               }
 
@@ -201,14 +209,6 @@ class _CommandBarState extends State<CommandBar> {
         },
       ),
     );
-  }
-
-  /// Closes the command bar
-  void _closeCommandBar() {
-    setState(() {
-      _commandBarOpen = false;
-    });
-    Navigator.of(context).pop();
   }
 
   /// Opens the command bar
@@ -227,6 +227,7 @@ class _CommandBarState extends State<CommandBar> {
             commandBarController: CommandBarControllerProvider.of(context),
             transitionCurve: widget.transitionCurve,
             transitionDuration: widget.transitionDuration,
+            closeKeySet: widget.closeKeySet,
           ),
         )
         .then(

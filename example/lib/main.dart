@@ -47,6 +47,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 contentPadding: EdgeInsets.all(16),
               ),
             ),
+
+            // Setting custom keyboard shortcuts
+            // openKeySet: LogicalKeySet(
+            //   LogicalKeyboardKey.alt,
+            //   LogicalKeyboardKey.keyO,
+            // ),
+            // closeKeySet: LogicalKeySet(
+            //   LogicalKeyboardKey.control,
+            //   LogicalKeyboardKey.keyC,
+            // ),
             actions: [
               CommandBarAction(
                 label: "Close Command Bar",

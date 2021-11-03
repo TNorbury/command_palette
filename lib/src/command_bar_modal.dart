@@ -21,6 +21,8 @@ class CommandBarModal extends ModalRoute<void> {
 
   final Curve _transitionCurve;
 
+  final LogicalKeySet closeKeySet;
+
   /// [transitionDuration] How long it takes for the modal to fade in or out
   ///
   /// [transitionCurve] The curve used when fading the modal in and out
@@ -29,6 +31,7 @@ class CommandBarModal extends ModalRoute<void> {
     required this.commandBarController,
     required Duration transitionDuration,
     required Curve transitionCurve,
+    required this.closeKeySet,
   })  : _transitionDuration = transitionDuration,
         _transitionCurve = transitionCurve;
 
@@ -97,6 +100,12 @@ class CommandBarModal extends ModalRoute<void> {
                 else if (LogicalKeySet(LogicalKeyboardKey.enter)
                     .accepts(event, RawKeyboard.instance)) {
                   commandBarController.performHighlightedAction(context);
+                  result = KeyEventResult.handled;
+                } 
+                
+                // close the command pallette
+                else if (closeKeySet.accepts(event, RawKeyboard.instance)) {
+                  Navigator.of(context).pop();
                   result = KeyEventResult.handled;
                 }
 
