@@ -37,6 +37,16 @@ class CommandPaletteStyle {
   /// ```
   final TextStyle? highlightedLabelTextStyle;
 
+  /// Text style for the description of an action
+  ///
+  /// Defaults to (if it's available):
+  /// ```
+  /// Theme.of(context).primaryTextTheme.subtitle2?.copyWith(
+  ///   color: Theme.of(context).colorScheme.onSurface,
+  ///  )
+  /// ```
+  final TextStyle? actionDescriptionTextStyle;
+
   /// Determines whether or not matching characters in action labels are
   /// highlighted while searching.
   ///
@@ -48,7 +58,7 @@ class CommandPaletteStyle {
   /// Defaults to `4.0`
   final double elevation;
 
-  /// Border radius of the entire command palette. Includes the search bar and 
+  /// Border radius of the entire command palette. Includes the search bar and
   /// the contents.
   ///
   /// Defaults to
@@ -71,8 +81,8 @@ class CommandPaletteStyle {
   final Color commandPaletteBarrierColor;
 
   /// Decoration used for the text field
-  /// 
-  /// Defaults to 
+  ///
+  /// Defaults to
   /// ```
   /// InputDecoration(
   ///   contentPadding: const EdgeInsets.all(8),
@@ -86,6 +96,7 @@ class CommandPaletteStyle {
     this.actionLabelTextStyle,
     this.highlightedLabelTextStyle,
     this.highlightSearchSubstring = true,
+    this.actionDescriptionTextStyle,
     this.elevation = 4.0,
     this.borderRadius = const BorderRadius.only(
       bottomLeft: Radius.circular(5),

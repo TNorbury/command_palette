@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (context) {
           return CommandPalette(
             style: CommandPaletteStyle(
-              actionLabelTextAlign: TextAlign.start,
+              actionLabelTextAlign: TextAlign.center,
               textFieldInputDecoration: InputDecoration(
                 hintText: "Enter Something",
                 contentPadding: EdgeInsets.all(16),
@@ -60,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
             actions: [
               CommandPaletteAction(
                 label: "Close Command Palette",
+                description: "Closes the command palette",
                 actionType: CommandPaletteActionType.single,
                 shortcut: ["esc"],
                 onSelect: () {
@@ -69,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
               CommandPaletteAction(
                 label: "Change Theme",
                 actionType: CommandPaletteActionType.nested,
+                description: "Change the color theme of the app",
                 shortcut: ["ctrl", "t"],
                 childrenActions: [
                   CommandPaletteAction(
@@ -94,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
               CommandPaletteAction(
                 label: "Set User",
                 actionType: CommandPaletteActionType.nested,
+                shortcut: ["ctrl", "shift","s"],
                 childrenActions: [
                   ...["Maria", "Kurt", "Susanne", "Larissa", "Simon", "Admin"]
                       .map(
@@ -123,6 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   label: "Log out",
                   actionType: CommandPaletteActionType.single,
                   shortcut: ["l", "o"],
+                  description: "Logs the current user out",
                   onSelect: () {
                     setState(() {
                       _currentUser = "";

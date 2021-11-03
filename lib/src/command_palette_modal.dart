@@ -14,7 +14,7 @@ class CommandPaletteModal extends ModalRoute<void> {
   /// See [CommandPalette.hintText]
   final String hintText;
 
-  /// controller for the command palette. Passed into the modal so that it can 
+  /// controller for the command palette. Passed into the modal so that it can
   /// be distributed among this route
   final CommandPaletteController commandPaletteController;
 
@@ -24,6 +24,13 @@ class CommandPaletteModal extends ModalRoute<void> {
   final Curve _transitionCurve;
 
   final LogicalKeySet closeKeySet;
+
+  @override
+  void dispose() {
+    // palette is closed now, tell the controller
+    commandPaletteController.onClose();
+    super.dispose();
+  }
 
   /// [transitionDuration] How long it takes for the modal to fade in or out
   ///
@@ -38,7 +45,8 @@ class CommandPaletteModal extends ModalRoute<void> {
         _transitionCurve = transitionCurve;
 
   @override
-  Color? get barrierColor => commandPaletteController.style.commandPaletteBarrierColor;
+  Color? get barrierColor =>
+      commandPaletteController.style.commandPaletteBarrierColor;
 
   @override
   bool get barrierDismissible => true;
@@ -104,8 +112,8 @@ class CommandPaletteModal extends ModalRoute<void> {
                     .accepts(event, RawKeyboard.instance)) {
                   commandPaletteController.performHighlightedAction(context);
                   result = KeyEventResult.handled;
-                } 
-                
+                }
+
                 // close the command palette
                 else if (closeKeySet.accepts(event, RawKeyboard.instance)) {
                   Navigator.of(context).pop();

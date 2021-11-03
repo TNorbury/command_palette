@@ -26,7 +26,7 @@ final ActionFilter _defaultFilter = (query, actions) {
 /// Command palette is a widget that is summoned by a keyboard shortcut, or by
 /// programmatic means.
 ///
-/// The command palette displays a list of actions and the user can type text 
+/// The command palette displays a list of actions and the user can type text
 /// into the search bar to filter those actions.
 class CommandPalette extends StatefulWidget {
   /// Child which is wrapped by the command palette
@@ -42,7 +42,7 @@ class CommandPalette extends StatefulWidget {
   /// entered text of the search bar
   final ActionFilter filter;
 
-  /// Used to build the actions which're displayed when the command palette is 
+  /// Used to build the actions which're displayed when the command palette is
   /// open
   ///
   /// For an idea on how to builder your own custom builder, see
@@ -61,7 +61,7 @@ class CommandPalette extends StatefulWidget {
 
   /// Provides options to style the look of the command palette.
   ///
-  /// Note for development: Changes to style while the command palette is open 
+  /// Note for development: Changes to style while the command palette is open
   /// will require the command palette to be closed and reopened.
   final CommandPaletteStyle? style;
 
@@ -72,7 +72,7 @@ class CommandPalette extends StatefulWidget {
 
   /// The set of keys used to close the command palette.
   ///
-  /// Please note that at this time escape will always close the command 
+  /// Please note that at this time escape will always close the command
   /// palette.
   /// Regardless of if it's set or not. This is something defined at the
   /// App-level. If you want to prevent this, see: https://stackoverflow.com/questions/63763478/disable-escape-key-navigation-in-flutter-web
@@ -147,7 +147,8 @@ class _CommandPaletteState extends State<CommandPalette> {
 
   /// Initialize all the styles and stuff
   void _initStyle() {
-    CommandPaletteStyle styleToCopy = widget.style ?? const CommandPaletteStyle();
+    CommandPaletteStyle styleToCopy =
+        widget.style ?? const CommandPaletteStyle();
 
     _style = CommandPaletteStyle(
       actionColor: styleToCopy.actionColor ?? Theme.of(context).canvasColor,
@@ -161,6 +162,10 @@ class _CommandPaletteState extends State<CommandPalette> {
           Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
                 color: Theme.of(context).colorScheme.secondary,
                 fontWeight: FontWeight.w600,
+              ),
+      actionDescriptionTextStyle: styleToCopy.actionDescriptionTextStyle ??
+          Theme.of(context).primaryTextTheme.subtitle2?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
               ),
       actionLabelTextAlign: styleToCopy.actionLabelTextAlign,
       borderRadius: styleToCopy.borderRadius,
@@ -196,7 +201,7 @@ class _CommandPaletteState extends State<CommandPalette> {
             onKey: (node, event) {
               KeyEventResult result = KeyEventResult.ignored;
 
-              // if ctrl-c is pressed, and the command palette isn't open, 
+              // if ctrl-c is pressed, and the command palette isn't open,
               // open it
               if (widget.openKeySet.accepts(event, RawKeyboard.instance) &&
                   !_commandPaletteOpen) {
@@ -227,7 +232,8 @@ class _CommandPaletteState extends State<CommandPalette> {
 
             // we pass the controller in so that it can be re-provided within the
             // tree of the modal
-            commandPaletteController: CommandPaletteControllerProvider.of(context),
+            commandPaletteController:
+                CommandPaletteControllerProvider.of(context),
             transitionCurve: widget.transitionCurve,
             transitionDuration: widget.transitionDuration,
             closeKeySet: widget.closeKeySet,
