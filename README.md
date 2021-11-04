@@ -1,7 +1,7 @@
 # command_palette
 
 [![pub package](https://img.shields.io/pub/v/command_palette.svg)](https://pub.dev/packages/command_palette)
-[![flutter_tests](https://github.com/TNorbury/command_palette/workflows/flutter%20tests/badge.svg)](https://github.com/TNorbury/command_palette/actions?query=workflow%3A%22flutter+tests%22)
+[![flutter_tests](https://github.com/TNorbury/command_palette/workflows/ci/badge.svg)](https://github.com/TNorbury/command_palette/actions?query=workflow%3A%22ci%22)
 [![codecov](https://codecov.io/gh/TNorbury/command_palette/branch/main/graph/badge.svg?token=TKS5WR5D7A)](https://codecov.io/gh/TNorbury/command_palette)
 [![style: flutter lints](https://img.shields.io/badge/style-flutter_lints-40c4ff.svg)](https://pub.dev/packages/flutter_lints)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
