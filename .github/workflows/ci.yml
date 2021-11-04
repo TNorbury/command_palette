@@ -1,5 +1,5 @@
-# This will run all of my flutter tests
-name: flutter tests
+# This will run tests and validate that the code is up to snuff
+name: CI
 
 # Trigger the workflow on push or pull request.
 on:
@@ -29,7 +29,7 @@ jobs:
           key: ${{ github.ref }}-${{ env.flutter_version }}
       - uses: subosito/flutter-action@v1
         with:
-          flutter_version: ${{ env.flutter_version }}
+          flutter-version: ${{ env.flutter_version }}
       - name: Install Dependencies
         run: flutter pub get
       - name: Analyze
@@ -51,7 +51,7 @@ jobs:
           key: ${{ github.ref }}-${{ env.flutter_version }}
       - uses: subosito/flutter-action@v1
         with:
-          flutter_version: ${{ env.flutter_version }}
+          flutter-version: ${{ env.flutter_version }}
       - name: Install Dependencies
         run: flutter pub get
       - name: Run Tests

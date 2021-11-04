@@ -113,7 +113,6 @@ void main() {
       expect(find.text("Nested Action 1"), findsNothing);
       expect(find.text("Action 1"), findsOneWidget);
       await closePalette(tester);
-      
     },
   );
 }
