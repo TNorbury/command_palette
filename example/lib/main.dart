@@ -40,6 +40,10 @@ class _MyHomePageState extends State<MyHomePage> {
       home: Builder(
         builder: (context) {
           return CommandPalette(
+            // define a custom query
+            // filter: (query, allActions) {
+
+            // },
             style: CommandPaletteStyle(
               actionLabelTextAlign: TextAlign.center,
               textFieldInputDecoration: InputDecoration(
@@ -58,15 +62,15 @@ class _MyHomePageState extends State<MyHomePage> {
             //   LogicalKeyboardKey.keyC,
             // ),
             actions: [
-              // CommandPaletteAction(
-              //   label: "Close Command Palette",
-              //   description: "Closes the command palette",
-              //   actionType: CommandPaletteActionType.single,
-              //   shortcut: ["esc"],
-              //   onSelect: () {
-              //     Navigator.of(context).pop();
-              //   },
-              // ),
+              CommandPaletteAction(
+                label: "Close Command Palette",
+                description: "Closes the command palette",
+                actionType: CommandPaletteActionType.single,
+                shortcut: ["esc"],
+                onSelect: () {
+                  Navigator.of(context).pop();
+                },
+              ),
               CommandPaletteAction(
                 label: "Change Theme",
                 actionType: CommandPaletteActionType.nested,
