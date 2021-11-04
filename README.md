@@ -86,6 +86,10 @@ CommandPalette.of(context).open();
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+Have a feature request, or some questions? Come on down to the [discussions tab](https://github.com/TNorbury/command_palette/discussions).
+
+Find a bug or want to open a pull request? Feel free to do so, any and all contributions are welcome and appreciated!
+
+### Note about the version
+
+While I feel confident that this package is ready to use in a real world app. I'm keeping the version below 1.0.0 for the time being incase there is any major changes I'd like to make before I settle down into something.
