@@ -50,7 +50,12 @@ class CommandPaletteController extends ChangeNotifier {
   /// To be called when the command palette is closed
   void onClose() {
     _currentlySelectedAction = null;
-    textEditingController.text = "";
+    highlightedAction = 0;
+    _actionsNeedRefiltered = true;
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      textEditingController.text = "";
+    });
   }
 
   /// updates the command palette style (if needed)
