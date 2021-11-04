@@ -58,15 +58,15 @@ class _MyHomePageState extends State<MyHomePage> {
             //   LogicalKeyboardKey.keyC,
             // ),
             actions: [
-              CommandPaletteAction(
-                label: "Close Command Palette",
-                description: "Closes the command palette",
-                actionType: CommandPaletteActionType.single,
-                shortcut: ["esc"],
-                onSelect: () {
-                  Navigator.of(context).pop();
-                },
-              ),
+              // CommandPaletteAction(
+              //   label: "Close Command Palette",
+              //   description: "Closes the command palette",
+              //   actionType: CommandPaletteActionType.single,
+              //   shortcut: ["esc"],
+              //   onSelect: () {
+              //     Navigator.of(context).pop();
+              //   },
+              // ),
               CommandPaletteAction(
                 label: "Change Theme",
                 actionType: CommandPaletteActionType.nested,
@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
               CommandPaletteAction(
                 label: "Set User",
                 actionType: CommandPaletteActionType.nested,
-                shortcut: ["ctrl", "shift","s"],
+                shortcut: ["ctrl", "shift", "s"],
                 childrenActions: [
                   ...["Maria", "Kurt", "Susanne", "Larissa", "Simon", "Admin"]
                       .map(
@@ -135,23 +135,35 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
             ],
-            child: Scaffold(
-              body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Welcome to the Command Palette example!"),
-                    if (_currentUser.isNotEmpty)
-                      Text("Current User: $_currentUser"),
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 1000),
-                      width: 50,
-                      height: 50,
-                      color: color,
-                    )
-                  ],
-                ),
-              ),
+            child: Builder(
+              builder: (context) {
+                return Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  body: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Welcome to the Command Palette example!"),
+                        Text("Press Ctrl+K to open"),
+                        TextButton(
+                          child: Text("Or Click Here!"),
+                          onPressed: () {
+                            CommandPalette.of(context).open();
+                          },
+                        ),
+                        if (_currentUser.isNotEmpty)
+                          Text("Current User: $_currentUser"),
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 1000),
+                          width: 50,
+                          height: 50,
+                          color: color,
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },
