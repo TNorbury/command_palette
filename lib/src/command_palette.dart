@@ -4,10 +4,7 @@ import 'package:flutter/services.dart';
 
 import '../command_palette.dart';
 import 'command_palette_modal.dart';
-import 'command_palette_options.dart';
 import 'controller/command_palette_controller.dart';
-import 'models/command_palette_action.dart';
-import 'models/command_palette_style.dart';
 
 /// Used to communicate the toggle status between the inherited widget and
 /// stateful inner widget
@@ -21,86 +18,27 @@ class _CommandPaletteToggler extends ValueNotifier<bool> {
 /// The command palette displays a list of actions and the user can type text
 /// into the search bar to filter those actions.
 class CommandPalette extends InheritedWidget {
-  /// Text that's displayed in the command palette when nothing has been entered
-  final String hintText;
-
   /// List of all the actions that are supported by this command palette
   final List<CommandPaletteAction> actions;
 
-  /// Used to filter which actions are displayed based upon the currently
-  /// entered text of the search bar
-  final ActionFilter filter;
-
-  /// Used to build the actions which're displayed when the command palette is
-  /// open
-  ///
-  /// For an idea on how to builder your own custom builder, see
-  /// [defaultBuilder]
-  final ActionBuilder builder;
-
-  /// How long it takes for the command palette to be opened or closed.
-  ///
-  /// Defaults to 150 ms
-  final Duration transitionDuration;
-
-  /// Curves used when fading the command palette in and out.
-  ///
-  /// Defaults to [Curves.linear]
-  final Curve transitionCurve;
-
-  /// Provides options to style the look of the command palette.
-  ///
-  /// Note for development: Changes to style while the command palette is open
-  /// will require the command palette to be closed and reopened.
-  final CommandPaletteStyle? style;
-
-  /// The set of keys used to open the command palette.
-  ///
-  /// Defaults to Ctrl-/Cmd- C
-  final LogicalKeySet openKeySet;
-
-  /// The set of keys used to close the command palette.
-  ///
-  /// Please note that at this time escape will always close the command
-  /// palette.
-  /// Regardless of if it's set or not. This is something defined at the
-  /// App-level. If you want to prevent this, see: https://stackoverflow.com/questions/63763478/disable-escape-key-navigation-in-flutter-web
-  ///
-  /// Defaults to Esc.
-  final LogicalKeySet closeKeySet;
+  /// Configuration options for the command pallette, includes both visual and
+  /// functional configuration
+  final CommandPaletteConfig config;
 
   late final _CommandPaletteToggler _toggler;
 
   CommandPalette({
-    ActionFilter? filter,
     Key? key,
-    ActionBuilder? builder,
-    required Widget child,
-    this.hintText = "Begin typing to search for something",
+    CommandPaletteConfig? config,
     required this.actions,
-    this.transitionDuration = const Duration(milliseconds: 150),
-    this.transitionCurve = Curves.linear,
-    this.style,
-    LogicalKeySet? openKeySet,
-    LogicalKeySet? closeKeySet,
-  })  : filter = filter ?? defaultFilter,
-        builder = builder ?? defaultBuilder,
-        openKeySet = openKeySet ??
-            LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyK),
-        closeKeySet = closeKeySet ?? LogicalKeySet(LogicalKeyboardKey.escape),
+    required Widget child,
+  })  : config = config ?? CommandPaletteConfig(),
         super(
           key: key,
           child: _CommandPaletteInner(
             key: key,
             actions: actions,
-            builder: builder,
-            closeKeySet: closeKeySet,
-            filter: filter,
-            hintText: hintText,
-            openKeySet: openKeySet,
-            style: style,
-            transitionCurve: transitionCurve,
-            transitionDuration: transitionDuration,
+            config: config ?? CommandPaletteConfig(),
             toggler: _CommandPaletteToggler(false),
             child: child,
           ),
@@ -130,52 +68,25 @@ class CommandPalette extends InheritedWidget {
     if (identical(this, other)) return true;
 
     return other is CommandPalette &&
-        other.hintText == hintText &&
         listEquals(other.actions, actions) &&
-        other.filter == filter &&
-        other.builder == builder &&
-        other.transitionDuration == transitionDuration &&
-        other.transitionCurve == transitionCurve &&
-        other.style == style &&
-        other.openKeySet == openKeySet &&
-        other.closeKeySet == closeKeySet;
+        other.config.equals(config);
   }
 }
 
 /// The actual widget which that handles the opening and closing of the palette.
 class _CommandPaletteInner extends StatefulWidget {
   final Widget child;
-  final String hintText;
   final List<CommandPaletteAction> actions;
-  final ActionFilter filter;
-  final ActionBuilder builder;
-  final Duration transitionDuration;
-  final Curve transitionCurve;
-  final CommandPaletteStyle? style;
-  final LogicalKeySet openKeySet;
-  final LogicalKeySet closeKeySet;
-
+  final CommandPaletteConfig config;
   final _CommandPaletteToggler toggler;
 
-  _CommandPaletteInner({
-    ActionFilter? filter,
+  const _CommandPaletteInner({
     Key? key,
-    ActionBuilder? builder,
-    LogicalKeySet? openKeySet,
-    LogicalKeySet? closeKeySet,
-    required this.child,
-    this.hintText = "Begin typing to search for something",
+    required this.config,
     required this.actions,
-    this.transitionDuration = const Duration(milliseconds: 150),
-    this.transitionCurve = Curves.linear,
-    this.style,
+    required this.child,
     required this.toggler,
-  })  : filter = filter ?? defaultFilter,
-        builder = builder ?? defaultBuilder,
-        openKeySet = openKeySet ??
-            LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyK),
-        closeKeySet = closeKeySet ?? LogicalKeySet(LogicalKeyboardKey.escape),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   State<_CommandPaletteInner> createState() => _CommandPaletteInnerState();
@@ -194,8 +105,8 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
 
     _controller = CommandPaletteController(
       widget.actions,
-      filter: widget.filter,
-      builder: widget.builder,
+      filter: widget.config.filter,
+      builder: widget.config.builder,
     );
   }
 
@@ -203,14 +114,15 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
   void didUpdateWidget(covariant _CommandPaletteInner oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.actions != widget.actions ||
-        oldWidget.filter != widget.filter ||
-        oldWidget.style != widget.style ||
-        oldWidget.builder != widget.builder) {
+    if (oldWidget.config != widget.config ||
+        oldWidget.config.filter != widget.config.filter ||
+        oldWidget.config.style != widget.config.style ||
+        oldWidget.config.builder != widget.config.builder
+        ) {
       _controller = CommandPaletteController(
         widget.actions,
-        filter: widget.filter,
-        builder: widget.builder,
+        filter: widget.config.filter,
+        builder: widget.config.builder,
       );
       _initStyle();
     }
@@ -234,7 +146,6 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
   void _handleToggle() {
     // is open
     if (widget.toggler.value && !_commandPaletteOpen) {
-      // widget.toggler.value
       _openCommandPalette(context);
     } else if (!widget.toggler.value && _commandPaletteOpen) {
       _closeCommandPalette();
@@ -244,7 +155,7 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
   /// Initialize all the styles and stuff
   void _initStyle() {
     CommandPaletteStyle styleToCopy =
-        widget.style ?? const CommandPaletteStyle();
+        widget.config.style ?? const CommandPaletteStyle();
 
     _style = CommandPaletteStyle(
       actionColor: styleToCopy.actionColor ?? Theme.of(context).canvasColor,
@@ -299,7 +210,8 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
 
               // if ctrl-c is pressed, and the command palette isn't open,
               // open it
-              if (widget.openKeySet.accepts(event, RawKeyboard.instance) &&
+              if (widget.config.openKeySet
+                      .accepts(event, RawKeyboard.instance) &&
                   !_commandPaletteOpen) {
                 _openCommandPalette(context);
 
@@ -325,14 +237,14 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
     Navigator.of(context)
         .push(
           CommandPaletteModal(
-            hintText: widget.hintText,
+            hintText: widget.config.hintText,
 
             // we pass the controller in so that it can be re-provided within the
             // tree of the modal
             commandPaletteController: _controller,
-            transitionCurve: widget.transitionCurve,
-            transitionDuration: widget.transitionDuration,
-            closeKeySet: widget.closeKeySet,
+            transitionCurve: widget.config.transitionCurve,
+            transitionDuration: widget.config.transitionDuration,
+            closeKeySet: widget.config.closeKeySet,
           ),
         )
         .then(

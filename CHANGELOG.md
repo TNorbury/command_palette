@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Changed
 - Flutter 2.8.1
+- BREAKING: The configuration for the command palette is now set by a CommandPaletteConfig object that is passed to the CommandPalette constructor. To migrate, wrap all the arguments in the CommandPalette constructor that aren't actions, child, or key, in a CommandPaletteConfig constructor and pass that to the config argument
 
 ## 0.1.1 - 2021-11-03
 ### Fixed

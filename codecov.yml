@@ -2,3 +2,4 @@ coverage:
     range: "60...98"
 ignore:
     - "lib/src/models/command_palette_style.dart"
+    - "lib/src/models/command_palette_config.dart"

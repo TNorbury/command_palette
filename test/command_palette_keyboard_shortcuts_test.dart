@@ -405,12 +405,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: CommandPalette(
         actions: actions,
-        builder: builder,
-        openKeySet: openKeySet,
-        closeKeySet: closeKeySet,
-        style: const CommandPaletteStyle(
-          // have to turn highlighting off in order to find by text
-          highlightSearchSubstring: false,
+        config: CommandPaletteConfig(
+          builder: builder,
+          openKeySet: openKeySet,
+          closeKeySet: closeKeySet,
+          style: const CommandPaletteStyle(
+            // have to turn highlighting off in order to find by text
+            highlightSearchSubstring: false,
+          ),
         ),
         child: const Scaffold(
           body: Center(

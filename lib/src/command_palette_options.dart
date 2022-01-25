@@ -3,8 +3,6 @@ import 'package:command_palette/src/controller/command_palette_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:substring_highlight/substring_highlight.dart';
 
-import 'models/command_palette_action.dart';
-
 /// Displays all the available [CommandPaletteAction] options based upon various
 /// filtering criteria
 class CommandPaletteOptions extends StatelessWidget {

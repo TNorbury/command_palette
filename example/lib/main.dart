@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
       home: Builder(
         builder: (context) {
           return CommandPalette(
+            config: CommandPaletteConfig(
             // define a custom query
             // filter: (query, allActions) {
 
@@ -61,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //   LogicalKeyboardKey.control,
             //   LogicalKeyboardKey.keyC,
             // ),
+            ),
             actions: [
               CommandPaletteAction(
                 label: "Close Command Palette",
