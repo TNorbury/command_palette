@@ -107,6 +107,7 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
       widget.actions,
       filter: widget.config.filter,
       builder: widget.config.builder,
+      scoreThreshold: widget.config.scoreThreshold,
     );
   }
 
@@ -117,12 +118,13 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
     if (oldWidget.config != widget.config ||
         oldWidget.config.filter != widget.config.filter ||
         oldWidget.config.style != widget.config.style ||
-        oldWidget.config.builder != widget.config.builder
-        ) {
+        oldWidget.config.builder != widget.config.builder ||
+        oldWidget.config.scoreThreshold != widget.config.scoreThreshold) {
       _controller = CommandPaletteController(
         widget.actions,
         filter: widget.config.filter,
         builder: widget.config.builder,
+        scoreThreshold: widget.config.scoreThreshold,
       );
       _initStyle();
     }

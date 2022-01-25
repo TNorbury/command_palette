@@ -1,7 +1,6 @@
 import 'package:command_palette/command_palette.dart';
-import 'package:command_palette/src/models/command_palette_action.dart';
-import 'package:command_palette/src/models/command_palette_style.dart';
 import 'package:flutter/material.dart';
+import 'package:woozy_search/woozy_search.dart';
 
 class CommandPaletteControllerProvider
     extends InheritedNotifier<CommandPaletteController> {
@@ -45,6 +44,9 @@ class CommandPaletteController extends ChangeNotifier {
   /// the enter key is pressed
   int highlightedAction = 0;
 
+  /// The threshold for filter scoring
+  final double scoreThreshold;
+
   CommandPaletteStyle _style;
 
   /// To be called when the command palette is closed
@@ -73,6 +75,7 @@ class CommandPaletteController extends ChangeNotifier {
     this.actions, {
     required this.filter,
     required this.builder,
+    required this.scoreThreshold,
   }) : _style = const CommandPaletteStyle() {
     textEditingController.addListener(_onTextControllerChange);
   }
@@ -121,7 +124,7 @@ class CommandPaletteController extends ChangeNotifier {
       } else {
         filteredActions = actions;
       }
-      filteredActions = filter(_enteredQuery, filteredActions);
+      filteredActions = filter(_enteredQuery, filteredActions, scoreThreshold);
       _filteredActionsCache = filteredActions;
       _actionsNeedRefiltered = false;
     }
@@ -207,14 +210,25 @@ class CommandPaletteController extends ChangeNotifier {
 /// Default filter for actions. Splits the entered query, and then wraps it in
 /// groups and wild cards
 // ignore: prefer_function_declarations_over_variables
-final ActionFilter defaultFilter = (query, actions) {
-  final String expression =
-      query.split(" ").map((e) => "(${e.replaceAll("\\", "\\\\")}).*").join("");
-  // debugPrint(expression);
-  final re = RegExp(expression, caseSensitive: false);
-  return actions
-      .where(
-        (action) => re.hasMatch(action.label),
-      )
+final ActionFilter defaultFilter = (query, actions, scoreThreshold) {
+  if (query.isEmpty) {
+    return actions;
+  }
+
+  final woozy = Woozy<CommandPaletteAction>();
+
+  for (final action in actions) {
+    woozy.addEntry(action.label, value: action);
+  }
+
+  final searchResults = woozy.search(query);
+  // searchResults.forEach((element) {
+  //   debugPrint("${element.text} ${element.score}");
+  // });
+  // debugPrint("-----");
+
+  return searchResults
+      .where((element) => element.score >= scoreThreshold)
+      .map((e) => e.value!)
       .toList();
 };

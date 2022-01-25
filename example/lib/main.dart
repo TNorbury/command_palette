@@ -41,27 +41,27 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (context) {
           return CommandPalette(
             config: CommandPaletteConfig(
-            // define a custom query
-            // filter: (query, allActions) {
+              // define a custom query
+              // filter: (query, allActions) {
 
-            // },
-            style: CommandPaletteStyle(
-              actionLabelTextAlign: TextAlign.center,
-              textFieldInputDecoration: InputDecoration(
-                hintText: "Enter Something",
-                contentPadding: EdgeInsets.all(16),
+              // },
+              style: CommandPaletteStyle(
+                actionLabelTextAlign: TextAlign.center,
+                textFieldInputDecoration: InputDecoration(
+                  hintText: "Enter Something",
+                  contentPadding: EdgeInsets.all(16),
+                ),
               ),
-            ),
 
-            // Setting custom keyboard shortcuts
-            // openKeySet: LogicalKeySet(
-            //   LogicalKeyboardKey.alt,
-            //   LogicalKeyboardKey.keyO,
-            // ),
-            // closeKeySet: LogicalKeySet(
-            //   LogicalKeyboardKey.control,
-            //   LogicalKeyboardKey.keyC,
-            // ),
+              // Setting custom keyboard shortcuts
+              // openKeySet: LogicalKeySet(
+              //   LogicalKeyboardKey.alt,
+              //   LogicalKeyboardKey.keyO,
+              // ),
+              // closeKeySet: LogicalKeySet(
+              //   LogicalKeyboardKey.control,
+              //   LogicalKeyboardKey.keyC,
+              // ),
             ),
             actions: [
               CommandPaletteAction(
