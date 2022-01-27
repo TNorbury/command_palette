@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:command_palette/command_palette.dart';
-import 'package:command_palette/src/command_palette_modal.dart';
+import 'package:command_palette/src/widgets/command_palette_modal.dart';
 
 import 'utils.dart';
 

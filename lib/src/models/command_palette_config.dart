@@ -1,4 +1,4 @@
-import 'package:command_palette/src/command_palette_options.dart';
+import 'package:command_palette/src/widgets/options/command_palette_options.dart';
 import 'package:command_palette/src/controller/command_palette_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,7 +25,7 @@ class CommandPaletteConfig {
   /// open
   ///
   /// For an idea on how to builder your own custom builder, see
-  /// [defaultBuilder]
+  /// [kDefaultBuilder]
   final ActionBuilder builder;
 
   /// How long it takes for the command palette to be opened or closed.
@@ -59,11 +59,6 @@ class CommandPaletteConfig {
   /// Defaults to Esc.
   final LogicalKeySet closeKeySet;
 
-  /// Action filtering rates actions on a scale of 0.0 to 1.0. The threshold is
-  /// the value that an action must score greater than or equal to, in order to
-  /// be considering a match
-  final double scoreThreshold;
-
   CommandPaletteConfig({
     ActionFilter? filter,
     Key? key,
@@ -74,9 +69,8 @@ class CommandPaletteConfig {
     this.style,
     LogicalKeySet? openKeySet,
     LogicalKeySet? closeKeySet,
-    this.scoreThreshold = 0.25,
-  })  : filter = filter ?? defaultFilter,
-        builder = builder ?? defaultBuilder,
+  })  : filter = filter ?? kDefaultFilter,
+        builder = builder ?? kDefaultBuilder,
         openKeySet = openKeySet ?? _defaultOpenKeySet,
         closeKeySet = closeKeySet ?? _defaultCloseKeySet;
 
@@ -91,7 +85,6 @@ class CommandPaletteConfig {
         other.transitionCurve == transitionCurve &&
         other.style == style &&
         other.openKeySet == openKeySet &&
-        other.closeKeySet == closeKeySet &&
-        other.scoreThreshold == scoreThreshold;
+        other.closeKeySet == closeKeySet;
   }
 }

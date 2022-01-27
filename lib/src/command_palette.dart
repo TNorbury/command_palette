@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../command_palette.dart';
-import 'command_palette_modal.dart';
+import 'widgets/command_palette_modal.dart';
 import 'controller/command_palette_controller.dart';
 
 /// Used to communicate the toggle status between the inherited widget and
@@ -107,7 +107,6 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
       widget.actions,
       filter: widget.config.filter,
       builder: widget.config.builder,
-      scoreThreshold: widget.config.scoreThreshold,
     );
   }
 
@@ -118,13 +117,11 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
     if (oldWidget.config != widget.config ||
         oldWidget.config.filter != widget.config.filter ||
         oldWidget.config.style != widget.config.style ||
-        oldWidget.config.builder != widget.config.builder ||
-        oldWidget.config.scoreThreshold != widget.config.scoreThreshold) {
+        oldWidget.config.builder != widget.config.builder ) {
       _controller = CommandPaletteController(
         widget.actions,
         filter: widget.config.filter,
         builder: widget.config.builder,
-        scoreThreshold: widget.config.scoreThreshold,
       );
       _initStyle();
     }

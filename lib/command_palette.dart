@@ -18,7 +18,7 @@ export 'src/models/command_palette_config.dart';
 /// [scoreThreshold] This is the same as whatever value was used in
 /// [CommandPaletteConfig]
 typedef ActionFilter = List<CommandPaletteAction> Function(
-    String query, List<CommandPaletteAction> allActions, double scoreThreshold);
+    String query, List<CommandPaletteAction> allActions);
 
 /// Builder used for the action options.
 /// Provides the following arguments:
