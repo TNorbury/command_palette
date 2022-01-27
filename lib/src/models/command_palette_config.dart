@@ -14,9 +14,6 @@ class CommandPaletteConfig {
   /// Text that's displayed in the command palette when nothing has been entered
   final String hintText;
 
-  /// List of all the actions that are supported by this command palette
-  // final List<CommandPaletteAction> actions;
-
   /// Used to filter which actions are displayed based upon the currently
   /// entered text of the search bar
   final ActionFilter filter;

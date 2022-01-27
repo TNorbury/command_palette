@@ -59,7 +59,7 @@ final ActionBuilder kDefaultBuilder = (
   // if highlighting the search substring is enabled, then we'll use one of the
   // two widgets for that
   if (style.highlightSearchSubstring) {
-    // if the action is our matched command palette action, then we'll use our
+    // if the action is a MatchedCommandPaletteAction, then we'll use our
     // own highlighter here.
     if (action is MatchedCommandPaletteAction && action.matches != null) {
       label = OptionHighlighter(

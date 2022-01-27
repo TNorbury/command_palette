@@ -49,6 +49,7 @@ class Filter {
     return word.isNotEmpty ? [FilterMatch(0, word.length)] : [];
   }
 
+  /// Joins [head] with the list of matches [tail]
   static List<FilterMatch> join(FilterMatch head, List<FilterMatch> tail) {
     if (tail.isEmpty) {
       tail = [head];

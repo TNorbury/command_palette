@@ -14,9 +14,6 @@ export 'src/models/command_palette_config.dart';
 /// actions.
 /// Given [query] and [allActions], the function should determine the subset of
 /// actions to return based on the function
-///
-/// [scoreThreshold] This is the same as whatever value was used in
-/// [CommandPaletteConfig]
 typedef ActionFilter = List<CommandPaletteAction> Function(
     String query, List<CommandPaletteAction> allActions);
 
