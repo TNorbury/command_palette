@@ -8,7 +8,7 @@
 A Flutter widget that allows you to bring up a command palette, seen in programs like Visual Studio Code and Slack.
 Allows you to provide users with a convenient way to perform all sorts of actions related to your app.
 
-![](https://raw.githubusercontent.com/TNorbury/command_palette/main/readme_assets/demo.gif)
+![](https://raw.githubusercontent.com/TNorbury/command_palette/main/readme_assets/demo2.gif)
 
 ## Features
 
