@@ -1,6 +1,5 @@
 import 'package:command_palette/command_palette.dart';
 import 'package:command_palette/src/controller/command_palette_controller.dart';
-import 'package:command_palette/src/models/matched_command_palette_action.dart';
 import 'package:command_palette/src/widgets/options/option_highlighter.dart';
 import 'package:flutter/material.dart';
 import 'package:substring_highlight/substring_highlight.dart';

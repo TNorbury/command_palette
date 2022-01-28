@@ -1,6 +1,4 @@
 import 'package:command_palette/command_palette.dart';
-import 'package:command_palette/src/models/matched_command_palette_action.dart';
-import 'package:command_palette/src/utils/filter.dart';
 import 'package:flutter/material.dart';
 import 'package:woozy_search/woozy_search.dart';
 
