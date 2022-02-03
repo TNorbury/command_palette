@@ -59,6 +59,11 @@ class CommandPalette extends InheritedWidget {
     _toggler.value = true;
   }
 
+  /// Closes the command palette
+  void close() {
+    _toggler.value = false;
+  }
+
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) {
     return !equals(oldWidget);
