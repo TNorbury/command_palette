@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.2.0 - 2022-02-03
 ### Changed
 - Flutter 2.10.0
 - BREAKING: The configuration for the command palette is now set by a CommandPaletteConfig object that is passed to the CommandPalette constructor. To migrate, wrap all the arguments in the CommandPalette constructor that aren't actions, child, or key, in a CommandPaletteConfig constructor and pass that to the config argument
