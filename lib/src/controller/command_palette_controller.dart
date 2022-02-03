@@ -206,7 +206,8 @@ class CommandPaletteController extends ChangeNotifier {
 /// Default filter for actions. Splits the entered query, and then wraps it in
 /// groups and wild cards
 // ignore: prefer_function_declarations_over_variables
-final ActionFilter kDefaultFilter = (query, actions) {
+final ActionFilter kDefaultFilter =
+    (String query, List<CommandPaletteAction> actions) {
   if (query.isEmpty) {
     return actions;
   }
@@ -231,12 +232,7 @@ final ActionFilter kDefaultFilter = (query, actions) {
   for (final action in matchedActions) {
     woozy.addEntry(action.label, value: action);
   }
-
   final searchResults = woozy.search(query);
-  // searchResults.forEach((element) {
-  //   debugPrint("${element.text} ${element.score}");
-  // });
-  // debugPrint("-----");
 
   return searchResults.map((e) => e.value!).toList();
 };
