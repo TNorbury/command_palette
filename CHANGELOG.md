@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Changed
-- Flutter 2.8.1
+- Flutter 2.10.0
 - BREAKING: The configuration for the command palette is now set by a CommandPaletteConfig object that is passed to the CommandPalette constructor. To migrate, wrap all the arguments in the CommandPalette constructor that aren't actions, child, or key, in a CommandPaletteConfig constructor and pass that to the config argument
 - Now using a fuzzy search implementation. This should improve search results. This also includes an improved sub-string highlighter. Expect the behavior to be the same as VSCode's command palette, as the logic is an adaptation of what's used there.
 
