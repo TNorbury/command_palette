@@ -116,11 +116,13 @@ class CommandPaletteStyle {
         other.selectedColor == selectedColor &&
         other.actionLabelTextStyle == actionLabelTextStyle &&
         other.highlightedLabelTextStyle == highlightedLabelTextStyle &&
+        other.actionDescriptionTextStyle == actionDescriptionTextStyle &&
         other.highlightSearchSubstring == highlightSearchSubstring &&
         other.elevation == elevation &&
         other.borderRadius == borderRadius &&
         other.actionLabelTextAlign == actionLabelTextAlign &&
-        other.commandPaletteBarrierColor == commandPaletteBarrierColor;
+        other.commandPaletteBarrierColor == commandPaletteBarrierColor &&
+        other.textFieldInputDecoration == textFieldInputDecoration;
   }
 
   @override
@@ -129,10 +131,12 @@ class CommandPaletteStyle {
         selectedColor.hashCode ^
         actionLabelTextStyle.hashCode ^
         highlightedLabelTextStyle.hashCode ^
+        actionDescriptionTextStyle.hashCode ^
         highlightSearchSubstring.hashCode ^
         elevation.hashCode ^
         borderRadius.hashCode ^
         actionLabelTextAlign.hashCode ^
-        commandPaletteBarrierColor.hashCode;
+        commandPaletteBarrierColor.hashCode ^
+        textFieldInputDecoration.hashCode;
   }
 }

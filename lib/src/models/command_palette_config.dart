@@ -1,7 +1,8 @@
-import 'package:command_palette/src/widgets/options/command_palette_options.dart';
-import 'package:command_palette/src/controller/command_palette_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:command_palette/src/controller/command_palette_controller.dart';
+import 'package:command_palette/src/widgets/options/command_palette_options.dart';
 
 import '../../command_palette.dart';
 
@@ -71,7 +72,8 @@ class CommandPaletteConfig {
         openKeySet = openKeySet ?? _defaultOpenKeySet,
         closeKeySet = closeKeySet ?? _defaultCloseKeySet;
 
-  bool equals(Object other) {
+  @override
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is CommandPaletteConfig &&
@@ -83,5 +85,17 @@ class CommandPaletteConfig {
         other.style == style &&
         other.openKeySet == openKeySet &&
         other.closeKeySet == closeKeySet;
+  }
+
+  @override
+  int get hashCode {
+    return hintText.hashCode ^
+        filter.hashCode ^
+        builder.hashCode ^
+        transitionDuration.hashCode ^
+        transitionCurve.hashCode ^
+        style.hashCode ^
+        openKeySet.hashCode ^
+        closeKeySet.hashCode;
   }
 }

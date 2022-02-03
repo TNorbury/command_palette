@@ -69,7 +69,7 @@ class CommandPalette extends InheritedWidget {
 
     return other is CommandPalette &&
         listEquals(other.actions, actions) &&
-        other.config.equals(config);
+        other.config == config;
   }
 }
 
@@ -115,9 +115,7 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.config != widget.config ||
-        oldWidget.config.filter != widget.config.filter ||
-        oldWidget.config.style != widget.config.style ||
-        oldWidget.config.builder != widget.config.builder) {
+        oldWidget.actions != widget.actions) {
       _controller = CommandPaletteController(
         widget.actions,
         filter: widget.config.filter,
