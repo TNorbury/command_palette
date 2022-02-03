@@ -1,7 +1,6 @@
 import 'package:command_palette/command_palette.dart';
-import 'package:command_palette/src/models/command_palette_action.dart';
-import 'package:command_palette/src/models/command_palette_style.dart';
 import 'package:flutter/material.dart';
+import 'package:woozy_search/woozy_search.dart';
 
 class CommandPaletteControllerProvider
     extends InheritedNotifier<CommandPaletteController> {
@@ -207,14 +206,33 @@ class CommandPaletteController extends ChangeNotifier {
 /// Default filter for actions. Splits the entered query, and then wraps it in
 /// groups and wild cards
 // ignore: prefer_function_declarations_over_variables
-final ActionFilter defaultFilter = (query, actions) {
-  final String expression =
-      query.split(" ").map((e) => "(${e.replaceAll("\\", "\\\\")}).*").join("");
-  // debugPrint(expression);
-  final re = RegExp(expression, caseSensitive: false);
-  return actions
-      .where(
-        (action) => re.hasMatch(action.label),
-      )
+final ActionFilter kDefaultFilter =
+    (String query, List<CommandPaletteAction> actions) {
+  if (query.isEmpty) {
+    return actions;
+  }
+
+  /// Using a fuzzy filter, match are actions based upon the entered query.
+  final List<MatchedCommandPaletteAction> matchedActions = actions
+      .map((e) {
+        final result = Filter.matchesFuzzy(query, e.label);
+
+        if (result != null) {
+          return MatchedCommandPaletteAction(e, result);
+        }
+
+        return null;
+      })
+      .where((element) => element != null)
+      .cast<MatchedCommandPaletteAction>()
       .toList();
+
+  // score all the matched actions, so that they're sorted by score
+  final woozy = Woozy<CommandPaletteAction>();
+  for (final action in matchedActions) {
+    woozy.addEntry(action.label, value: action);
+  }
+  final searchResults = woozy.search(query);
+
+  return searchResults.map((e) => e.value!).toList();
 };

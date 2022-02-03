@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 /// The different type of command palette
 enum CommandPaletteActionType {
@@ -63,5 +63,28 @@ class CommandPaletteAction {
         child._parent = this;
       }
     }
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is CommandPaletteAction &&
+        other.label == label &&
+        other.description == description &&
+        other.actionType == actionType &&
+        other.onSelect == onSelect &&
+        listEquals(other.childrenActions, childrenActions) &&
+        listEquals(other.shortcut, shortcut);
+  }
+
+  @override
+  int get hashCode {
+    return label.hashCode ^
+        description.hashCode ^
+        actionType.hashCode ^
+        onSelect.hashCode ^
+        childrenActions.hashCode ^
+        shortcut.hashCode;
   }
 }

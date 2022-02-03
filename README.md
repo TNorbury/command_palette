@@ -8,7 +8,7 @@
 A Flutter widget that allows you to bring up a command palette, seen in programs like Visual Studio Code and Slack.
 Allows you to provide users with a convenient way to perform all sorts of actions related to your app.
 
-![](https://raw.githubusercontent.com/TNorbury/command_palette/main/readme_assets/demo.gif)
+![](https://raw.githubusercontent.com/TNorbury/command_palette/main/readme_assets/demo2.gif)
 
 ## Features
 
@@ -85,6 +85,10 @@ Want to allow devices that don't have a keyboard to open the palette, just use t
 ```dart
 CommandPalette.of(context).open();
 ```
+
+### Creating a custom filter
+
+One of the configuration options is `filter`, which allows you to define your own custom filtering logic. The return type of this function is `List<CommandPaletteAction>`. With that in mind there is one thing I'd like to make you aware of before implementing your own: There is a sub class of CommandPaletteAction called [`MatchedCommandPaletteAction`](https://github.com/TNorbury/command_palette/blob/main/lib/src/models/matched_command_palette_action.dart). The only difference between this sub class and it's super class is it has a list of [`FilterMatch`es](https://github.com/TNorbury/command_palette/blob/main/lib/src/utils/filter.dart), which indicates the parts of the action label (this can be any string, but it's advisable to match against the label) that were matched against some part of the query. By using this subclass with the default builder, you can get enhanced sub-string high lighting.
 
 ## Additional information
 

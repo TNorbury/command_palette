@@ -1,9 +1,8 @@
 import 'package:command_palette/command_palette.dart';
 import 'package:command_palette/src/controller/command_palette_controller.dart';
+import 'package:command_palette/src/widgets/options/option_highlighter.dart';
 import 'package:flutter/material.dart';
 import 'package:substring_highlight/substring_highlight.dart';
-
-import 'models/command_palette_action.dart';
 
 /// Displays all the available [CommandPaletteAction] options based upon various
 /// filtering criteria
@@ -46,7 +45,7 @@ class CommandPaletteOptions extends StatelessWidget {
 /// Uses all the parameters, so this is a good place to look if you're wanting
 /// to create your our custom builder
 // ignore: prefer_function_declarations_over_variables
-final ActionBuilder defaultBuilder = (
+final ActionBuilder kDefaultBuilder = (
   BuildContext context,
   CommandPaletteStyle style,
   CommandPaletteAction action,
@@ -56,16 +55,30 @@ final ActionBuilder defaultBuilder = (
 ) {
   Widget label;
 
-  // if highlighting the search substring is enabled, then we'll use the
-  // widget for that
+  // if highlighting the search substring is enabled, then we'll use one of the
+  // two widgets for that
   if (style.highlightSearchSubstring) {
-    label = SubstringHighlight(
-      text: action.label,
-      textAlign: style.actionLabelTextAlign,
-      terms: searchTerms,
-      textStyle: style.actionLabelTextStyle!,
-      textStyleHighlight: style.highlightedLabelTextStyle!,
-    );
+    // if the action is a MatchedCommandPaletteAction, then we'll use our
+    // own highlighter here.
+    if (action is MatchedCommandPaletteAction && action.matches != null) {
+      label = OptionHighlighter(
+        action: action,
+        textStyle: style.actionLabelTextStyle!,
+        textAlign: style.actionLabelTextAlign,
+        textStyleHighlight: style.highlightedLabelTextStyle!,
+      );
+    }
+    // if it's just a generic action, then we'll use the 3rd party highlighter.
+    // This likely means that the user made their own filtering solution.
+    else {
+      label = SubstringHighlight(
+        text: action.label,
+        textAlign: style.actionLabelTextAlign,
+        terms: searchTerms,
+        textStyle: style.actionLabelTextStyle!,
+        textStyleHighlight: style.highlightedLabelTextStyle!,
+      );
+    }
   }
   // otherwise, just use a plain ol' text widget
   else {
@@ -87,14 +100,12 @@ final ActionBuilder defaultBuilder = (
           if (action.shortcut != null) {
             shortcuts = Wrap(
                 alignment: WrapAlignment.end,
-                // mainAxisAlignment: MainAxisAlignment.end,
                 children: action.shortcut!
                     .map<Widget>(
                       (e) => Padding(
                         padding: const EdgeInsets.only(right: 2.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
-                          // crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(
@@ -114,7 +125,6 @@ final ActionBuilder defaultBuilder = (
                                 style: style.actionDescriptionTextStyle,
                               ),
                             ),
-                            // const Text("+")
                           ],
                         ),
                       ),

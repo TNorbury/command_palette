@@ -4,6 +4,7 @@
     },
     "dart.flutterSdkPath": "./.fvm/flutter_sdk",
     "cSpell.words": [
-        "keyboardless"
+        "keyboardless",
+        "tion"
     ],
 }

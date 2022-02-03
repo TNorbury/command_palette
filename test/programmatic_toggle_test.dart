@@ -1,13 +1,11 @@
 import 'package:command_palette/command_palette.dart';
-import 'package:command_palette/src/command_palette_modal.dart';
+import 'package:command_palette/src/widgets/command_palette_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'utils.dart';
-
 void main() {
   testWidgets(
-    "Open the palette programmatically",
+    "Open and close the palette programmatically",
     (WidgetTester tester) async {
       await tester.pumpWidget(
         MyApp(
@@ -26,10 +24,18 @@ void main() {
 
       expect(find.byKey(kCommandPaletteModalKey), findsOneWidget);
 
-      await closePalette(tester);
+      closeCP();
+      await tester.pumpAndSettle();
       expect(find.byKey(kCommandPaletteModalKey), findsNothing);
     },
   );
+}
+
+// don't do this in the real world, very bad, just wanting to test
+// functionality...
+BuildContext? hackyContext;
+void closeCP() {
+  CommandPalette.of(hackyContext!).close();
 }
 
 class MyApp extends StatelessWidget {
@@ -47,6 +53,7 @@ class MyApp extends StatelessWidget {
         actions: actions,
         child: Builder(
           builder: (context) {
+            hackyContext = context;
             return Scaffold(
               body: Center(
                 child: TextButton(

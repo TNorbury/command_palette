@@ -7,7 +7,10 @@ import 'src/models/command_palette_style.dart';
 
 export 'src/command_palette.dart';
 export 'src/models/command_palette_action.dart';
+export 'src/models/matched_command_palette_action.dart';
 export 'src/models/command_palette_style.dart';
+export 'src/models/command_palette_config.dart';
+export 'src/utils/filter.dart';
 
 /// Defines the type of function to be used for filtering command palette
 /// actions.

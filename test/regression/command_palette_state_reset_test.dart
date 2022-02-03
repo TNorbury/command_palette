@@ -1,5 +1,4 @@
 import 'package:command_palette/command_palette.dart';
-import 'package:command_palette/src/command_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -136,12 +135,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: CommandPalette(
         actions: actions,
-        builder: builder,
-        openKeySet: openKeySet,
-        closeKeySet: closeKeySet,
-        style: const CommandPaletteStyle(
-          // have to turn highlighting off in order to find by text
-          highlightSearchSubstring: false,
+        config: CommandPaletteConfig(
+          builder: builder,
+          openKeySet: openKeySet,
+          closeKeySet: closeKeySet,
+          style: const CommandPaletteStyle(
+            // have to turn highlighting off in order to find by text
+            highlightSearchSubstring: false,
+          ),
         ),
         child: const Scaffold(
           body: Center(
