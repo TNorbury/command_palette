@@ -6,9 +6,9 @@
 [![style: flutter lints](https://img.shields.io/badge/style-flutter_lints-40c4ff.svg)](https://pub.dev/packages/flutter_lints)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
 A Flutter widget that allows you to bring up a command palette, seen in programs like Visual Studio Code and Slack.
-Allows you to provide users with a convenient way to perform all sorts of actions related to your app.
+Allowing you to provide users with a convenient way to perform all sorts of actions related to your app.
 
-![](https://raw.githubusercontent.com/TNorbury/command_palette/main/readme_assets/demo2.gif)
+![A gif showing a demo of the command palette. Showcasing filtering, sub-options, and text highlighting](https://raw.githubusercontent.com/TNorbury/command_palette/main/readme_assets/demo2.gif)
 
 ## Features
 
