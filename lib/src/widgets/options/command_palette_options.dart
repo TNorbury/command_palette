@@ -23,6 +23,7 @@ class CommandPaletteOptions extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: ListView.builder(
         shrinkWrap: true,
+        padding: const EdgeInsets.all(0),
         itemCount: actions.length,
         itemBuilder: (context, index) {
           final CommandPaletteAction item = actions[index];
@@ -131,28 +132,31 @@ final ActionBuilder kDefaultBuilder = (
                     )
                     .toList());
           }
-          return Stack(
+          return Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(child: label),
-                    ],
-                  ),
-                  if (action.description != null)
+              Flexible(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
                     Row(
                       children: [
-                        Expanded(
-                          child: Text(
-                            action.description!,
-                            textAlign: style.actionLabelTextAlign,
-                          ),
-                        ),
+                        Expanded(child: label),
                       ],
                     ),
-                ],
+                    if (action.description != null)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              action.description!,
+                              textAlign: style.actionLabelTextAlign,
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
               ),
               if (shortcuts != null)
                 Align(
