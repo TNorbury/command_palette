@@ -72,7 +72,7 @@ class CommandPaletteStyle {
 
   /// The alignment of the text within the action labels
   ///
-  /// Defaults to [TextAlign.center]
+  /// Defaults to [TextAlign.left]
   final TextAlign actionLabelTextAlign;
 
   /// The color which is set behind the command palette when it's open
@@ -102,7 +102,7 @@ class CommandPaletteStyle {
       bottomLeft: Radius.circular(5),
       bottomRight: Radius.circular(5),
     ),
-    this.actionLabelTextAlign = TextAlign.center,
+    this.actionLabelTextAlign = TextAlign.left,
     this.commandPaletteBarrierColor = Colors.black12,
     this.textFieldInputDecoration,
   });
