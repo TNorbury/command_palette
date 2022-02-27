@@ -2,8 +2,8 @@ import 'package:command_palette/src/controller/command_palette_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'options/command_palette_options.dart';
 import 'command_palette_text_field.dart';
+import 'options/command_palette_options.dart';
 
 const Key kCommandPaletteModalKey = Key("Command Palette Modal");
 
@@ -130,7 +130,11 @@ class CommandPaletteModal extends ModalRoute<void> {
                 ),
                 child: Column(
                   children: [
-                    CommandPaletteTextField(hintText: hintText),
+                    CommandPaletteTextField(
+                      hintText: hintText,
+                      onSubmit: () => commandPaletteController
+                          .performHighlightedAction(context),
+                    ),
                     const Flexible(
                       child: CommandPaletteOptions(),
                     )

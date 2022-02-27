@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               // },
               style: CommandPaletteStyle(
-                actionLabelTextAlign: TextAlign.center,
+                actionLabelTextAlign: TextAlign.left,
                 textFieldInputDecoration: InputDecoration(
                   hintText: "Enter Something",
                   contentPadding: EdgeInsets.all(16),
