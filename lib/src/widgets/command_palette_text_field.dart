@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:command_palette/src/controller/command_palette_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -6,8 +8,14 @@ class CommandPaletteTextField extends StatefulWidget {
   /// See [CommandPalette.hintText]
   final String hintText;
 
-  const CommandPaletteTextField({required this.hintText, Key? key})
-      : super(key: key);
+  /// The field has been submitted. Only gets called on Android and iOS
+  final VoidCallback onSubmit;
+
+  const CommandPaletteTextField({
+    required this.hintText,
+    required this.onSubmit,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _CommandPaletteTextFieldState createState() =>
@@ -45,10 +53,21 @@ class _CommandPaletteTextFieldState extends State<CommandPaletteTextField> {
       child: TextField(
         controller:
             CommandPaletteControllerProvider.of(context).textEditingController,
+        textInputAction: TextInputAction.done,
         focusNode: _focusNode,
         decoration: CommandPaletteControllerProvider.of(context)
             .style
             .textFieldInputDecoration,
+        onSubmitted: (val) {
+          // with on-screen keyboards, the "enter" (or action key), doesn't get
+          // mapped to an enter key event. There are some exceptions, e.g.
+          // Hacker's Keyboard (but only if the text input action is none).
+          // As such I'll just capture the submit action here and bubble that
+          // up to the modal so it knows to process the selected action
+          if (Platform.isAndroid || Platform.isIOS) {
+            widget.onSubmit();
+          }
+        },
       ),
     );
   }
