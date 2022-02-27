@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Remove ListView padding that was creating blank spaces on smaller screens
+- On-screen virtual keyboards that don't have a proper enter button were unable to select an action. This should be fixed now
 
 ## 0.2.0 - 2022-02-03
 ### Changed
