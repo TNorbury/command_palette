@@ -25,12 +25,6 @@ class CommandPaletteController extends ChangeNotifier {
   /// All the actions supported by this command palette.
   final List<CommandPaletteAction> actions;
 
-  /// Filter used to determine the actions currently shown
-  final ActionFilter filter;
-
-  /// Builder for the action item
-  final ActionBuilder builder;
-
   List<CommandPaletteAction> _filteredActionsCache = [];
   bool _actionsNeedRefiltered = true;
 
@@ -45,6 +39,8 @@ class CommandPaletteController extends ChangeNotifier {
   int highlightedAction = 0;
 
   CommandPaletteStyle _style;
+
+  CommandPaletteConfig config;
 
   /// To be called when the command palette is closed
   void onClose() {
@@ -70,8 +66,7 @@ class CommandPaletteController extends ChangeNotifier {
 
   CommandPaletteController(
     this.actions, {
-    required this.filter,
-    required this.builder,
+    required this.config,
   }) : _style = const CommandPaletteStyle() {
     textEditingController.addListener(_onTextControllerChange);
   }
@@ -120,7 +115,7 @@ class CommandPaletteController extends ChangeNotifier {
       } else {
         filteredActions = actions;
       }
-      filteredActions = filter(_enteredQuery, filteredActions);
+      filteredActions = config.filter(_enteredQuery, filteredActions);
       _filteredActionsCache = filteredActions;
       _actionsNeedRefiltered = false;
     }

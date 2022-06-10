@@ -80,67 +80,95 @@ class CommandPaletteModal extends ModalRoute<void> {
         ),
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return Focus(
-              // not sure why but this seems to make things play nice lol
-              onKeyEvent: (node, event) => KeyEventResult.ignored,
-              onKey: (node, event) {
-                KeyEventResult result = KeyEventResult.ignored;
+            // figure out size and positioning for the modal
+            double height = commandPaletteController.config.height ??
+                constraints.maxHeight * (6 / 8);
+            double width = commandPaletteController.config.width ??
+                constraints.maxWidth * (6 / 8);
 
-                if (LogicalKeySet(LogicalKeyboardKey.backspace)
-                    .accepts(event, RawKeyboard.instance)) {
-                  if (commandPaletteController.handleBackspace()) {
-                    result = KeyEventResult.handled;
-                  }
-                }
+            double top = commandPaletteController.config.top ??
+                constraints.maxHeight * (1 / 8);
+            double left = commandPaletteController.config.left ??
+                constraints.maxWidth * (1 / 8);
+            double? bottom = commandPaletteController.config.bottom;
+            double? right = commandPaletteController.config.right;
 
-                // down, move selector down
-                else if (LogicalKeySet(LogicalKeyboardKey.arrowDown)
-                    .accepts(event, RawKeyboard.instance)) {
-                  commandPaletteController.movedHighlightedAction(down: true);
-                  result = KeyEventResult.handled;
-                }
+            return Stack(
+              children: [
+                Positioned(
+                  top: top,
+                  bottom: bottom,
+                  left: left,
+                  right: right,
+                  child: Focus(
+                    // not sure why but this seems to make things play nice lol
+                    onKeyEvent: (node, event) => KeyEventResult.ignored,
+                    onKey: (node, event) {
+                      KeyEventResult result = KeyEventResult.ignored;
 
-                // up, move selector up
-                else if (LogicalKeySet(LogicalKeyboardKey.arrowUp)
-                    .accepts(event, RawKeyboard.instance)) {
-                  commandPaletteController.movedHighlightedAction(down: false);
-                  result = KeyEventResult.handled;
-                }
+                      if (LogicalKeySet(LogicalKeyboardKey.backspace)
+                          .accepts(event, RawKeyboard.instance)) {
+                        if (commandPaletteController.handleBackspace()) {
+                          result = KeyEventResult.handled;
+                        }
+                      }
 
-                // enter makes selection
-                else if (LogicalKeySet(LogicalKeyboardKey.enter)
-                    .accepts(event, RawKeyboard.instance)) {
-                  commandPaletteController.performHighlightedAction(context);
-                  result = KeyEventResult.handled;
-                }
+                      // down, move selector down
+                      else if (LogicalKeySet(LogicalKeyboardKey.arrowDown)
+                          .accepts(event, RawKeyboard.instance)) {
+                        commandPaletteController.movedHighlightedAction(
+                          down: true,
+                        );
+                        result = KeyEventResult.handled;
+                      }
 
-                // close the command palette
-                else if (closeKeySet.accepts(event, RawKeyboard.instance)) {
-                  Navigator.of(context).pop();
-                  result = KeyEventResult.handled;
-                }
+                      // up, move selector up
+                      else if (LogicalKeySet(LogicalKeyboardKey.arrowUp)
+                          .accepts(event, RawKeyboard.instance)) {
+                        commandPaletteController.movedHighlightedAction(
+                          down: false,
+                        );
+                        result = KeyEventResult.handled;
+                      }
 
-                return result;
-              },
-              child: Container(
-                height: constraints.maxHeight,
-                padding: EdgeInsets.symmetric(
-                  vertical: constraints.maxHeight * (1 / 8),
-                  horizontal: constraints.maxWidth * (1 / 8),
-                ),
-                child: Column(
-                  children: [
-                    CommandPaletteTextField(
-                      hintText: hintText,
-                      onSubmit: () => commandPaletteController
-                          .performHighlightedAction(context),
+                      // enter makes selection
+                      else if (LogicalKeySet(LogicalKeyboardKey.enter)
+                          .accepts(event, RawKeyboard.instance)) {
+                        commandPaletteController
+                            .performHighlightedAction(context);
+                        result = KeyEventResult.handled;
+                      }
+
+                      // close the command palette
+                      else if (closeKeySet.accepts(
+                        event,
+                        RawKeyboard.instance,
+                      )) {
+                        Navigator.of(context).pop();
+                        result = KeyEventResult.handled;
+                      }
+
+                      return result;
+                    },
+                    child: SizedBox(
+                      height: height,
+                      width: width,
+                      child: Column(
+                        children: [
+                          CommandPaletteTextField(
+                            hintText: hintText,
+                            onSubmit: () => commandPaletteController
+                                .performHighlightedAction(context),
+                          ),
+                          const Flexible(
+                            child: CommandPaletteOptions(),
+                          )
+                        ],
+                      ),
                     ),
-                    const Flexible(
-                      child: CommandPaletteOptions(),
-                    )
-                  ],
+                  ),
                 ),
-              ),
+              ],
             );
           },
         ),

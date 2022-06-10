@@ -110,8 +110,7 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
 
     _controller = CommandPaletteController(
       widget.actions,
-      filter: widget.config.filter,
-      builder: widget.config.builder,
+      config: widget.config,
     );
   }
 
@@ -123,8 +122,7 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
         oldWidget.actions != widget.actions) {
       _controller = CommandPaletteController(
         widget.actions,
-        filter: widget.config.filter,
-        builder: widget.config.builder,
+        config: widget.config,
       );
       _initStyle();
     }

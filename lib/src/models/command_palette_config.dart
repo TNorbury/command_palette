@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -57,16 +58,48 @@ class CommandPaletteConfig {
   /// Defaults to Esc.
   final LogicalKeySet closeKeySet;
 
+  /// The offset of the modal from the top of the screen.
+  ///
+  /// If null, this will become equal to 1/8 of the height of the viewport
+  final double? top;
+
+  /// The offset of the modal from the bottom of the screen
+  final double? bottom;
+
+  /// The offset of the modal from the left of the screen
+  ///
+  /// If null, this will become equal to 1/8 of the width of the viewport
+  final double? left;
+
+  /// The offset of the modal from the right of the screen
+  final double? right;
+
+  /// The height of the modal.
+  ///
+  /// If null this will become equal to 6/8 of the height of the viewport
+  final double? height;
+
+  /// The width of the modal.
+  ///
+  /// If null this will become equal to 6/8 of the width of the viewport
+  final double? width;
+
   CommandPaletteConfig({
     ActionFilter? filter,
     Key? key,
     ActionBuilder? builder,
+    LogicalKeySet? openKeySet,
+    LogicalKeySet? closeKeySet,
     this.hintText = "Begin typing to search for something",
     this.transitionDuration = const Duration(milliseconds: 150),
     this.transitionCurve = Curves.linear,
     this.style,
-    LogicalKeySet? openKeySet,
-    LogicalKeySet? closeKeySet,
+    this.top,
+    this.bottom,
+    this.left,
+    this.right,
+    this.height,
+    this.width,
   })  : filter = filter ?? kDefaultFilter,
         builder = builder ?? kDefaultBuilder,
         openKeySet = openKeySet ?? _defaultOpenKeySet,
@@ -84,7 +117,13 @@ class CommandPaletteConfig {
         other.transitionCurve == transitionCurve &&
         other.style == style &&
         other.openKeySet == openKeySet &&
-        other.closeKeySet == closeKeySet;
+        other.closeKeySet == closeKeySet &&
+        other.top == top &&
+        other.bottom == bottom &&
+        other.left == left &&
+        other.right == right &&
+        other.height == height &&
+        other.width == width;
   }
 
   @override
@@ -96,6 +135,12 @@ class CommandPaletteConfig {
         transitionCurve.hashCode ^
         style.hashCode ^
         openKeySet.hashCode ^
-        closeKeySet.hashCode;
+        closeKeySet.hashCode ^
+        top.hashCode ^
+        bottom.hashCode ^
+        left.hashCode ^
+        right.hashCode ^
+        height.hashCode ^
+        width.hashCode;
   }
 }

@@ -28,7 +28,7 @@ class CommandPaletteOptions extends StatelessWidget {
         itemBuilder: (context, index) {
           final CommandPaletteAction item = actions[index];
 
-          return controller.builder(
+          return controller.config.builder(
             context,
             controller.style,
             item,
