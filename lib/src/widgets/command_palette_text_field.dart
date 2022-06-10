@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:command_palette/src/controller/command_palette_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// The Text Field portion of the command palette
@@ -64,7 +65,7 @@ class _CommandPaletteTextFieldState extends State<CommandPaletteTextField> {
           // Hacker's Keyboard (but only if the text input action is none).
           // As such I'll just capture the submit action here and bubble that
           // up to the modal so it knows to process the selected action
-          if (Platform.isAndroid || Platform.isIOS) {
+          if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
             widget.onSubmit();
           }
         },

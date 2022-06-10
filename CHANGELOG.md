@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Fixed
 - specify supported platforms explicitly
+- use kIsWeb to stop error from being thrown when platform is checked
+
 ## 0.3.0 - 2022-02-26
 ### Changed
 - Change default alignment of action text to better support all screen sizes
