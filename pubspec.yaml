@@ -4,6 +4,14 @@ version: 0.3.0
 homepage: https://github.com/TNorbury/command_palette
 issue_tracker: https://github.com/TNorbury/command_palette/issues
 repository: https://github.com/TNorbury/command_palette
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
+
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
