@@ -52,7 +52,7 @@ class CommandPaletteController extends ChangeNotifier {
     highlightedAction = 0;
     _actionsNeedRefiltered = true;
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       textEditingController.text = "";
     });
   }
