@@ -12,7 +12,7 @@ on:
       - synchronize
 
 env:
-  flutter_version: 2.5.2
+  flutter_version: 3.0.1
 
 jobs:
   lint:
