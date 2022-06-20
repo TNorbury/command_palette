@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:command_palette/command_palette.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -150,7 +151,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text("Welcome to the Command Palette example!"),
-                        Text("Press Ctrl+K to open"),
+                        Text(
+                          "Press ${defaultTargetPlatform == TargetPlatform.macOS ? 'Cmd' : 'Ctrl'}+K to open",
+                        ),
                         TextButton(
                           child: Text("Or Click Here!"),
                           onPressed: () {

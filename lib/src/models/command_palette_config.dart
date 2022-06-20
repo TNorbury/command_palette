@@ -1,14 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:command_palette/src/controller/command_palette_controller.dart';
+import 'package:command_palette/src/widgets/options/command_palette_options.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:command_palette/src/controller/command_palette_controller.dart';
-import 'package:command_palette/src/widgets/options/command_palette_options.dart';
-
 import '../../command_palette.dart';
 
-final _defaultOpenKeySet =
-    LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyK);
+final _defaultOpenKeySet = defaultTargetPlatform == TargetPlatform.macOS
+    ? LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyK)
+    : LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyK);
 final _defaultCloseKeySet = LogicalKeySet(LogicalKeyboardKey.escape);
 
 /// Configuration options for the command palette

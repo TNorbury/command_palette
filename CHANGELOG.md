@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+### Fixed
+- BREAKING: default open key is now platform dependent. Previously it was always Ctrl+K, but now it will check if the platform is MacOS (this includes Web running on Mac) and if so will change the default open key to Command. While this change does make things function as I originally intended, this is changing default behavior so I'm considering this a breaking change
+
 ## 0.4.1 - 2022-06-09
 ### Added
 - allow the setting of size (height, width) and position (top, bottom, left, right) of the command palette modal via the CommandPaletteConfig class
