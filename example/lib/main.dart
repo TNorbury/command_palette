@@ -75,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               CommandPaletteAction(
+                id: "change-theme", // ids can be strings
                 label: "Change Theme",
                 actionType: CommandPaletteActionType.nested,
                 description: "Change the color theme of the app",
@@ -101,6 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
               CommandPaletteAction(
+                id: 1, // or numbers (or really anything...)
                 label: "Set User",
                 actionType: CommandPaletteActionType.nested,
                 shortcut: ["ctrl", "shift", "s"],
@@ -161,7 +163,22 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         if (_currentUser.isNotEmpty)
-                          Text("Current User: $_currentUser"),
+                          Text("Current User: $_currentUser")
+                        else
+                          TextButton(
+                            child: Text("Set User"),
+                            onPressed: () {
+                              CommandPalette.of(context)
+                                  .openToAction(1);
+                            },
+                          ),
+                        TextButton(
+                          child: Text("Change Theme"),
+                          onPressed: () {
+                            CommandPalette.of(context)
+                                .openToAction("change-theme");
+                          },
+                        ),
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 1000),
                           width: 50,

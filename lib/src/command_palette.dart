@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../command_palette.dart';
-import 'widgets/command_palette_modal.dart';
 import 'controller/command_palette_controller.dart';
+import 'widgets/command_palette_modal.dart';
 
 /// Used to communicate the toggle status between the inherited widget and
 /// stateful inner widget
@@ -27,6 +27,8 @@ class CommandPalette extends InheritedWidget {
 
   late final _CommandPaletteToggler _toggler;
 
+  late final CommandPaletteController _controller;
+
   CommandPalette({
     Key? key,
     CommandPaletteConfig? config,
@@ -38,12 +40,17 @@ class CommandPalette extends InheritedWidget {
           child: _CommandPaletteInner(
             key: key,
             actions: actions,
+            controller: CommandPaletteController(
+              actions,
+              config: config ?? CommandPaletteConfig(),
+            ),
             config: config ?? CommandPaletteConfig(),
             toggler: _CommandPaletteToggler(false),
             child: child,
           ),
         ) {
     _toggler = (super.child as _CommandPaletteInner).toggler;
+    _controller = (super.child as _CommandPaletteInner).controller;
   }
 
   static CommandPalette of(BuildContext context) {
@@ -62,6 +69,24 @@ class CommandPalette extends InheritedWidget {
   /// Closes the command palette
   void close() {
     _toggler.value = false;
+  }
+
+  /// Opens the command palette to the action with the given id. If no action
+  /// with the given id is found, a [StateError] will be thrown. The action
+  /// should also be a nested action
+  void openToAction(Object id) {
+    final CommandPaletteAction action;
+    try {
+      action = actions.firstWhere((a) => a.id == id);
+    }
+    // create a new state error with more relevant information
+    on StateError {
+      throw StateError("No CommandPallette Action found with id $id");
+    }
+
+    // open the palette and set the selected action
+    open();
+    _controller.currentlySelectedAction = action;
   }
 
   @override
@@ -84,13 +109,15 @@ class _CommandPaletteInner extends StatefulWidget {
   final List<CommandPaletteAction> actions;
   final CommandPaletteConfig config;
   final _CommandPaletteToggler toggler;
+  final CommandPaletteController controller;
 
   const _CommandPaletteInner({
     Key? key,
-    required this.config,
-    required this.actions,
     required this.child,
+    required this.actions,
+    required this.config,
     required this.toggler,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -100,18 +127,11 @@ class _CommandPaletteInner extends StatefulWidget {
 class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
   bool _commandPaletteOpen = false;
 
-  late CommandPaletteController _controller;
-
   late CommandPaletteStyle _style;
 
   @override
   void initState() {
     super.initState();
-
-    _controller = CommandPaletteController(
-      widget.actions,
-      config: widget.config,
-    );
   }
 
   @override
@@ -120,10 +140,6 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
 
     if (oldWidget.config != widget.config ||
         oldWidget.actions != widget.actions) {
-      _controller = CommandPaletteController(
-        widget.actions,
-        config: widget.config,
-      );
       _initStyle();
     }
 
@@ -188,19 +204,19 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
               .applyDefaults(Theme.of(context).inputDecorationTheme),
     );
 
-    _controller.style = _style;
+    widget.controller.style = _style;
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    widget.controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return CommandPaletteControllerProvider(
-      controller: _controller,
+      controller: widget.controller,
       child: Builder(
         builder: (context) {
           return Focus(
@@ -241,7 +257,7 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
 
             // we pass the controller in so that it can be re-provided within the
             // tree of the modal
-            commandPaletteController: _controller,
+            commandPaletteController: widget.controller,
             transitionCurve: widget.config.transitionCurve,
             transitionDuration: widget.config.transitionDuration,
             closeKeySet: widget.config.closeKeySet,
