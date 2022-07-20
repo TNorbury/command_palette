@@ -4,9 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.5.0 - 2022-07-20
 ### Added
 - Open to nested action via `CommandPalette.of(context).openToAction(actionId)`
+
 ### Changed
 - When a nested action is selected, the label of that action will prefix the command palette text field. This can be enabled by setting `prefixNestedActions` to true (this is also the current default) in `CommandPaletteStyle`
 
