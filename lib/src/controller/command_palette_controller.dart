@@ -42,15 +42,20 @@ class CommandPaletteController extends ChangeNotifier {
 
   CommandPaletteConfig config;
 
+  /// Whether or not this controller has been disposed
+  bool _disposed = false;
+
   /// To be called when the command palette is closed
   void onClose() {
     _currentlySelectedAction = null;
     highlightedAction = 0;
     _actionsNeedRefiltered = true;
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      textEditingController.text = "";
-    });
+    if (!_disposed) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        textEditingController.text = "";
+      });
+    }
   }
 
   /// updates the command palette style (if needed)
@@ -74,6 +79,7 @@ class CommandPaletteController extends ChangeNotifier {
   @override
   void dispose() {
     textEditingController.dispose();
+    _disposed = true;
     super.dispose();
   }
 

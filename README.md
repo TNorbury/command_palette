@@ -47,6 +47,7 @@ CommandPalette(
       }
     ),
     CommandPaletteAction(
+      id: "change-theme",
       label: "Change Theme",
       actionType: CommandPaletteActionType.nested,
       description: "Change the color theme of the app",
@@ -89,6 +90,16 @@ CommandPalette.of(context).open();
 ### Creating a custom filter
 
 One of the configuration options is `filter`, which allows you to define your own custom filtering logic. The return type of this function is `List<CommandPaletteAction>`. With that in mind there is one thing I'd like to make you aware of before implementing your own: There is a sub class of CommandPaletteAction called [`MatchedCommandPaletteAction`](https://github.com/TNorbury/command_palette/blob/main/lib/src/models/matched_command_palette_action.dart). The only difference between this sub class and it's super class is it has a list of [`FilterMatch`es](https://github.com/TNorbury/command_palette/blob/main/lib/src/utils/filter.dart), which indicates the parts of the action label (this can be any string, but it's advisable to match against the label) that were matched against some part of the query. By using this subclass with the default builder, you can get enhanced sub-string high lighting.
+
+
+### Opening to a nested action
+
+To open up a nested action directly (e.g. You want to have a "Set User" button, that will open the palette with the Set User nested action already selected), you can use the following method:
+
+```dart
+CommandPalette.of(context).openToAction(actionId);
+```
+Where `actionId` is a value which matches the `id` of a `CommandPaletteAction`. An `id` can be any object, primitives work best, but if you use a custom object, be sure to override the the `==` operator.
 
 ## Additional information
 

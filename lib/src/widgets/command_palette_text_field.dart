@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:command_palette/command_palette.dart';
 import 'package:command_palette/src/controller/command_palette_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

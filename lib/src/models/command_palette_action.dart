@@ -46,6 +46,13 @@ class CommandPaletteAction {
   /// visual indicator.
   List<String>? shortcut;
 
+  /// The id of an action should be used to uniquely identify the action.
+  /// Whatever type is specified should be comparable.
+  ///
+  /// The primary purpose of the ID is to be able to open to a specific nested
+  /// action.
+  Object? id;
+
   CommandPaletteAction({
     required this.label,
     this.description,
@@ -53,6 +60,7 @@ class CommandPaletteAction {
     this.onSelect,
     this.childrenActions,
     this.shortcut,
+    this.id,
   }) : assert((actionType == CommandPaletteActionType.single &&
                 onSelect != null) ||
             (actionType == CommandPaletteActionType.nested &&
