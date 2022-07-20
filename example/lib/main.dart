@@ -168,8 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           TextButton(
                             child: Text("Set User"),
                             onPressed: () {
-                              CommandPalette.of(context)
-                                  .openToAction(1);
+                              CommandPalette.of(context).openToAction(1);
                             },
                           ),
                         TextButton(
