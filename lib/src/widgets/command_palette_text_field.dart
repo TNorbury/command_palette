@@ -52,16 +52,34 @@ class _CommandPaletteTextFieldState extends State<CommandPaletteTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final CommandPaletteController controller =
+        CommandPaletteControllerProvider.of(context);
+    InputDecoration inputDecoration =
+        controller.style.textFieldInputDecoration!;
+
+    // if no prefix was provided, the selected action is a nested action, and
+    // the user indicates that they want nested actions to have prefix text,
+    // then we'll create prefix text with the nested action's parent's label
+    final bool styleHasNoPrefix = inputDecoration.prefix == null &&
+        inputDecoration.prefixIcon == null &&
+        inputDecoration.prefixText == null;
+    if (styleHasNoPrefix &&
+        controller.style.prefixNestedActions &&
+        controller.currentlySelectedAction?.actionType ==
+            CommandPaletteActionType.nested) {
+      inputDecoration = inputDecoration.copyWith(
+        prefixText: "${controller.currentlySelectedAction!.label}: ",
+        hintText: "",
+      );
+    }
+
     return Material(
       elevation: 4,
       child: TextField(
-        controller:
-            CommandPaletteControllerProvider.of(context).textEditingController,
+        controller: controller.textEditingController,
         textInputAction: TextInputAction.done,
         focusNode: _focusNode,
-        decoration: CommandPaletteControllerProvider.of(context)
-            .style
-            .textFieldInputDecoration,
+        decoration: inputDecoration,
         onSubmitted: (val) {
           // with on-screen keyboards, the "enter" (or action key), doesn't get
           // mapped to an enter key event. There are some exceptions, e.g.
