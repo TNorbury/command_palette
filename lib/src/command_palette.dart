@@ -196,12 +196,11 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
       elevation: styleToCopy.elevation,
       highlightSearchSubstring: styleToCopy.highlightSearchSubstring,
       textFieldInputDecoration: styleToCopy.textFieldInputDecoration == null
-          ? const InputDecoration(
-              hintText: "Begin typing to search for something",
-              contentPadding: EdgeInsets.all(8),
-            ).applyDefaults(Theme.of(context).inputDecorationTheme)
+          ? kDefaultInputDecoration
+              .applyDefaults(Theme.of(context).inputDecorationTheme)
           : styleToCopy.textFieldInputDecoration!
               .applyDefaults(Theme.of(context).inputDecorationTheme),
+      prefixNestedActions: styleToCopy.prefixNestedActions,
     );
 
     widget.controller.style = _style;

@@ -85,10 +85,21 @@ class CommandPaletteStyle {
   /// Defaults to
   /// ```
   /// InputDecoration(
+  ///   hintText: "Begin typing to search for something",
   ///   contentPadding: const EdgeInsets.all(8),
   /// ).applyDefaults(Theme.of(context).inputDecorationTheme)
   /// ```
   final InputDecoration? textFieldInputDecoration;
+
+  /// Sets whether or not prefix text should be added to the text field when a
+  /// nested action is selected. If a prefix (i.e. `prefix`, `prefixIcon`,
+  /// or `prefixText`) is specified in `textFieldInputDecoration`, this option
+  /// will be ignored.
+  ///
+  /// The text that is shown will be the label of the selected nested action.
+  ///
+  /// This defaults to true
+  final bool prefixNestedActions;
 
   const CommandPaletteStyle({
     this.actionColor,
@@ -105,6 +116,7 @@ class CommandPaletteStyle {
     this.actionLabelTextAlign = TextAlign.left,
     this.commandPaletteBarrierColor = Colors.black12,
     this.textFieldInputDecoration,
+    this.prefixNestedActions = true,
   });
 
   @override
@@ -122,7 +134,8 @@ class CommandPaletteStyle {
         other.borderRadius == borderRadius &&
         other.actionLabelTextAlign == actionLabelTextAlign &&
         other.commandPaletteBarrierColor == commandPaletteBarrierColor &&
-        other.textFieldInputDecoration == textFieldInputDecoration;
+        other.textFieldInputDecoration == textFieldInputDecoration &&
+        other.prefixNestedActions == prefixNestedActions;
   }
 
   @override
@@ -137,6 +150,12 @@ class CommandPaletteStyle {
         borderRadius.hashCode ^
         actionLabelTextAlign.hashCode ^
         commandPaletteBarrierColor.hashCode ^
-        textFieldInputDecoration.hashCode;
+        textFieldInputDecoration.hashCode ^
+        prefixNestedActions.hashCode;
   }
 }
+
+const InputDecoration kDefaultInputDecoration = InputDecoration(
+  hintText: "Begin typing to search for something",
+  contentPadding: EdgeInsets.all(8),
+);
