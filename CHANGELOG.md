@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
-- Optional `leading` widget for `CommandPaletteAction`s which will display a Widget at the left-side of the different command palette options 
+- Optional `leading` widget for `CommandPaletteAction`s which will display a Widget at the left-side of the different command palette options
+
+### Changed
+- Flutter 3.3.1
 
 ## 0.5.0 - 2022-07-20
 ### Added
