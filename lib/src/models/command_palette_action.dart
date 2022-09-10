@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 /// The different type of command palette
 enum CommandPaletteActionType {
@@ -53,6 +54,13 @@ class CommandPaletteAction {
   /// action.
   Object? id;
 
+  /// Optional widget that will be placed at the start of the action widget.
+  /// Intended to be an [Icon], but really anything could suffice.
+  ///
+  /// When using the default option builder, the leading widget is given 8.0
+  /// padding to the right
+  Widget? leading;
+
   CommandPaletteAction({
     required this.label,
     this.description,
@@ -61,6 +69,7 @@ class CommandPaletteAction {
     this.childrenActions,
     this.shortcut,
     this.id,
+    this.leading,
   }) : assert((actionType == CommandPaletteActionType.single &&
                 onSelect != null) ||
             (actionType == CommandPaletteActionType.nested &&

@@ -100,6 +100,31 @@ void main() {
       await closePalette(tester);
     },
   );
+
+  testWidgets(
+    "Leading icon is displayed",
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MyApp(
+          actions: [
+            CommandPaletteAction(
+              label: "Action 1",
+              description: "This is action 1",
+              leading: const Icon(Icons.abc),
+              actionType: CommandPaletteActionType.single,
+              onSelect: () {},
+            ),
+          ],
+        ),
+      );
+
+      await openPalette(tester);
+
+      expect(find.byIcon(Icons.abc), findsOneWidget);
+
+      await closePalette(tester);
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {

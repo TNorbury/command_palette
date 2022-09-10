@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+### Added
+- Optional `leading` widget for `CommandPaletteAction`s which will display a Widget at the left-side of the different command palette options 
+
 ## 0.5.0 - 2022-07-20
 ### Added
 - Open to nested action via `CommandPalette.of(context).openToAction(actionId)`

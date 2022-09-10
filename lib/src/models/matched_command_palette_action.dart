@@ -13,5 +13,7 @@ class MatchedCommandPaletteAction extends CommandPaletteAction {
           description: action.description,
           onSelect: action.onSelect,
           shortcut: action.shortcut,
+          id: action.id,
+          leading: action.leading,
         );
 }
