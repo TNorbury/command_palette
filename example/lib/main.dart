@@ -70,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 description: "Closes the command palette",
                 actionType: CommandPaletteActionType.single,
                 shortcut: ["esc"],
+                leading: Icon(Icons.close),
                 onSelect: () {
                   Navigator.of(context).pop();
                 },
@@ -80,6 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 actionType: CommandPaletteActionType.nested,
                 description: "Change the color theme of the app",
                 shortcut: ["ctrl", "t"],
+                leading: Icon(Icons.format_paint),
                 childrenActions: [
                   CommandPaletteAction(
                     label: "Light",
@@ -106,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 label: "Set User",
                 actionType: CommandPaletteActionType.nested,
                 shortcut: ["ctrl", "shift", "s"],
+                leading: Icon(Icons.account_circle),
                 childrenActions: [
                   ...["Maria", "Kurt", "Susanne", "Larissa", "Simon", "Admin"]
                       .map(

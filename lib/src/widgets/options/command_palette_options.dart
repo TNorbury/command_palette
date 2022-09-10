@@ -135,6 +135,11 @@ final ActionBuilder kDefaultBuilder = (
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              if (action.leading != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: action.leading!,
+                ),
               Flexible(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
