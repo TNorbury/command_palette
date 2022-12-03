@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               // Setting custom keyboard shortcuts
               // openKeySet: LogicalKeySet(
-              //   LogicalKeyboardKey.alt,`
+              //   LogicalKeyboardKey.alt,
               //   LogicalKeyboardKey.keyO,
               // ),
               // closeKeySet: LogicalKeySet(
