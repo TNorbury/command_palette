@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Added
 - Optional `leading` widget for `CommandPaletteAction`s which will display a Widget at the left-side of the different command palette options
+- exporting new widget 'KeyboardKeyIcon', this is the widget used to create the Keyboard Key Icons for the instructions bar and the shortcuts for each action
 
 ### Changed
 - Flutter 3.3.1

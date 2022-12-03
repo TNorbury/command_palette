@@ -96,41 +96,20 @@ final ActionBuilder kDefaultBuilder = (
       onTap: onSelected,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: LayoutBuilder(builder: (context, c) {
+        child: LayoutBuilder(
+          builder: (context, c) {
           Widget? shortcuts;
           if (action.shortcut != null) {
             shortcuts = Wrap(
                 alignment: WrapAlignment.end,
                 children: action.shortcut!
                     .map<Widget>(
-                      (e) => Padding(
-                        padding: const EdgeInsets.only(right: 2.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 4,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? Colors.grey.shade700
-                                    : Colors.grey.shade200,
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(color: Colors.black87),
-                              ),
-                              child: Text(
-                                e.toUpperCase(),
-                                style: style.actionDescriptionTextStyle,
-                              ),
-                            ),
-                          ],
-                        ),
+                        (e) => KeyboardKeyIcon(
+                          iconString: e,
                       ),
                     )
-                    .toList());
+                    .toList(),
+              );
           }
           return Row(
             mainAxisSize: MainAxisSize.min,
@@ -170,7 +149,8 @@ final ActionBuilder kDefaultBuilder = (
                 ),
             ],
           );
-        }),
+          },
+        ),
       ),
     ),
   );
