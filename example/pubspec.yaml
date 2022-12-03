@@ -13,6 +13,7 @@ dependencies:
 
     command_palette:
         path: ../
+    flutter_lorem: ^2.0.0
 
 dev_dependencies:
     flutter_test:

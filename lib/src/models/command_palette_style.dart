@@ -101,6 +101,11 @@ class CommandPaletteStyle {
   /// This defaults to true
   final bool prefixNestedActions;
 
+  /// Color used for both the text and icons in the instructions bar.
+  ///
+  /// Defaults to the color of [actionLabelTextStyle] with an opacity of 84%
+  final Color? instructionColor;
+
   const CommandPaletteStyle({
     this.actionColor,
     this.selectedColor,
@@ -117,6 +122,7 @@ class CommandPaletteStyle {
     this.commandPaletteBarrierColor = Colors.black12,
     this.textFieldInputDecoration,
     this.prefixNestedActions = true,
+    this.instructionColor,
   });
 
   @override
@@ -135,7 +141,8 @@ class CommandPaletteStyle {
         other.actionLabelTextAlign == actionLabelTextAlign &&
         other.commandPaletteBarrierColor == commandPaletteBarrierColor &&
         other.textFieldInputDecoration == textFieldInputDecoration &&
-        other.prefixNestedActions == prefixNestedActions;
+        other.prefixNestedActions == prefixNestedActions &&
+        other.instructionColor == instructionColor;
   }
 
   @override
@@ -151,7 +158,8 @@ class CommandPaletteStyle {
         actionLabelTextAlign.hashCode ^
         commandPaletteBarrierColor.hashCode ^
         textFieldInputDecoration.hashCode ^
-        prefixNestedActions.hashCode;
+        prefixNestedActions.hashCode ^
+        instructionColor.hashCode;
   }
 }
 

@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:command_palette/src/controller/command_palette_controller.dart';
-import 'package:command_palette/src/widgets/options/command_palette_options.dart';
+import 'package:command_palette/src/widgets/options/command_palette_body.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -85,6 +85,20 @@ class CommandPaletteConfig {
   /// If null this will become equal to 6/8 of the width of the viewport
   final double? width;
 
+  /// Whether or not to show the instructions bar at the bottom of the command
+  /// palette modal, under all the options.
+  /// The current instructions tell the user how to user the modal with their
+  /// keyboard
+  ///
+  /// The current instructions are:
+  /// * enter/return: to select
+  /// * up/down arrow: to navigate
+  /// * escape: to close
+  ///
+  /// When a nested action is selected:
+  /// * backspace: to cancel selected action
+  final bool showInstructions;
+
   CommandPaletteConfig({
     ActionFilter? filter,
     Key? key,
@@ -101,6 +115,7 @@ class CommandPaletteConfig {
     this.right,
     this.height,
     this.width,
+    this.showInstructions = false,
   })  : filter = filter ?? kDefaultFilter,
         builder = builder ?? kDefaultBuilder,
         openKeySet = openKeySet ?? _defaultOpenKeySet,
