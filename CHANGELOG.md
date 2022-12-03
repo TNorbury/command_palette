@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added flag, `showInstructions`, to `CommandPaletteConfig`, which when set to true, will show the basic instructions for using the command palette, navigation, selection, and closing.
 
 ### Changed
-- Flutter 3.3.1
+- Flutter 3.3.7
 
 ## 0.5.0 - 2022-07-20
 ### Added
