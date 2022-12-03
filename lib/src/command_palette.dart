@@ -173,14 +173,15 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
     CommandPaletteStyle styleToCopy =
         widget.config.style ?? const CommandPaletteStyle();
 
+    var newActionLabelTextStyle = styleToCopy.actionLabelTextStyle ??
+        Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            );
     _style = CommandPaletteStyle(
       actionColor: styleToCopy.actionColor ?? Theme.of(context).canvasColor,
       selectedColor:
           styleToCopy.selectedColor ?? Theme.of(context).highlightColor,
-      actionLabelTextStyle: styleToCopy.actionLabelTextStyle ??
-          Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+      actionLabelTextStyle: newActionLabelTextStyle,
       highlightedLabelTextStyle: styleToCopy.highlightedLabelTextStyle ??
           Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
                 color: Theme.of(context).colorScheme.secondary,
@@ -201,6 +202,8 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
           : styleToCopy.textFieldInputDecoration!
               .applyDefaults(Theme.of(context).inputDecorationTheme),
       prefixNestedActions: styleToCopy.prefixNestedActions,
+      instructionColor: styleToCopy.instructionColor ??
+          newActionLabelTextStyle?.color?.withOpacity(.84),
     );
 
     widget.controller.style = _style;

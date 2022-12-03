@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:command_palette/command_palette.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_lorem/flutter_lorem.dart';
 
 void main() {
   runApp(const MyApp());
@@ -63,6 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
               //   LogicalKeyboardKey.control,
               //   LogicalKeyboardKey.keyC,
               // ),
+
+              showInstructions: true,
             ),
             actions: [
               CommandPaletteAction(
@@ -70,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 description: "Closes the command palette",
                 actionType: CommandPaletteActionType.single,
                 shortcut: ["esc"],
+                leading: Icon(Icons.close),
                 onSelect: () {
                   Navigator.of(context).pop();
                 },
@@ -80,6 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 actionType: CommandPaletteActionType.nested,
                 description: "Change the color theme of the app",
                 shortcut: ["ctrl", "t"],
+                leading: Icon(Icons.format_paint),
                 childrenActions: [
                   CommandPaletteAction(
                     label: "Light",
@@ -106,6 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 label: "Set User",
                 actionType: CommandPaletteActionType.nested,
                 shortcut: ["ctrl", "shift", "s"],
+                leading: Icon(Icons.account_circle),
                 childrenActions: [
                   ...["Maria", "Kurt", "Susanne", "Larissa", "Simon", "Admin"]
                       .map(
@@ -143,6 +149,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   },
                 ),
+              // for (int i = 0; i < 10; i++)
+              //   CommandPaletteAction(
+              //     label: lorem(paragraphs: 1, words: 3),
+              //     actionType: CommandPaletteActionType.single,
+              //     onSelect: () {},
+              //   )
             ],
             child: Builder(
               builder: (context) {

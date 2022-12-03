@@ -14,7 +14,7 @@ on:
       - opened
 
 env:
-  flutter_version: 3.0.1
+  flutter_version: 3.3.7
 
 jobs:
   lint:

@@ -1,4 +1,5 @@
 import 'package:command_palette/command_palette.dart';
+import 'package:command_palette/src/widgets/command_palette_instructions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -100,24 +101,99 @@ void main() {
       await closePalette(tester);
     },
   );
+
+  testWidgets(
+    "Leading icon is displayed",
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MyApp(
+          actions: [
+            CommandPaletteAction(
+              label: "Action 1",
+              description: "This is action 1",
+              leading: const Icon(Icons.abc),
+              actionType: CommandPaletteActionType.single,
+              onSelect: () {},
+            ),
+          ],
+        ),
+      );
+
+      await openPalette(tester);
+
+      expect(find.byIcon(Icons.abc), findsOneWidget);
+
+      await closePalette(tester);
+    },
+  );
+
+  testWidgets(
+    "show Instructions",
+    (WidgetTester tester) async {
+      // default config doesn't show instructions
+      await tester.pumpWidget(
+        MyApp(
+          config: CommandPaletteConfig(),
+          actions: [
+            CommandPaletteAction(
+              label: "Action 1",
+              description: "This is action 1",
+              leading: const Icon(Icons.abc),
+              actionType: CommandPaletteActionType.single,
+              onSelect: () {},
+            ),
+          ],
+        ),
+      );
+
+      await openPalette(tester);
+      expect(find.byType(CommandPaletteInstructions), findsNothing);
+      await closePalette(tester);
+
+      // setting flag will show instructions
+      await tester.pumpWidget(
+        MyApp(
+          config: CommandPaletteConfig(showInstructions: true),
+          actions: [
+            CommandPaletteAction(
+              label: "Action 1",
+              description: "This is action 1",
+              leading: const Icon(Icons.abc),
+              actionType: CommandPaletteActionType.single,
+              onSelect: () {},
+            ),
+          ],
+        ),
+      );
+
+      await openPalette(tester);
+      expect(find.byType(CommandPaletteInstructions), findsOneWidget);
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {
   final List<CommandPaletteAction> actions;
+  final CommandPaletteConfig config;
 
-  const MyApp({
+  MyApp({
     Key? key,
     required this.actions,
-  }) : super(key: key);
+    CommandPaletteConfig? config,
+  })  : config = config ??
+            CommandPaletteConfig(
+              style: const CommandPaletteStyle(
+                highlightedLabelTextStyle: TextStyle(color: Colors.pink),
+              ),
+            ),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: CommandPalette(
         actions: actions,
-        config: CommandPaletteConfig(
-            style: const CommandPaletteStyle(
-                highlightedLabelTextStyle: TextStyle(color: Colors.pink))),
+        config: config,
         child: const Scaffold(
           body: Center(
             child: Text('Hello World'),
