@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'command_palette_text_field.dart';
-import 'options/command_palette_options.dart';
+import 'options/command_palette_body.dart';
 
 const Key kCommandPaletteModalKey = Key("Command Palette Modal");
 
@@ -161,8 +161,8 @@ class CommandPaletteModal extends ModalRoute<void> {
                                 .performHighlightedAction(context),
                           ),
                           const Flexible(
-                            child: CommandPaletteOptions(),
-                          )
+                            child: CommandPaletteBody(),
+                          ),
                         ],
                       ),
                     ),
