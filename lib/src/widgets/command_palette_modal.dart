@@ -1,3 +1,5 @@
+// ignore_for_file: body_might_complete_normally_nullable
+
 import 'package:command_palette/src/controller/command_palette_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +25,7 @@ class CommandPaletteModal extends ModalRoute<void> {
 
   final Curve _transitionCurve;
 
-  final LogicalKeySet closeKeySet;
+  final ShortcutActivator closeKeySet;
 
   @override
   void dispose() {
@@ -100,70 +102,62 @@ class CommandPaletteModal extends ModalRoute<void> {
                   bottom: bottom,
                   left: left,
                   right: right,
-                  child: Focus(
-                    // not sure why but this seems to make things play nice lol
-                    onKeyEvent: (node, event) => KeyEventResult.ignored,
-                    onKey: (node, event) {
-                      KeyEventResult result = KeyEventResult.ignored;
-
-                      if (LogicalKeySet(LogicalKeyboardKey.backspace)
-                          .accepts(event, RawKeyboard.instance)) {
-                        if (commandPaletteController.handleBackspace()) {
-                          result = KeyEventResult.handled;
-                        }
-                      }
-
-                      // down, move selector down
-                      else if (LogicalKeySet(LogicalKeyboardKey.arrowDown)
-                          .accepts(event, RawKeyboard.instance)) {
-                        commandPaletteController.movedHighlightedAction(
-                          down: true,
-                        );
-                        result = KeyEventResult.handled;
-                      }
-
-                      // up, move selector up
-                      else if (LogicalKeySet(LogicalKeyboardKey.arrowUp)
-                          .accepts(event, RawKeyboard.instance)) {
-                        commandPaletteController.movedHighlightedAction(
-                          down: false,
-                        );
-                        result = KeyEventResult.handled;
-                      }
-
-                      // enter makes selection
-                      else if (LogicalKeySet(LogicalKeyboardKey.enter)
-                          .accepts(event, RawKeyboard.instance)) {
-                        commandPaletteController
-                            .performHighlightedAction(context);
-                        result = KeyEventResult.handled;
-                      }
-
-                      // close the command palette
-                      else if (closeKeySet.accepts(
-                        event,
-                        RawKeyboard.instance,
-                      )) {
-                        Navigator.of(context).pop();
-                        result = KeyEventResult.handled;
-                      }
-
-                      return result;
+                  child: Shortcuts(
+                    shortcuts: {
+                      const SingleActivator(LogicalKeyboardKey.backspace):
+                          const _BackspaceIntent(),
+                      const SingleActivator(LogicalKeyboardKey.arrowDown):
+                          const _DownArrowIntent(),
+                      const SingleActivator(LogicalKeyboardKey.arrowUp):
+                          const _UpArrowIntent(),
+                      const SingleActivator(LogicalKeyboardKey.enter):
+                          const _EnterIntent(),
+                      closeKeySet: const _CloseIntent(),
                     },
-                    child: SizedBox(
-                      height: height,
-                      width: width,
-                      child: Column(
-                        children: [
-                          CommandPaletteTextField(
-                            hintText: hintText,
-                            onSubmit: () => commandPaletteController
-                                .performHighlightedAction(context),
+                    child: Actions(
+                      actions: {
+                        _BackspaceIntent: _BackspaceAction(
+                          onInvoke: (intent) =>
+                              commandPaletteController.gotoParentAction(),
+                          controller: commandPaletteController,
+                        ),
+                        _DownArrowIntent: CallbackAction<_DownArrowIntent>(
+                          onInvoke: (intent) =>
+                              commandPaletteController.movedHighlightedAction(
+                            down: true,
                           ),
-                          const Flexible(
-                            child: CommandPaletteBody(),
+                        ),
+                        _UpArrowIntent: CallbackAction<_UpArrowIntent>(
+                          onInvoke: (intent) =>
+                              commandPaletteController.movedHighlightedAction(
+                            down: false,
                           ),
-                        ],
+                        ),
+                        _EnterIntent: CallbackAction<_EnterIntent>(
+                          onInvoke: (intent) => commandPaletteController
+                              .performHighlightedAction(context),
+                        ),
+                        _CloseIntent: CallbackAction<_CloseIntent>(
+                          onInvoke: (intent) => Navigator.of(context).pop(),
+                        ),
+                      },
+                      child: Focus(
+                        child: SizedBox(
+                          height: height,
+                          width: width,
+                          child: Column(
+                            children: [
+                              CommandPaletteTextField(
+                                hintText: hintText,
+                                onSubmit: () => commandPaletteController
+                                    .performHighlightedAction(context),
+                              ),
+                              const Flexible(
+                                child: CommandPaletteBody(),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -175,4 +169,36 @@ class CommandPaletteModal extends ModalRoute<void> {
       ),
     );
   }
+}
+
+// intents for the different control keys
+class _BackspaceIntent extends Intent {
+  const _BackspaceIntent();
+}
+
+class _DownArrowIntent extends Intent {
+  const _DownArrowIntent();
+}
+
+class _UpArrowIntent extends Intent {
+  const _UpArrowIntent();
+}
+
+class _EnterIntent extends Intent {
+  const _EnterIntent();
+}
+
+class _CloseIntent extends Intent {
+  const _CloseIntent();
+}
+
+class _BackspaceAction extends CallbackAction<_BackspaceIntent> {
+  CommandPaletteController controller;
+  _BackspaceAction({
+    required OnInvokeCallback<_BackspaceIntent> onInvoke,
+    required this.controller,
+  }) : super(onInvoke: onInvoke);
+
+  @override
+  bool isEnabled(_) => controller.backspaceWillBeHandled();
 }

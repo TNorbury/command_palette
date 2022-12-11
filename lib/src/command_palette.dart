@@ -138,10 +138,15 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
   void didUpdateWidget(covariant _CommandPaletteInner oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.config != widget.config ||
-        oldWidget.actions != widget.actions) {
+    final bool actionsChanged = !listEquals(oldWidget.actions, widget.actions);
+
+    if (oldWidget.config != widget.config || actionsChanged) {
       _initStyle();
     }
+
+    // if (actionsChanged) {
+    //   widget.controller.actions = widget.actions;
+    // }
 
     // refresh toggler listeners if need be
     if (oldWidget.toggler != widget.toggler) {
@@ -221,24 +226,23 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
       controller: widget.controller,
       child: Builder(
         builder: (context) {
-          return Focus(
-            autofocus: true,
-            onKey: (node, event) {
-              KeyEventResult result = KeyEventResult.ignored;
-
-              // if ctrl-c is pressed, and the command palette isn't open,
-              // open it
-              if (widget.config.openKeySet
-                      .accepts(event, RawKeyboard.instance) &&
-                  !_commandPaletteOpen) {
-                _openCommandPalette(context);
-
-                result = KeyEventResult.handled;
-              }
-
-              return result;
+          return Shortcuts(
+            shortcuts: {
+              widget.config.openKeySet: const _OpenCommandPaletteIntent()
             },
-            child: widget.child,
+            child: Actions(
+              actions: {
+                _OpenCommandPaletteIntent:
+                    CallbackAction<_OpenCommandPaletteIntent>(
+                  // ignore: body_might_complete_normally_nullable
+                  onInvoke: (_) => _openCommandPalette(context),
+                )
+              },
+              child: Focus(
+                autofocus: true,
+                child: widget.child,
+              ),
+            ),
           );
         },
       ),
@@ -281,4 +285,8 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
     });
     Navigator.of(context).pop();
   }
+}
+
+class _OpenCommandPaletteIntent extends Intent {
+  const _OpenCommandPaletteIntent();
 }

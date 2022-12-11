@@ -7,10 +7,10 @@ import 'package:flutter/services.dart';
 
 import '../../command_palette.dart';
 
-final _defaultOpenKeySet = defaultTargetPlatform == TargetPlatform.macOS
-    ? LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyK)
-    : LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyK);
-final _defaultCloseKeySet = LogicalKeySet(LogicalKeyboardKey.escape);
+final _defaultOpenKeySet = SingleActivator(LogicalKeyboardKey.keyK,
+    meta: defaultTargetPlatform == TargetPlatform.macOS,
+    control: defaultTargetPlatform != TargetPlatform.macOS);
+const _defaultCloseKeySet = SingleActivator(LogicalKeyboardKey.escape);
 
 /// Configuration options for the command palette
 class CommandPaletteConfig {
@@ -47,7 +47,7 @@ class CommandPaletteConfig {
   /// The set of keys used to open the command palette.
   ///
   /// Defaults to Ctrl-/Cmd- C
-  final LogicalKeySet openKeySet;
+  final ShortcutActivator openKeySet;
 
   /// The set of keys used to close the command palette.
   ///
@@ -57,7 +57,7 @@ class CommandPaletteConfig {
   /// App-level. If you want to prevent this, see: https://stackoverflow.com/questions/63763478/disable-escape-key-navigation-in-flutter-web
   ///
   /// Defaults to Esc.
-  final LogicalKeySet closeKeySet;
+  final ShortcutActivator closeKeySet;
 
   /// The offset of the modal from the top of the screen.
   ///
@@ -103,8 +103,8 @@ class CommandPaletteConfig {
     ActionFilter? filter,
     Key? key,
     ActionBuilder? builder,
-    LogicalKeySet? openKeySet,
-    LogicalKeySet? closeKeySet,
+    ShortcutActivator? openKeySet,
+    ShortcutActivator? closeKeySet,
     this.hintText = "Begin typing to search for something",
     this.transitionDuration = const Duration(milliseconds: 150),
     this.transitionCurve = Curves.linear,
