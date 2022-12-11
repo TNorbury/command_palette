@@ -53,7 +53,6 @@ void main() {
   test(
     "Filter doesn't crash when back-slash entered",
     () {
-
       final result = Filter.matchesFuzzy(r'\', r'\my string\');
 
       expect(result, isNotNull);
