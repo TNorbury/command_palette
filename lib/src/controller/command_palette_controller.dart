@@ -134,19 +134,19 @@ class CommandPaletteController extends ChangeNotifier {
     return filteredActions;
   }
 
-  /// Handles backspace being pressed. The order of actions is as follows
-  /// 1. If there is text in the controller, the backspace works as expected
-  ///     there (i.e. deletes the character right behind the cursor)
-  /// 2. If an action is currently selected, we'll pop one level
-  bool handleBackspace() {
-    bool handled = false;
-
+  /// Determines if the backspace will be handled by the command palette.
+  /// The following things determine if it'll be handled:
+  /// 1. If there is text in the text field, the backspace won't be handled here
+  ///    and instead be passed on, behaving as a backspace is expected to (i.e.
+  ///    deletes a character). False will be returned
+  /// 2. If no text is present, and an action is selected, this will return true.
+  ///    otherwise false.
+  bool backspaceWillBeHandled() {
     if (textEditingController.text.isNotEmpty) {
-      handled = false;
+      return false;
     } else {
-      handled = gotoParentAction();
+      return currentlySelectedAction != null;
     }
-    return handled;
   }
 
   /// Goes a level up in the action tree, and sets the selected action as the

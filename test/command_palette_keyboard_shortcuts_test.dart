@@ -326,9 +326,9 @@ void main() {
         (WidgetTester tester) async {
           await tester.pumpWidget(
             MyApp(
-              openKeySet: LogicalKeySet(
-                LogicalKeyboardKey.alt,
+              openKeySet: const SingleActivator(
                 LogicalKeyboardKey.keyJ,
+                alt: true,
               ),
               actions: [
                 CommandPaletteAction(
@@ -360,9 +360,9 @@ void main() {
         (WidgetTester tester) async {
           await tester.pumpWidget(
             MyApp(
-              closeKeySet: LogicalKeySet(
-                LogicalKeyboardKey.alt,
+              closeKeySet: SingleActivator(
                 LogicalKeyboardKey.keyJ,
+                alt: true,
               ),
               actions: [
                 CommandPaletteAction(
@@ -374,6 +374,7 @@ void main() {
             ),
           );
           await openPalette(tester);
+          expect(find.byKey(kCommandPaletteModalKey), findsOneWidget);
           await tester.sendKeyDownEvent(LogicalKeyboardKey.alt);
           await tester.sendKeyDownEvent(LogicalKeyboardKey.keyJ);
           await tester.sendKeyUpEvent(LogicalKeyboardKey.alt);
@@ -389,8 +390,8 @@ void main() {
 class MyApp extends StatelessWidget {
   final List<CommandPaletteAction> actions;
   final ActionBuilder? builder;
-  final LogicalKeySet? openKeySet;
-  final LogicalKeySet? closeKeySet;
+  final ShortcutActivator? openKeySet;
+  final ShortcutActivator? closeKeySet;
 
   const MyApp({
     Key? key,

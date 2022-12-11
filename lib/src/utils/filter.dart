@@ -89,9 +89,9 @@ class Filter {
   }
 
   static String convertToRegExpPattern(String word) {
-    return word
+    return RegExp.escape(word
         .replaceAll(r'/[\-\\\{\}\+\?\|\^\$\.\,\[\]\(\)\#\s]/g', '\\\$&')
-        .replaceAll(r"/[\*]/g", ".*");
+        .replaceAll(r"/[\*]/g", ".*"));
   }
 
   /// Matches a non-contiguous sub-string
