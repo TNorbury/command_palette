@@ -82,7 +82,7 @@ class CommandPaletteStyle {
   /// Defaults to `Colors.black12`
   final Color commandPaletteBarrierColor;
 
-  /// Filter to apply behind the command pallette when it's open. Is used to set
+  /// Filter to apply behind the command palette when it's open. It's used to set
   /// [ModalRoute.filter].
   final ImageFilter? barrierFilter;
 

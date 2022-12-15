@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
-- Added `CommandPaletteStyle.barrierFilter`, which is an option `ImageFilter` which can be used to add an effect (usually a blurring) behind the command palette when it's open
+- Added `CommandPaletteStyle.barrierFilter`, which is an optional `ImageFilter` which can be used to add an effect (usually a blurring) behind the command palette when it's open
 
 ## 0.6.0 - 2022-12-10
 ### Fixed
