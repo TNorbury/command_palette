@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+### Changed
+- The default value of `CommandPaletteStyle.borderRadius` has been changed to `BorderRadius.all(Radius.circular(5))`
+
+### Fixed
+- `CommandPaletteStyle.borderRadius` now correctly applies to the border of the entire modal, and not just the part with the actions/instructions.
+
 ## 0.6.0 - 2022-12-10
 ### Fixed
 - Semi-Breaking: Changed the type of `CommandPaletteConfig.openKeySet` and `CommandPaletteConfig.closeKeySet` from `LogicalKeySet` to `ShortcutActivator` (note: `LogicalKeySet` already implements `ShortcutActivator`, so existing custom shortcuts should still work, but a proposed solution is discussed below). This was done to fix an issue on Web builds for MacOS (discussed [here](https://github.com/TNorbury/command_palette/issues/22)). If you don't set custom values for the open and close key sets (or if you're not targeting Web), then no change will be required on your part. But if you are, the following change is suggested to make sure everything works well: If you're opening the palette with a keyboard shortcut, such as CTRL/CMD+U, then you could go from `LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyU)`/`LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyU)` to `SingleActivator(LogicalKeyboardKey.keyU, control: true)`/`SingleActivator(LogicalKeyboardKey.keyU, meta: true)`. This also changes how the command palette control shortcuts (Up/down/enter/backspace) are handled (from `LogicalKeySet` to `SingleActivator`). This should make things a bit cleaner on my end, and more stable going forward.
@@ -61,4 +68,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.1.0 - 2021-11-03
 ### Added
--   initial release
+- initial release

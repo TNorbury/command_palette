@@ -54,8 +54,8 @@ class _CommandPaletteTextFieldState extends State<CommandPaletteTextField> {
   Widget build(BuildContext context) {
     final CommandPaletteController controller =
         CommandPaletteControllerProvider.of(context);
-    InputDecoration inputDecoration =
-        controller.style.textFieldInputDecoration!;
+    final style = controller.style;
+    InputDecoration inputDecoration = style.textFieldInputDecoration!;
 
     // if no prefix was provided, the selected action is a nested action, and
     // the user indicates that they want nested actions to have prefix text,
@@ -64,7 +64,7 @@ class _CommandPaletteTextFieldState extends State<CommandPaletteTextField> {
         inputDecoration.prefixIcon == null &&
         inputDecoration.prefixText == null;
     if (styleHasNoPrefix &&
-        controller.style.prefixNestedActions &&
+        style.prefixNestedActions &&
         controller.currentlySelectedAction?.actionType ==
             CommandPaletteActionType.nested) {
       inputDecoration = inputDecoration.copyWith(
@@ -73,8 +73,13 @@ class _CommandPaletteTextFieldState extends State<CommandPaletteTextField> {
       );
     }
 
+    final radius = style.borderRadius.resolve(Directionality.of(context));
     return Material(
       elevation: 4,
+      borderRadius: BorderRadius.only(
+        topLeft: radius.topLeft,
+        topRight: radius.topRight,
+      ),
       child: TextField(
         controller: controller.textEditingController,
         textInputAction: TextInputAction.done,
