@@ -5,8 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+### Changed
+- The default value of `CommandPaletteStyle.borderRadius` has been changed to `BorderRadius.all(Radius.circular(5))`
+
+### Fixed
+- `CommandPaletteStyle.borderRadius` now correctly applies to the border of the entire modal, and not just the part with the actions/instructions.
+
 ### Added
 - Added `CommandPaletteStyle.barrierFilter`, which is an optional `ImageFilter` which can be used to add an effect (usually a blurring) behind the command palette when it's open
+
 
 ## 0.6.0 - 2022-12-10
 ### Fixed

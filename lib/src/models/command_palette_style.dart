@@ -65,10 +65,7 @@ class CommandPaletteStyle {
   ///
   /// Defaults to
   /// ```
-  /// BorderRadius.only(
-  ///   bottomLeft: Radius.circular(5),
-  ///   bottomRight: Radius.circular(5),
-  /// )
+  /// BorderRadius.all(Radius.circular(5))
   /// ```
   final BorderRadiusGeometry borderRadius;
 
@@ -120,10 +117,7 @@ class CommandPaletteStyle {
     this.highlightSearchSubstring = true,
     this.actionDescriptionTextStyle,
     this.elevation = 4.0,
-    this.borderRadius = const BorderRadius.only(
-      bottomLeft: Radius.circular(5),
-      bottomRight: Radius.circular(5),
-    ),
+    this.borderRadius = const BorderRadius.all(Radius.circular(5)),
     this.actionLabelTextAlign = TextAlign.left,
     this.commandPaletteBarrierColor = Colors.black12,
     this.textFieldInputDecoration,
