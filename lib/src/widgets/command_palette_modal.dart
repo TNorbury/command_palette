@@ -1,5 +1,7 @@
 // ignore_for_file: body_might_complete_normally_nullable
 
+import 'dart:ui';
+
 import 'package:command_palette/src/controller/command_palette_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,8 +45,10 @@ class CommandPaletteModal extends ModalRoute<void> {
     required Duration transitionDuration,
     required Curve transitionCurve,
     required this.closeKeySet,
+    ImageFilter? filter,
   })  : _transitionDuration = transitionDuration,
-        _transitionCurve = transitionCurve;
+        _transitionCurve = transitionCurve,
+        super(filter: filter);
 
   @override
   Color? get barrierColor =>
