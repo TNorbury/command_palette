@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 /// Used to style a [CommandPalette]
@@ -77,6 +79,10 @@ class CommandPaletteStyle {
   /// Defaults to `Colors.black12`
   final Color commandPaletteBarrierColor;
 
+  /// Filter to apply behind the command palette when it's open. It's used to set
+  /// [ModalRoute.filter].
+  final ImageFilter? barrierFilter;
+
   /// Decoration used for the text field
   ///
   /// Defaults to
@@ -117,6 +123,7 @@ class CommandPaletteStyle {
     this.textFieldInputDecoration,
     this.prefixNestedActions = true,
     this.instructionColor,
+    this.barrierFilter,
   });
 
   @override
@@ -136,7 +143,8 @@ class CommandPaletteStyle {
         other.commandPaletteBarrierColor == commandPaletteBarrierColor &&
         other.textFieldInputDecoration == textFieldInputDecoration &&
         other.prefixNestedActions == prefixNestedActions &&
-        other.instructionColor == instructionColor;
+        other.instructionColor == instructionColor &&
+        other.barrierFilter == barrierFilter;
   }
 
   @override
@@ -153,7 +161,8 @@ class CommandPaletteStyle {
         commandPaletteBarrierColor.hashCode ^
         textFieldInputDecoration.hashCode ^
         prefixNestedActions.hashCode ^
-        instructionColor.hashCode;
+        instructionColor.hashCode ^
+        barrierFilter.hashCode;
   }
 }
 
