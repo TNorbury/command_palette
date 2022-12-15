@@ -34,11 +34,24 @@ class CommandPaletteBody extends StatelessWidget {
               itemBuilder: (context, index) {
                 final CommandPaletteAction item = actions[index];
 
+                var isHighlighted = controller.highlightedAction == index;
+
+                //                 return ActionItemWrapper(
+                //   child: controller.config.builder(
+                //     context,
+                //     controller.style,
+                //     item,
+                //     isHighlighted,
+                //     () => controller.handleAction(context, action: item),
+                //     controller.textEditingController.text.split(" "),
+                //   ),
+                // );
+
                 return controller.config.builder(
                   context,
                   controller.style,
                   item,
-                  controller.highlightedAction == index,
+                  isHighlighted,
                   () => controller.handleAction(context, action: item),
                   controller.textEditingController.text.split(" "),
                 );
@@ -51,6 +64,29 @@ class CommandPaletteBody extends StatelessWidget {
       ),
     );
   }
+}
+
+class ActionItemWrapper extends SingleChildRenderObjectWidget {
+  const ActionItemWrapper({Key? key, required Widget child})
+      : super(key: key, child: child);
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return ActionItemRenderObject();
+  }
+}
+
+class ActionItemRenderObject extends RenderBox with RenderObjectWithChildMixin {
+  ActionItemRenderObject();
+
+  @override
+  void performLayout() {
+    child?.layout(constraints);
+    super.performLayout();
+  }
+
+  @override
+  bool get sizedByParent => true;
 }
 
 /// Default builder of Actions.
