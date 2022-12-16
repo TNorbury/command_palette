@@ -18,10 +18,14 @@ class CommandPaletteBody extends StatelessWidget {
     CommandPaletteController controller =
         CommandPaletteControllerProvider.of(context);
     List<CommandPaletteAction> actions = controller.getFilteredActions();
-
+    final borderRadius =
+        controller.style.borderRadius.resolve(Directionality.of(context));
     return Material(
       elevation: controller.style.elevation,
-      borderRadius: controller.style.borderRadius,
+      borderRadius: BorderRadius.only(
+        bottomLeft: borderRadius.bottomLeft,
+        bottomRight: borderRadius.bottomRight,
+      ),
       clipBehavior: Clip.antiAlias,
       child: Column(
         mainAxisSize: MainAxisSize.min,

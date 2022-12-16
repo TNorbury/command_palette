@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../command_palette.dart';
 import 'controller/command_palette_controller.dart';
@@ -209,6 +208,7 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
       prefixNestedActions: styleToCopy.prefixNestedActions,
       instructionColor: styleToCopy.instructionColor ??
           newActionLabelTextStyle?.color?.withOpacity(.84),
+      barrierFilter: styleToCopy.barrierFilter,
     );
 
     widget.controller.style = _style;
@@ -267,6 +267,7 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
             transitionCurve: widget.config.transitionCurve,
             transitionDuration: widget.config.transitionDuration,
             closeKeySet: widget.config.closeKeySet,
+            filter: widget.config.style?.barrierFilter,
           ),
         )
         .then(
