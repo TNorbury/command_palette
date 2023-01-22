@@ -360,7 +360,7 @@ void main() {
         (WidgetTester tester) async {
           await tester.pumpWidget(
             MyApp(
-              closeKeySet: SingleActivator(
+              closeKeySet: const SingleActivator(
                 LogicalKeyboardKey.keyJ,
                 alt: true,
               ),
