@@ -61,6 +61,7 @@ class CommandPaletteAction {
   /// padding to the right
   Widget? leading;
 
+  @Deprecated("Prefer using the named constructors '.single' or '.nested'")
   CommandPaletteAction({
     required this.label,
     this.description,
@@ -79,6 +80,29 @@ class CommandPaletteAction {
       for (final child in childrenActions!) {
         child._parent = this;
       }
+    }
+  }
+
+  CommandPaletteAction.single({
+    required this.label,
+    this.description,
+    required this.onSelect,
+    this.shortcut,
+    this.id,
+    this.leading,
+  }) : actionType = CommandPaletteActionType.single;
+
+  CommandPaletteAction.nested({
+    required this.label,
+    this.description,
+    required this.childrenActions,
+    this.shortcut,
+    this.id,
+    this.leading,
+  }) : actionType = CommandPaletteActionType.nested {
+    // give all our children "us" as a parent.
+    for (final child in childrenActions!) {
+      child._parent = this;
     }
   }
 

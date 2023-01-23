@@ -19,9 +19,8 @@ void main() {
           await tester.pumpWidget(
             MyApp(
               actions: [
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Action 1",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
               ],
@@ -49,19 +48,16 @@ void main() {
                 return Text("${action.label}-$isHighlighted");
               },
               actions: [
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "1",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "2",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "3",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
               ],
@@ -110,19 +106,16 @@ void main() {
                 return Text("${action.label}-$isHighlighted");
               },
               actions: [
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "1",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "2",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "3",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
               ],
@@ -169,9 +162,8 @@ void main() {
           await tester.pumpWidget(
             MyApp(
               actions: [
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Action 1",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {
                     action1Selected = true;
                   },
@@ -197,20 +189,17 @@ void main() {
           await tester.pumpWidget(
             MyApp(
               actions: [
-                CommandPaletteAction(
+                CommandPaletteAction.nested(
                   label: "Action 1",
-                  actionType: CommandPaletteActionType.nested,
                   childrenActions: [
-                    CommandPaletteAction(
+                    CommandPaletteAction.single(
                       label: "Nested Action 1",
-                      actionType: CommandPaletteActionType.single,
                       onSelect: () {},
                     ),
                   ],
                 ),
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Action 2",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
               ],
@@ -245,20 +234,17 @@ void main() {
           await tester.pumpWidget(
             MyApp(
               actions: [
-                CommandPaletteAction(
+                CommandPaletteAction.nested(
                   label: "Action 1",
-                  actionType: CommandPaletteActionType.nested,
                   childrenActions: [
-                    CommandPaletteAction(
+                    CommandPaletteAction.single(
                       label: "Nested Action 1",
-                      actionType: CommandPaletteActionType.single,
                       onSelect: () {},
                     ),
                   ],
                 ),
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Action 2",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
               ],
@@ -287,9 +273,8 @@ void main() {
           await tester.pumpWidget(
             MyApp(
               actions: [
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Action 1",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
               ],
@@ -331,9 +316,8 @@ void main() {
                 alt: true,
               ),
               actions: [
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Action 1",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
               ],
@@ -365,9 +349,8 @@ void main() {
                 alt: true,
               ),
               actions: [
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Action 1",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
               ],

@@ -12,10 +12,9 @@ void main() {
       await tester.pumpWidget(
         MyApp(
           actions: [
-            CommandPaletteAction(
+            CommandPaletteAction.single(
               label: "Action 1",
               description: "This is action 1",
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
           ],
@@ -36,10 +35,9 @@ void main() {
       await tester.pumpWidget(
         MyApp(
           actions: [
-            CommandPaletteAction(
+            CommandPaletteAction.single(
               label: "Action 1",
               shortcut: ["ctrl", "a"],
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
           ],
@@ -60,10 +58,9 @@ void main() {
       await tester.pumpWidget(
         MyApp(
           actions: [
-            CommandPaletteAction(
+            CommandPaletteAction.single(
               label: "Action 1",
               description: "This is action 1",
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
           ],
@@ -108,11 +105,10 @@ void main() {
       await tester.pumpWidget(
         MyApp(
           actions: [
-            CommandPaletteAction(
+            CommandPaletteAction.single(
               label: "Action 1",
               description: "This is action 1",
               leading: const Icon(Icons.abc),
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
           ],
@@ -135,11 +131,10 @@ void main() {
         MyApp(
           config: CommandPaletteConfig(),
           actions: [
-            CommandPaletteAction(
+            CommandPaletteAction.single(
               label: "Action 1",
               description: "This is action 1",
               leading: const Icon(Icons.abc),
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
           ],
@@ -155,11 +150,10 @@ void main() {
         MyApp(
           config: CommandPaletteConfig(showInstructions: true),
           actions: [
-            CommandPaletteAction(
+            CommandPaletteAction.single(
               label: "Action 1",
               description: "This is action 1",
               leading: const Icon(Icons.abc),
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
           ],

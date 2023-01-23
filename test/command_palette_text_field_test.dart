@@ -12,20 +12,17 @@ void main() {
       await tester.pumpWidget(
         MyApp(
           actions: [
-            CommandPaletteAction(
+            CommandPaletteAction.nested(
               label: "Change Theme",
-              actionType: CommandPaletteActionType.nested,
               description: "Change the color theme of the app",
               shortcut: ["ctrl", "t"],
               childrenActions: [
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Light",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Dark",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
               ],

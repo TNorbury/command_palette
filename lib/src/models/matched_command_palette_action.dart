@@ -6,6 +6,7 @@ class MatchedCommandPaletteAction extends CommandPaletteAction {
   final List<FilterMatch>? matches;
 
   MatchedCommandPaletteAction(CommandPaletteAction action, this.matches)
+      // ignore: deprecated_member_use_from_same_package
       : super(
           label: action.label,
           actionType: action.actionType,
