@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.7.1 - 2023-01-25
 ### Changed
 - Create two named constructors for actions: `CommandPaletteAction.single` and `CommandPaletteAction.nested`. These handle the setting of the `actionType` and makes the required parameters for each explicit. The unnamed constructor has been marked as deprecated, but I have no plans to remove anytime soon.
 - upgrade to Flutter 3.7.0 and update deprecations in style
