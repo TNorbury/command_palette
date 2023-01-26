@@ -178,7 +178,7 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
         widget.config.style ?? const CommandPaletteStyle();
 
     var newActionLabelTextStyle = styleToCopy.actionLabelTextStyle ??
-        Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
+        Theme.of(context).primaryTextTheme.titleMedium?.copyWith(
               color: Theme.of(context).colorScheme.onSurface,
             );
     _style = CommandPaletteStyle(
@@ -187,12 +187,12 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
           styleToCopy.selectedColor ?? Theme.of(context).highlightColor,
       actionLabelTextStyle: newActionLabelTextStyle,
       highlightedLabelTextStyle: styleToCopy.highlightedLabelTextStyle ??
-          Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
+          Theme.of(context).primaryTextTheme.titleMedium?.copyWith(
                 color: Theme.of(context).colorScheme.secondary,
                 fontWeight: FontWeight.w600,
               ),
       actionDescriptionTextStyle: styleToCopy.actionDescriptionTextStyle ??
-          Theme.of(context).primaryTextTheme.subtitle2?.copyWith(
+          Theme.of(context).primaryTextTheme.titleSmall?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
               ),
       actionLabelTextAlign: styleToCopy.actionLabelTextAlign,

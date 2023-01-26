@@ -18,7 +18,7 @@ class CommandPaletteStyle {
   ///
   /// Defaults to (if it's available):
   /// ```
-  /// Theme.of(context).primaryTextTheme.subtitle1?.copyWith(
+  /// Theme.of(context).primaryTextTheme.titleMedium?.copyWith(
   ///   color: Theme.of(context).colorScheme.onSurface,
   ///  )
   /// ```
@@ -31,7 +31,7 @@ class CommandPaletteStyle {
   /// ```
   /// Theme.of(context)
   ///   .primaryTextTheme
-  ///   .subtitle1
+  ///   .titleMedium
   ///   ?.copyWith(
   ///       color: Theme.of(context).colorScheme.secondary,
   ///       fontWeight: FontWeight.w600,
@@ -43,7 +43,7 @@ class CommandPaletteStyle {
   ///
   /// Defaults to (if it's available):
   /// ```
-  /// Theme.of(context).primaryTextTheme.subtitle2?.copyWith(
+  /// Theme.of(context).primaryTextTheme.titleSmall?.copyWith(
   ///   color: Theme.of(context).colorScheme.onSurface,
   ///  )
   /// ```
