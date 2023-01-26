@@ -7,11 +7,14 @@ on:
 
 jobs:
   publish:
-    name: Publish Release
-    runs-on: ubuntu-latest
+    name: Publish Release to Pub.dev
     uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
     with:
       environment: pub.dev
+
+  release:
+    name: Create Release on GH
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
@@ -19,4 +22,3 @@ jobs:
     - uses: ncipollo/release-action@v1
       with:
         generateReleaseNotes: true
-
