@@ -27,11 +27,11 @@ jobs:
           distribution: 'adopt'
           java-version: '12'
       - uses: actions/cache@v3
-        with:
-          path: /opt/hostedtoolcache/flutter
-          key: flutter-${{ env.flutter_version }}
       - uses: subosito/flutter-action@v2
         with:
+          cache: true
+          cache-path: /opt/hostedtoolcache/flutter
+          cache-key: flutter-${{ env.flutter_version }}
           flutter-version: ${{ env.flutter_version }}
       - name: Install Dependencies
         run: flutter pub get
@@ -50,11 +50,11 @@ jobs:
           distribution: 'adopt'
           java-version: '12'
       - uses: actions/cache@v3
-        with:
-          path: /opt/hostedtoolcache/flutter
-          key: flutter-${{ env.flutter_version }}
       - uses: subosito/flutter-action@v2
         with:
+          cache: true
+          cache-path: /opt/hostedtoolcache/flutter
+          cache-key: flutter-${{ env.flutter_version }}
           flutter-version: ${{ env.flutter_version }}
       - name: Install Dependencies
         run: flutter pub get
