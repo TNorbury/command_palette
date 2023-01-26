@@ -26,7 +26,6 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '12'
-      - uses: actions/cache@v3
       - uses: subosito/flutter-action@v2
         with:
           cache: true
@@ -49,7 +48,6 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '12'
-      - uses: actions/cache@v3
       - uses: subosito/flutter-action@v2
         with:
           cache: true
