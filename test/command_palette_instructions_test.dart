@@ -8,13 +8,11 @@ void main() {
   testWidgets(
     "Go Back instruction will be displayed when nested action is selected",
     (WidgetTester tester) async {
-      final action = CommandPaletteAction(
+      final action = CommandPaletteAction.nested(
         label: "Nest",
-        actionType: CommandPaletteActionType.nested,
         childrenActions: [
-          CommandPaletteAction(
+          CommandPaletteAction.single(
             label: "Nested",
-            actionType: CommandPaletteActionType.single,
             onSelect: () {},
           )
         ],
@@ -41,13 +39,11 @@ void main() {
     (WidgetTester tester) async {
       CommandPaletteController controller = CommandPaletteController(
         [
-          CommandPaletteAction(
+          CommandPaletteAction.nested(
             label: "Nest",
-            actionType: CommandPaletteActionType.nested,
             childrenActions: [
-              CommandPaletteAction(
+              CommandPaletteAction.single(
                 label: "Nested",
-                actionType: CommandPaletteActionType.single,
                 onSelect: () {},
               )
             ],

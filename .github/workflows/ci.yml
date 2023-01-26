@@ -14,7 +14,7 @@ on:
       - opened
 
 env:
-  flutter_version: 3.3.7
+  flutter_version: 3.7.0
 
 jobs:
   lint:
@@ -26,12 +26,11 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '12'
-      - uses: actions/cache@v3
-        with:
-          path: /opt/hostedtoolcache/flutter
-          key: ${{ github.ref }}-${{ env.flutter_version }}
       - uses: subosito/flutter-action@v2
         with:
+          cache: true
+          cache-path: /opt/hostedtoolcache/flutter
+          cache-key: flutter-${{ env.flutter_version }}
           flutter-version: ${{ env.flutter_version }}
       - name: Install Dependencies
         run: flutter pub get
@@ -49,12 +48,11 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '12'
-      - uses: actions/cache@v3
-        with:
-          path: /opt/hostedtoolcache/flutter
-          key: ${{ github.ref }}-${{ env.flutter_version }}
       - uses: subosito/flutter-action@v2
         with:
+          cache: true
+          cache-path: /opt/hostedtoolcache/flutter
+          cache-key: flutter-${{ env.flutter_version }}
           flutter-version: ${{ env.flutter_version }}
       - name: Install Dependencies
         run: flutter pub get

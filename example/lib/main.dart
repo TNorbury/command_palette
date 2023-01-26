@@ -65,36 +65,32 @@ class _MyHomePageState extends State<MyHomePage> {
               showInstructions: true,
             ),
             actions: [
-              CommandPaletteAction(
+              CommandPaletteAction.single(
                 label: "Close Command Palette",
                 description: "Closes the command palette",
-                actionType: CommandPaletteActionType.single,
                 shortcut: ["esc"],
                 leading: Icon(Icons.close),
                 onSelect: () {
                   Navigator.of(context).pop();
                 },
               ),
-              CommandPaletteAction(
+              CommandPaletteAction.nested(
                 id: "change-theme", // ids can be strings
                 label: "Change Theme",
-                actionType: CommandPaletteActionType.nested,
                 description: "Change the color theme of the app",
                 shortcut: ["ctrl", "t"],
                 leading: Icon(Icons.format_paint),
                 childrenActions: [
-                  CommandPaletteAction(
+                  CommandPaletteAction.single(
                     label: "Light",
-                    actionType: CommandPaletteActionType.single,
                     onSelect: () {
                       setState(() {
                         themeMode = ThemeMode.light;
                       });
                     },
                   ),
-                  CommandPaletteAction(
+                  CommandPaletteAction.single(
                     label: "Dark",
-                    actionType: CommandPaletteActionType.single,
                     onSelect: () {
                       setState(() {
                         themeMode = ThemeMode.dark;
@@ -103,18 +99,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              CommandPaletteAction(
+              CommandPaletteAction.nested(
                 id: 1, // or numbers (or really anything...)
                 label: "Set User",
-                actionType: CommandPaletteActionType.nested,
                 shortcut: ["ctrl", "shift", "s"],
                 leading: Icon(Icons.account_circle),
                 childrenActions: [
                   ...["Maria", "Kurt", "Susanne", "Larissa", "Simon", "Admin"]
                       .map(
-                    (e) => CommandPaletteAction(
+                    (e) => CommandPaletteAction.single(
                       label: e,
-                      actionType: CommandPaletteActionType.single,
                       onSelect: () => setState(() {
                         _currentUser = e;
                         color = Colors.transparent;
@@ -124,9 +118,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
               if (_currentUser == "Admin")
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Some sorta super secret admin action",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {
                     setState(() {
                       color = Color(Random().nextInt(0xFFFFFF)).withAlpha(255);
@@ -134,9 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               if (_currentUser.isNotEmpty)
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Log out",
-                  actionType: CommandPaletteActionType.single,
                   shortcut: ["l", "o"],
                   description: "Logs the current user out",
                   onSelect: () {

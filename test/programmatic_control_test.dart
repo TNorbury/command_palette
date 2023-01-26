@@ -11,9 +11,8 @@ void main() {
       await tester.pumpWidget(
         MyApp(
           actions: [
-            CommandPaletteAction(
+            CommandPaletteAction.single(
               label: "Action 1",
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
           ],
@@ -38,30 +37,25 @@ void main() {
       await tester.pumpWidget(
         MyApp(
           actions: [
-            CommandPaletteAction(
+            CommandPaletteAction.single(
               id: "not-nested",
               label: "Action 1",
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
-            CommandPaletteAction(
+            CommandPaletteAction.nested(
               id: nestedActionId,
               label: "Nested Action",
-              actionType: CommandPaletteActionType.nested,
               childrenActions: [
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "I'm nested",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Me too!",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Me three!",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
               ],

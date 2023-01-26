@@ -25,11 +25,10 @@ void main() {
           config: CommandPaletteConfig(),
           actions: List.generate(
             100,
-            (index) => CommandPaletteAction(
+            (index) => CommandPaletteAction.single(
               label: "Action $index",
               description: "This is action $index",
               leading: const Icon(Icons.abc),
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
           ),
@@ -54,11 +53,10 @@ void main() {
           config: CommandPaletteConfig(),
           actions: List.generate(
             100,
-            (index) => CommandPaletteAction(
+            (index) => CommandPaletteAction.single(
               label: "Action $index",
               description: "This is action $index",
               leading: const Icon(Icons.abc),
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
           ),
@@ -93,11 +91,10 @@ void main() {
           config: CommandPaletteConfig(),
           actions: List.generate(
             100,
-            (index) => CommandPaletteAction(
+            (index) => CommandPaletteAction.single(
               label: "Action $index",
               description: "This is action $index",
               leading: const Icon(Icons.abc),
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
           ),

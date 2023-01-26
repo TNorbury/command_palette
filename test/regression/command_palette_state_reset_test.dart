@@ -16,20 +16,17 @@ void main() {
             return Text("${action.label}-$isHighlighted");
           },
           actions: [
-            CommandPaletteAction(
+            CommandPaletteAction.nested(
               label: "1",
-              actionType: CommandPaletteActionType.nested,
               childrenActions: [
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Nested Action 1",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
               ],
             ),
-            CommandPaletteAction(
+            CommandPaletteAction.single(
               label: "2",
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
           ],
@@ -59,9 +56,8 @@ void main() {
       await tester.pumpWidget(
         MyApp(
           actions: [
-            CommandPaletteAction(
+            CommandPaletteAction.single(
               label: "Action 1",
-              actionType: CommandPaletteActionType.single,
               onSelect: () {},
             ),
           ],
@@ -87,13 +83,11 @@ void main() {
       await tester.pumpWidget(
         MyApp(
           actions: [
-            CommandPaletteAction(
+            CommandPaletteAction.nested(
               label: "Action 1",
-              actionType: CommandPaletteActionType.nested,
               childrenActions: [
-                CommandPaletteAction(
+                CommandPaletteAction.single(
                   label: "Nested Action 1",
-                  actionType: CommandPaletteActionType.single,
                   onSelect: () {},
                 ),
               ],
