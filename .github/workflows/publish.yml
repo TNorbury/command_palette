@@ -7,13 +7,14 @@ on:
 
 jobs:
   publish:
+    name: Publish Release
     runs-on: ubuntu-latest
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    with:
+      environment: pub.dev
     permissions:
       contents: write
     steps:
-    - uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
-      with:
-        environment: pub.dev
     - uses: actions/checkout@v2
     - uses: ncipollo/release-action@v1
       with:
