@@ -208,6 +208,7 @@ class _DefaultItem extends StatelessWidget {
                                 child: Text(
                                   action.description!,
                                   textAlign: style.actionLabelTextAlign,
+                                  style: style.actionDescriptionTextStyle,
                                   overflow: TextOverflow.fade,
                                 ),
                               ),
