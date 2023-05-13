@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:command_palette/command_palette.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_lorem/flutter_lorem.dart';
+// import 'package:flutter_lorem/flutter_lorem.dart';
 
 void main() {
   runApp(const MyApp());
