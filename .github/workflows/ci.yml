@@ -37,7 +37,7 @@ jobs:
       - name: Analyze
         run: flutter analyze --no-fatal-infos
       - name: Format
-        run: flutter format --set-exit-if-changed --dry-run .
+        run: dart format --set-exit-if-changed --dry-run .
 
   test:
     name: Test
