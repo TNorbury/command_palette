@@ -14,7 +14,7 @@ on:
       - opened
 
 env:
-  flutter_version: 3.7.0
+  flutter_version: 3.10.0
 
 jobs:
   lint:
@@ -37,7 +37,7 @@ jobs:
       - name: Analyze
         run: flutter analyze --no-fatal-infos
       - name: Format
-        run: flutter format --set-exit-if-changed --dry-run .
+        run: dart format --set-exit-if-changed -o none .
 
   test:
     name: Test
