@@ -85,6 +85,10 @@ class CommandPaletteController extends ChangeNotifier {
 
   /// Listens to [textEditingController] and is called whenever it changes.
   void _onTextControllerChange() {
+    if (currentlySelectedAction?.actionType == CommandPaletteActionType.input) {
+      return;
+    }
+
     if (_enteredQuery != textEditingController.text) {
       _enteredQuery = textEditingController.text;
       _actionsNeedRefiltered = true;
@@ -96,7 +100,8 @@ class CommandPaletteController extends ChangeNotifier {
   CommandPaletteAction? get currentlySelectedAction => _currentlySelectedAction;
   set currentlySelectedAction(CommandPaletteAction? newAction) {
     assert(newAction == null ||
-        newAction.actionType == CommandPaletteActionType.nested);
+        newAction.actionType == CommandPaletteActionType.nested ||
+        newAction.actionType == CommandPaletteActionType.input);
     _currentlySelectedAction = newAction;
     _actionsNeedRefiltered = true;
     textEditingController.clear();
@@ -118,6 +123,9 @@ class CommandPaletteController extends ChangeNotifier {
       if (currentlySelectedAction?.actionType ==
           CommandPaletteActionType.nested) {
         filteredActions = currentlySelectedAction!.childrenActions!;
+      } else if (currentlySelectedAction?.actionType ==
+          CommandPaletteActionType.input) {
+        filteredActions = [];
       } else {
         filteredActions = actions;
       }
@@ -193,14 +201,26 @@ class CommandPaletteController extends ChangeNotifier {
 
     // nested items we set this item as the selected which in turn
     // will display its children.
-    else if (action.actionType == CommandPaletteActionType.nested) {
+    else {
       currentlySelectedAction = action;
+    }
+  }
+
+  void handleActionInput(BuildContext context) {
+    _currentlySelectedAction?.onConfirmInput!(textEditingController.text);
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
     }
   }
 
   /// performs the action which is currently selected by [highlightedAction]
   void performHighlightedAction(BuildContext context) {
-    handleAction(context, action: _filteredActionsCache[highlightedAction]);
+    if (_currentlySelectedAction?.actionType ==
+        CommandPaletteActionType.input) {
+      handleActionInput(context);
+    } else {
+      handleAction(context, action: _filteredActionsCache[highlightedAction]);
+    }
   }
 }
 
