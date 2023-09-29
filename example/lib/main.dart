@@ -99,6 +99,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
+              CommandPaletteAction.input(
+                id: "new-user",
+                label: "New User",
+                shortcut: ["ctrl", "shift", "n"],
+                leading: Icon(Icons.add),
+                onConfirmInput: (value) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Created user: $value')));
+                },
+              ),
               CommandPaletteAction.nested(
                 id: 1, // or numbers (or really anything...)
                 label: "Set User",
