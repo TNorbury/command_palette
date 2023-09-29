@@ -24,6 +24,8 @@ class CommandPalette extends InheritedWidget {
   /// functional configuration
   final CommandPaletteConfig config;
 
+  final FocusNode? focusNode;
+
   late final _CommandPaletteToggler _toggler;
 
   late final CommandPaletteController _controller;
@@ -33,6 +35,7 @@ class CommandPalette extends InheritedWidget {
     CommandPaletteConfig? config,
     required this.actions,
     required Widget child,
+    this.focusNode,
   })  : config = config ?? CommandPaletteConfig(),
         super(
           key: key,
@@ -45,6 +48,7 @@ class CommandPalette extends InheritedWidget {
             ),
             config: config ?? CommandPaletteConfig(),
             toggler: _CommandPaletteToggler(false),
+            focusNode: focusNode, 
             child: child,
           ),
         ) {
@@ -109,7 +113,7 @@ class _CommandPaletteInner extends StatefulWidget {
   final CommandPaletteConfig config;
   final _CommandPaletteToggler toggler;
   final CommandPaletteController controller;
-
+  final FocusNode? focusNode;
   const _CommandPaletteInner({
     Key? key,
     required this.child,
@@ -117,6 +121,7 @@ class _CommandPaletteInner extends StatefulWidget {
     required this.config,
     required this.toggler,
     required this.controller,
+    required this.focusNode,
   }) : super(key: key);
 
   @override
@@ -239,6 +244,7 @@ class _CommandPaletteInnerState extends State<_CommandPaletteInner> {
                 )
               },
               child: Focus(
+                focusNode: widget.focusNode,
                 autofocus: true,
                 child: widget.child,
               ),
