@@ -48,7 +48,7 @@ class CommandPalette extends InheritedWidget {
             ),
             config: config ?? CommandPaletteConfig(),
             toggler: _CommandPaletteToggler(false),
-            focusNode: focusNode, 
+            focusNode: focusNode,
             child: child,
           ),
         ) {
