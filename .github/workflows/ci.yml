@@ -8,10 +8,7 @@ on:
       - main
       - development
   pull_request:
-    types:
-      - ready_for_review
-      - synchronize
-      - opened
+    types: [synchronize, opened, reopened]
 
 env:
   flutter_version: 3.10.0
