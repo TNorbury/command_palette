@@ -13,6 +13,7 @@ class MatchedCommandPaletteAction extends CommandPaletteAction {
           childrenActions: action.childrenActions,
           description: action.description,
           onSelect: action.onSelect,
+          onConfirmInput: action.onConfirmInput,
           shortcut: action.shortcut,
           id: action.id,
           leading: action.leading,

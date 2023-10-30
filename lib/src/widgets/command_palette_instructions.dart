@@ -1,4 +1,5 @@
 import 'package:command_palette/src/controller/command_palette_controller.dart';
+import 'package:command_palette/src/models/command_palette_action.dart';
 import 'package:command_palette/src/widgets/keyboard_key_icon.dart';
 import 'package:flutter/material.dart';
 
@@ -34,21 +35,27 @@ class CommandPaletteInstructions extends StatelessWidget {
                       color: color,
                     ),
                   ],
-                  instruction: "to select",
+                  instruction:
+                      (controller.currentlySelectedAction?.actionType ==
+                              CommandPaletteActionType.input)
+                          ? "to confirm"
+                          : "to select",
                 ),
-                _KeyboardInstruction(
-                  icons: [
-                    KeyboardKeyIcon(
-                      icon: Icons.arrow_upward,
-                      color: color,
-                    ),
-                    KeyboardKeyIcon(
-                      icon: Icons.arrow_downward,
-                      color: color,
-                    ),
-                  ],
-                  instruction: "to navigate",
-                ),
+                if (controller.currentlySelectedAction?.actionType !=
+                    CommandPaletteActionType.input)
+                  _KeyboardInstruction(
+                    icons: [
+                      KeyboardKeyIcon(
+                        icon: Icons.arrow_upward,
+                        color: color,
+                      ),
+                      KeyboardKeyIcon(
+                        icon: Icons.arrow_downward,
+                        color: color,
+                      ),
+                    ],
+                    instruction: "to navigate",
+                  ),
                 if (controller.currentlySelectedAction != null)
                   _KeyboardInstruction(
                     icons: [

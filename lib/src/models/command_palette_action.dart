@@ -8,7 +8,11 @@ enum CommandPaletteActionType {
 
   /// Upon being selected a nested action will change the state of the command
   /// palette so that it only shows its children
-  nested
+  nested,
+
+  /// Upon being selected the user will be given a text field that they can enter text into and submit.
+  /// The entered text will then be passed to the relevant callback
+  input
 }
 
 /// Action that is presented in the command palette. These are the things the
@@ -24,6 +28,10 @@ class CommandPaletteAction {
 
   /// Specifies what type of action this is
   final CommandPaletteActionType actionType;
+
+  /// Required when [actionType] set to [CommandPaletteActionType.input]. This
+  /// function is called when the action is confirmed
+  ValueChanged<String>? onConfirmInput;
 
   /// Required when [actionType] set to [CommandPaletteActionType.single]. This
   /// function is called when the action is selected
@@ -68,13 +76,16 @@ class CommandPaletteAction {
     required this.actionType,
     this.onSelect,
     this.childrenActions,
+    this.onConfirmInput,
     this.shortcut,
     this.id,
     this.leading,
   }) : assert((actionType == CommandPaletteActionType.single &&
                 onSelect != null) ||
             (actionType == CommandPaletteActionType.nested &&
-                (childrenActions?.isNotEmpty ?? false))) {
+                (childrenActions?.isNotEmpty ?? false)) ||
+            (actionType == CommandPaletteActionType.input &&
+                (onConfirmInput != null))) {
     // give all our children "us" as a parent.
     if (actionType == CommandPaletteActionType.nested) {
       for (final child in childrenActions!) {
@@ -105,6 +116,15 @@ class CommandPaletteAction {
       child._parent = this;
     }
   }
+
+  CommandPaletteAction.input({
+    required this.label,
+    this.description,
+    required this.onConfirmInput,
+    this.shortcut,
+    this.id,
+    this.leading,
+  }) : actionType = CommandPaletteActionType.input;
 
   @override
   bool operator ==(Object other) {
