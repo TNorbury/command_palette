@@ -38,7 +38,8 @@ class _CommandPaletteBodyState extends State<CommandPaletteBody> {
       double posToScrollTo = -1;
       if (selectedItemTop < scrollViewTopOffset) {
         posToScrollTo = selectedItemTop;
-      } else if (selectedItemBottom > scrollViewBottomOffset) {
+      } else if (scrollViewBottomOffset != 0 &&
+          selectedItemBottom > scrollViewBottomOffset) {
         // align bottom of item to bottom
         posToScrollTo = selectedItemBottom - scrollViewHeight;
       }
