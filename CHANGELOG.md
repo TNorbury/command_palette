@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.7.4 - 2023-10-30
+### Added
+- Add FocusNode parameter which is passed to underlying Focus widget
+- Added input as a type for an action. This type of action will give the user a text field and accept the processed text, passing it to a callback
+
 ## 0.7.3 - 2023-05-12
 ### Changed
 - Upgrade to Flutter 3.10.0

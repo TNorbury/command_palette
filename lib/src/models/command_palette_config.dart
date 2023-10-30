@@ -91,7 +91,7 @@ class CommandPaletteConfig {
   /// keyboard
   ///
   /// The current instructions are:
-  /// * enter/return: to select
+  /// * enter/return: to select, (or if an input action) to confirm
   /// * up/down arrow: to navigate
   /// * escape: to close
   ///
