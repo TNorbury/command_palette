@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Added
 - Add FocusNode parameter which is passed to underlying Focus widget
+- Added input as a type for an action. This type of action will give the user a text field and accept the processed text, passing it to a callback
 
 ## 0.7.3 - 2023-05-12
 ### Changed
