@@ -65,8 +65,10 @@ class _CommandPaletteTextFieldState extends State<CommandPaletteTextField> {
         inputDecoration.prefixText == null;
     if (styleHasNoPrefix &&
         style.prefixNestedActions &&
-        controller.currentlySelectedAction?.actionType ==
-            CommandPaletteActionType.nested) {
+        (controller.currentlySelectedAction?.actionType ==
+                CommandPaletteActionType.nested ||
+            controller.currentlySelectedAction?.actionType ==
+                CommandPaletteActionType.input)) {
       inputDecoration = inputDecoration.copyWith(
         prefixText: "${controller.currentlySelectedAction!.label}: ",
         hintText: "",
