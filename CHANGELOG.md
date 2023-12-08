@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Changed
-- Upgrade to Flutter 3.13.x
+- Upgrade to Flutter 3.16
 
 ## 0.7.4 - 2023-10-30
 ### Added
