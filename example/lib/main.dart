@@ -32,6 +32,14 @@ class _MyHomePageState extends State<MyHomePage> {
   ThemeMode themeMode = ThemeMode.light;
   String _currentUser = "";
   Color? color;
+  List<String> users = [
+    "Maria",
+    "Kurt",
+    "Susanne",
+    "Larissa",
+    "Simon",
+    "Admin"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +113,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 shortcut: ["ctrl", "shift", "n"],
                 leading: Icon(Icons.add),
                 onConfirmInput: (value) {
+                  setState(() {
+                    users.add(value);
+                  });
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Created user: $value')));
                 },
@@ -115,8 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 shortcut: ["ctrl", "shift", "s"],
                 leading: Icon(Icons.account_circle),
                 childrenActions: [
-                  ...["Maria", "Kurt", "Susanne", "Larissa", "Simon", "Admin"]
-                      .map(
+                  ...users.map(
                     (e) => CommandPaletteAction.single(
                       label: e,
                       onSelect: () => setState(() {

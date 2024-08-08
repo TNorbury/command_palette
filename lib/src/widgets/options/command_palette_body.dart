@@ -5,7 +5,7 @@ import 'package:command_palette/src/widgets/options/option_highlighter.dart';
 import 'package:flutter/material.dart';
 import 'package:substring_highlight/substring_highlight.dart';
 
-const double itemHeight = 52;
+const double itemHeight = 56;
 
 /// Displays all the available [CommandPaletteAction] options based upon various
 /// filtering criteria.
