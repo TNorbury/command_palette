@@ -76,4 +76,6 @@ build/
 
 # ignore coverage file
 coverage
-.fvm/flutter_sdk
+
+# FVM Version Cache
+.fvm/

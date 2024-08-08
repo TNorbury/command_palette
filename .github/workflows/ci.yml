@@ -11,7 +11,7 @@ on:
     types: [synchronize, opened, reopened]
 
 env:
-  flutter_version: 3.10.0
+  flutter_version: 3.24.0
 
 jobs:
   lint:

@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Changed
-- Upgrade to Flutter 3.16
+- Upgrade to Flutter 3.24
 - Increase CP default item height from 52 to 56 to comply with new Material 3 designs
 
 ## 0.7.4 - 2023-10-30
