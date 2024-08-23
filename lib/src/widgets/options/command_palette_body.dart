@@ -95,7 +95,7 @@ class _CommandPaletteBodyState extends State<CommandPaletteBody> {
               },
             ),
           ),
-          if (controller.config.showInstructions)
+          if (controller.config.instructionConfig.showInstructions)
             const CommandPaletteInstructions(),
         ],
       ),

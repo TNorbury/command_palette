@@ -21,7 +21,11 @@ void main() {
         [
           action,
         ],
-        config: CommandPaletteConfig(showInstructions: true),
+        config: CommandPaletteConfig(
+          instructionConfig: const CommandPaletteInstructionConfig(
+            showInstructions: true,
+          ),
+        ),
       );
 
       controller.currentlySelectedAction = action;
@@ -49,7 +53,11 @@ void main() {
             ],
           ),
         ],
-        config: CommandPaletteConfig(showInstructions: true),
+        config: CommandPaletteConfig(
+          instructionConfig: const CommandPaletteInstructionConfig(
+            showInstructions: true,
+          ),
+        ),
       );
 
       await tester.pumpWidget(

@@ -112,7 +112,9 @@ class MyApp extends StatelessWidget {
       home: CommandPalette(
         actions: actions,
         config: CommandPaletteConfig(
-            showInstructions: true,
+            instructionConfig: const CommandPaletteInstructionConfig(
+              showInstructions: true,
+            ),
             builder: (context, style, action, isHighlighted, onSelected,
                 searchTerms) {
               return Text(action.label);

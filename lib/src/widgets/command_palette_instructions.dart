@@ -13,6 +13,7 @@ class CommandPaletteInstructions extends StatelessWidget {
         CommandPaletteControllerProvider.of(context);
     final outline = Theme.of(context).dividerColor;
     var color = controller.style.instructionColor;
+    final instructionConfig = controller.config.instructionConfig;
     return Container(
       margin: const EdgeInsets.all(8.0),
       padding: const EdgeInsets.only(top: 8),
@@ -38,8 +39,8 @@ class CommandPaletteInstructions extends StatelessWidget {
                   instruction:
                       (controller.currentlySelectedAction?.actionType ==
                               CommandPaletteActionType.input)
-                          ? "to confirm"
-                          : "to select",
+                          ? instructionConfig.confirmLabel
+                          : instructionConfig.selectLabel,
                 ),
                 if (controller.currentlySelectedAction?.actionType !=
                     CommandPaletteActionType.input)
@@ -54,7 +55,7 @@ class CommandPaletteInstructions extends StatelessWidget {
                         color: color,
                       ),
                     ],
-                    instruction: "to navigate",
+                    instruction: instructionConfig.navigationLabel,
                   ),
                 if (controller.currentlySelectedAction != null)
                   _KeyboardInstruction(
@@ -64,7 +65,7 @@ class CommandPaletteInstructions extends StatelessWidget {
                         color: color,
                       ),
                     ],
-                    instruction: "to cancel selected action",
+                    instruction: instructionConfig.cancelSelectedLabel,
                   ),
                 _KeyboardInstruction(
                   icons: [
@@ -73,7 +74,7 @@ class CommandPaletteInstructions extends StatelessWidget {
                       color: color,
                     ),
                   ],
-                  instruction: "to close",
+                  instruction: instructionConfig.closeLabel,
                 ),
               ],
             ),

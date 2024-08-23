@@ -70,7 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
               //   LogicalKeyboardKey.keyC,
               // ),
 
-              showInstructions: true,
+              instructionConfig: CommandPaletteInstructionConfig(
+                showInstructions: true,
+              ),
             ),
             actions: [
               CommandPaletteAction.single(
