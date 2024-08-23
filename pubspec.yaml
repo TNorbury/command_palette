@@ -1,6 +1,6 @@
 name: command_palette
 description: Flutter implementation of a Command Palette. Can be brought up via a keyboard shortcut.
-version: 0.7.5
+version: 0.7.6
 homepage: https://github.com/TNorbury/command_palette
 issue_tracker: https://github.com/TNorbury/command_palette/issues
 repository: https://github.com/TNorbury/command_palette
