@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:command_palette/src/controller/command_palette_controller.dart';
 import 'package:command_palette/src/widgets/options/command_palette_body.dart';
 import 'package:flutter/foundation.dart';
@@ -87,17 +86,14 @@ class CommandPaletteConfig {
 
   /// Whether or not to show the instructions bar at the bottom of the command
   /// palette modal, under all the options.
-  /// The current instructions tell the user how to user the modal with their
-  /// keyboard
   ///
-  /// The current instructions are:
-  /// * enter/return: to select, (or if an input action) to confirm
-  /// * up/down arrow: to navigate
-  /// * escape: to close
-  ///
-  /// When a nested action is selected:
-  /// * backspace: to cancel selected action
+  /// This option is deprecated, prefer to use [instructionConfig] and set its
+  /// property [CommandPaletteInstructionConfig.showInstructions]
   final bool showInstructions;
+
+  /// Configuration options for the instructions bar at the bottom of the
+  /// command palette
+  final CommandPaletteInstructionConfig instructionConfig;
 
   CommandPaletteConfig({
     ActionFilter? filter,
@@ -115,11 +111,15 @@ class CommandPaletteConfig {
     this.right,
     this.height,
     this.width,
+    @Deprecated("Use CommandPaletteInstructionConfig.showInstructions instead")
     this.showInstructions = false,
+    CommandPaletteInstructionConfig? instructionConfig,
   })  : filter = filter ?? kDefaultFilter,
         builder = builder ?? kDefaultBuilder,
         openKeySet = openKeySet ?? _defaultOpenKeySet,
-        closeKeySet = closeKeySet ?? _defaultCloseKeySet;
+        closeKeySet = closeKeySet ?? _defaultCloseKeySet,
+        instructionConfig = instructionConfig ??
+            CommandPaletteInstructionConfig(showInstructions: showInstructions);
 
   @override
   bool operator ==(Object other) {
@@ -139,7 +139,9 @@ class CommandPaletteConfig {
         other.left == left &&
         other.right == right &&
         other.height == height &&
-        other.width == width;
+        other.width == width &&
+        other.showInstructions == showInstructions &&
+        other.instructionConfig == instructionConfig;
   }
 
   @override
@@ -157,6 +159,85 @@ class CommandPaletteConfig {
         left.hashCode ^
         right.hashCode ^
         height.hashCode ^
-        width.hashCode;
+        width.hashCode ^
+        showInstructions.hashCode ^
+        instructionConfig.hashCode;
+  }
+}
+
+/// Configures the text and visibility of the instructions bar at the bottom of
+/// the command palette
+/// The current instructions tell the user how to user the modal with their
+/// keyboard
+///
+/// The current instructions are:
+/// * enter/return: to select, (or if an input action) to confirm
+/// * up/down arrow: to navigate
+/// * escape: to close
+///
+/// When a nested action is selected:
+/// * backspace: to cancel selected action
+class CommandPaletteInstructionConfig {
+  /// Default value is "to confirm".
+  /// Used with [CommandPaletteActionType.input] type actions to indicate to the
+  /// user that the currently entered text can be submitted with the
+  /// return/enter key
+  final String confirmLabel;
+
+  /// Default value is "to select"
+  /// Appears for all non input type action to indicate to the user that hitting
+  /// the return/enter key will select the currently highlighted action
+  final String selectLabel;
+
+  /// Default value is "to navigate"
+  /// Tells the user the the up and down arrow keys can be used to highlight
+  /// different actions in the command palette
+  final String navigationLabel;
+
+  /// Default value is "to cancel selected action".
+  /// Used with [CommandPaletteActionType.input] and
+  /// [CommandPaletteActionType.nested] type actions, after that action has been
+  /// select. Tells the user that pressing back-space will unselect the
+  /// currently selected action
+  final String cancelSelectedLabel;
+
+  /// Default value is "to close"
+  /// Tells the user that the ESC key will close the command palette
+  final String closeLabel;
+
+  /// Whether or not to show the instructions bar at the bottom of the command
+  /// palette modal, under all the options.
+  final bool showInstructions;
+
+  const CommandPaletteInstructionConfig({
+    this.confirmLabel = "to confirm",
+    this.selectLabel = "to select",
+    this.navigationLabel = "to navigate",
+    this.cancelSelectedLabel = "to cancel selected action",
+    this.closeLabel = "to close",
+    this.showInstructions = false,
+  });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is CommandPaletteInstructionConfig &&
+        other.confirmLabel == confirmLabel &&
+        other.selectLabel == selectLabel &&
+        other.navigationLabel == navigationLabel &&
+        other.cancelSelectedLabel == cancelSelectedLabel &&
+        other.closeLabel == closeLabel &&
+        other.showInstructions == showInstructions;
+  }
+
+  @override
+  int get hashCode {
+    return confirmLabel.hashCode ^
+        selectLabel.hashCode ^
+        navigationLabel.hashCode ^
+        cancelSelectedLabel.hashCode ^
+        closeLabel.hashCode ^
+        showInstructions.hashCode;
   }
 }

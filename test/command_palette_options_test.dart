@@ -148,7 +148,11 @@ void main() {
       // setting flag will show instructions
       await tester.pumpWidget(
         MyApp(
-          config: CommandPaletteConfig(showInstructions: true),
+          config: CommandPaletteConfig(
+            instructionConfig: const CommandPaletteInstructionConfig(
+              showInstructions: true,
+            ),
+          ),
           actions: [
             CommandPaletteAction.single(
               label: "Action 1",
